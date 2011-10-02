@@ -1,0 +1,175 @@
+table.cfs {
+    border: 0;
+}
+
+table.cfs td {
+    border: 0;
+    border-bottom: 1px solid #dfdfdf;
+    padding: 8px;
+}
+
+table.cfs td.field_label,
+table.cfs td.field_name {
+    width: 30%;
+}
+
+table.cfs td.field_order {
+    width: 32px;
+    cursor: move;
+}
+
+table.cfs td.field_delete {
+    width: 16px;
+}
+
+#cfs_fields .inside {
+    margin: 0;
+    padding: 0;
+}
+
+#cfs_fields .field.even .field_meta td {
+    background: #fcfcfc;
+}
+
+#cfs_fields .field.form_open > .field_meta td {
+    color: #fff;
+    background: #777;
+    border-bottom: 0;
+}
+
+#cfs_fields .field.form_open > .field_meta a {
+    color: #fff;
+}
+
+#cfs_fields .field.form_open > .field_meta a:hover {
+    color: #ff8a4f;
+}
+
+#cfs_fields .field_form_mask {
+    padding: 10px;
+    background: #ACCDE4;
+    display: none;
+}
+
+/*---------------------------------------------------------------------------------------------
+    Input fields
+---------------------------------------------------------------------------------------------*/
+
+table.cfs_input {
+    border-radius: 5px;
+    border: 1px solid #98B6CB;
+}
+
+table.cfs_input tr.field_label td {
+    border-top: 0;
+}
+
+table.cfs_input tr.field_save td {
+    border-bottom: 0;
+}
+
+table.cfs_input td {
+    padding: 10px;
+}
+
+table.cfs_input td.label {
+    width: 24%;
+    vertical-align: top;
+    border-right: 1px solid #ebebeb;
+}
+
+table.cfs_input td.label label {
+    font-weight: bold;
+    color: #333;
+}
+
+table.cfs_input td.label span.required {
+    margin-right: 5px;
+    color: red;
+}
+
+table.cfs_input td.label p.description {
+    color: #666;
+    font-style: normal;
+    margin: 6px 0 0 0 !important;
+}
+
+table.cfs_input .loop_wrapper {
+    border: 1px solid #dfdfdf;
+}
+
+table.cfs_input select,
+table.cfs_input textarea,
+table.cfs_input input[type="text"] {
+    width: 99.95%;
+    padding: 5px;
+    outline: none;
+}
+
+#wpcontent table.cfs_input select.multiple {
+    height: 100px;
+}
+
+div.table_footer {
+    padding: 5px;
+    text-align: right;
+    background: #eaf2fa;
+}
+
+/*---------------------------------------------------------------------------------------------
+    Buttons, links
+---------------------------------------------------------------------------------------------*/
+
+span.cfs_delete_field {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: url(../images/button_remove.png) no-repeat;
+    cursor: pointer;
+}
+
+span.cfs_delete_field:hover {
+    background-position: 0 100%;
+}
+
+/*---------------------------------------------------------------------------------------------
+    Options
+---------------------------------------------------------------------------------------------*/
+
+#cfs_rules .inside {
+    margin: 0;
+    padding: 0;
+}
+
+#cfs_rules table td {
+    padding: 10px;
+}
+
+#cfs_rules table td.label {
+    width: 24%;
+    vertical-align: top;
+    border-right: 1px solid #ebebeb;
+}
+
+#cfs_rules table td.label label {
+    font-weight: bold;
+    color: #333;
+}
+
+#cfs_rules table td.label p.description {
+    color: #666;
+    font-style: normal;
+    margin: 6px 0 0 0 !important;
+}
+
+#cfs_rules table select,
+#cfs_rules table textarea,
+#cfs_rules table input[type="text"] {
+    width: 99.95%;
+    padding: 5px;
+    outline: none;
+}
+
+#wpcontent #cfs_rules table select.multiple {
+    height: 100px;
+}
