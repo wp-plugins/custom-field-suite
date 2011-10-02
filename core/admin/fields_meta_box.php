@@ -14,7 +14,7 @@ foreach ($this->fields as $field_name => $field_data)
 }
 
 $field_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}cfs_fields WHERE post_id = '$post->ID'");
-$results = $this->api->get_input_fields($post->ID);
+$results = $this->api->get_input_fields($post->ID, 0);
 
 ?>
 
@@ -48,7 +48,6 @@ jQuery(function() {
         var parent = jQuery(this).closest(".table_footer").siblings(".fields");
         var html = jQuery(".field_clone").html().replace(/\[clone\]/g, "["+field_index+"]");
 
-        // If sub-field, set hidden element to 1
         if (jQuery(this).hasClass("cfs_add_sub_field")) {
             html = html.replace(/{sub_field}/g, "1");
         }

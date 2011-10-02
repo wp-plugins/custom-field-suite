@@ -152,7 +152,9 @@ class cfs_Loop
                             </td>
                         </tr>
 
-                        <?php $this->parent->fields[$field->type]->options_html($field->weight, $field); ?>
+                        <?php if (method_exists($this->parent->fields[$field->type], 'options_html')) : ?>
+                            <?php $this->parent->fields[$field->type]->options_html($field->weight, $field); ?>
+                        <?php endif; ?>
 
                         <tr class="field_instructions">
                             <td class="label">
@@ -181,10 +183,10 @@ class cfs_Loop
 
     <?php endforeach; ?>
 
-        <div class="table_footer">
-            <input type="button" class="button-primary cfs_add_field cfs_add_sub_field" value="Add New Field" />
-        </div>
+    </div>
 
+    <div class="table_footer">
+        <input type="button" class="button-primary cfs_add_field cfs_add_sub_field" value="Add New Field" />
     </div>
 
     <?php

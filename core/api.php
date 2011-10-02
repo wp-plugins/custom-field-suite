@@ -35,7 +35,7 @@ class cfs_Api
 
         $post_id = empty($post_id) ? $post->ID : (int) $post_id;
 
-        // Trigger get_fields if needed
+        // Trigger get_fields
         if (!isset($this->data[$post_id]))
         {
             $fields = $this->get_fields($post_id);
@@ -66,6 +66,7 @@ class cfs_Api
 
         $post_id = empty($post_id) ? $post->ID : (int) $post_id;
 
+        // Return cached results
         if (isset($this->data[$post_id]))
         {
             return $this->data[$post_id];
@@ -196,7 +197,7 @@ class cfs_Api
         {
             $where = (false !== $group_id) ? "WHERE post_id = $group_id" : '';
 
-            if ($parent_id)
+            if (false !== $parent_id)
             {
                 $where .= " AND parent_id = $parent_id";
             }
