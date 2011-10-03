@@ -17,7 +17,7 @@ if (isset($_POST['cfs']['input']))
     WHERE v.post_id = '$post_id'";
     $wpdb->query($sql);
 
-    // Get applicable field names
+    // Get field names
     $field_names = array();
     $field_ids = implode(',', array_keys($cfs_input));
     $results = $wpdb->get_results("SELECT id, name FROM {$wpdb->prefix}cfs_fields WHERE id IN ($field_ids)");
@@ -26,15 +26,16 @@ if (isset($_POST['cfs']['input']))
         $field_names[$result->id] = $result->name;
     }
 
-    // Save individial fields
-    foreach ($cfs_input as $field_id => $value)
+    // Save each field
+    foreach ($cfs_input as $field_id => $values)
     {
         $weight = 0;
-        $value = $value['value'];
+        $sub_weight = 0;
 
-        if (false !== $value && null !== $value)
+        // Basic field
+        if (isset($values['value']))
         {
-            foreach ((array) $value as $v)
+            foreach ((array) $values['value'] as $v)
             {
                 // Insert into postmeta
                 $data = array(
@@ -52,9 +53,44 @@ if (isset($_POST['cfs']['input']))
                     'post_id' => $post_id,
                     'value' => $v,
                     'weight' => $weight,
+                    'sub_weight' => $sub_weight,
                 );
 
                 $wpdb->insert($table_name, $data);
+                $weight++;
+            }
+        }
+
+        // Loop field
+        elseif (is_array($values))
+        {
+            foreach ($values as $value)
+            {
+                $sub_weight = 0;
+                foreach ((array) $value['value'] as $v)
+                {
+                    // Insert into postmeta
+                    $data = array(
+                        'post_id' => $post_id,
+                        'meta_key' => $field_names[$field_id],
+                        'meta_value' => $v,
+                    );
+                    $wpdb->insert($wpdb->postmeta, $data);
+                    $meta_id = $wpdb->insert_id;
+
+                    // Insert into cfs_values
+                    $data = array(
+                        'field_id' => $field_id,
+                        'meta_id' => $meta_id,
+                        'post_id' => $post_id,
+                        'value' => $v,
+                        'weight' => $weight,
+                        'sub_weight' => $sub_weight,
+                    );
+
+                    $wpdb->insert($table_name, $data);
+                    $sub_weight++;
+                }
                 $weight++;
             }
         }

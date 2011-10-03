@@ -36,7 +36,7 @@ class cfs_Api
         $post_id = empty($post_id) ? $post->ID : (int) $post_id;
 
         // Trigger get_fields
-        if (!isset($this->data[$post_id]))
+        if (!isset($this->data[$post_id][$field_name]))
         {
             $fields = $this->get_fields($post_id);
             return $fields[$field_name];
@@ -62,7 +62,7 @@ class cfs_Api
         $defaults = array(
             'for_input' => false,
         );
-        $options = (object) array_merge($defaults, $options);
+        $options = (object) array_merge(array(), $options);
 
         $post_id = empty($post_id) ? $post->ID : (int) $post_id;
 
@@ -102,70 +102,63 @@ class cfs_Api
                 }
                 else
                 {
-                    /*
                     $sql = "
-                    SELECT m.meta_value
-                    FROM {$wpdb->prefix}cfs_values v
-                    INNER JOIN {$wpdb->postmeta} m ON m.meta_id = v.meta_id
-                    WHERE v.post_id = '$post_id' AND v.field_id = '$field->id'
-                    ORDER BY v.weight
-                    ";
-                    */
-                    $sql = "
-                    SELECT v.value
+                    SELECT v.value, v.weight
                     FROM {$wpdb->prefix}cfs_values v
                     WHERE v.post_id = '$post_id' AND v.field_id = '$field->id'
-                    ORDER BY v.weight
-                    ";
+                    ORDER BY v.weight, v.sub_weight";
+
                     $results = $wpdb->get_results($sql);
 
                     // Clean the SQL results
                     $value = array();
                     foreach ($results as $result)
                     {
-                        $value[] = $result->value;
+                        if (0 < (int) $field->parent_id)
+                        {
+                            $value[$result->weight][] = $result->value;
+                        }
+                        else
+                        {
+                            $value[] = $result->value;
+                        }
                     }
                 }
 
-                // Format value for input
+                // Format input data differently from API data
                 if (false !== $options->for_input)
                 {
-                    if (method_exists($this->parent->fields[$field->type], 'format_value_for_input'))
+                    // Loop field
+                    if (0 < (int) $field->parent_id)
                     {
-                        $value = $this->parent->fields[$field->type]->format_value_for_input($value);
+                        foreach ($value as $weight => $loop_values)
+                        {
+                            $field_data[$field->id][$weight] = $this->apply_value_filters($field, $loop_values, $options);
+                        }
                     }
+                    // Basic field
                     else
                     {
-                        $value = $value[0];
+                        $field_data[$field->id] = $this->apply_value_filters($field, $value, $options);
                     }
-
-                    $field_data[$field->id] = $value;
                 }
-
-                // Format value for api
                 else
                 {
-                    if (method_exists($this->parent->fields[$field->type], 'format_value_for_api'))
-                    {
-                        $value = $this->parent->fields[$field->type]->format_value_for_api($value);
-                    }
-                    else
-                    {
-                        $value = $value[0];
-                    }
-
-                    // If a child field, append the parent array
+                    // Loop field
                     if (0 < (int) $field->parent_id)
                     {
                         // Get the field name from the ID
                         $parent_field_name = $fields[$field->parent_id]->name;
 
-                        // Append the parent array
-                        $field_data[$parent_field_name][$field->name] = $value;
+                        foreach ($value as $weight => $loop_values)
+                        {
+                            $field_data[$parent_field_name][$weight][$field->name] = $this->apply_value_filters($field, $loop_values, $options);
+                        }
                     }
+                    // Basic field
                     else
                     {
-                        $field_data[$field->name] = $value;
+                        $field_data[$field->name] = $this->apply_value_filters($field, $value, $options);
                     }
                 }
             }
@@ -173,6 +166,47 @@ class cfs_Api
 
         $this->data[$post_id] = $field_data;
         return $field_data;
+    }
+
+
+    /*--------------------------------------------------------------------------------------
+    *
+    *    apply_value_filters
+    *
+    *    @author Matt Gibbs
+    *    @since 1.0.0
+    *
+    *-------------------------------------------------------------------------------------*/
+
+    function apply_value_filters($field, $value, $options)
+    {
+        // Format value for input
+        if (false !== $options->for_input)
+        {
+            if (method_exists($this->parent->fields[$field->type], 'format_value_for_input'))
+            {
+                $value = $this->parent->fields[$field->type]->format_value_for_input($value);
+            }
+            else
+            {
+                $value = $value[0];
+            }
+        }
+
+        // Format value for api
+        else
+        {
+            if (method_exists($this->parent->fields[$field->type], 'format_value_for_api'))
+            {
+                $value = $this->parent->fields[$field->type]->format_value_for_api($value);
+            }
+            else
+            {
+                $value = $value[0];
+            }
+        }
+
+        return $value;
     }
 
 

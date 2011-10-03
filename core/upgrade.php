@@ -25,7 +25,8 @@ if (version_compare($last_version, $this->version, '<'))
         meta_id INT unsigned,
         post_id INT unsigned,
         value TEXT,
-        weight INT unsigned
+        weight INT unsigned,
+        sub_weight INT unsigned
     ) DEFAULT CHARSET=utf8";
     dbDelta($sql);
 

@@ -16,9 +16,18 @@ class cfs_Loop
     function html($field)
     {
         $results = $this->parent->api->get_input_fields($field->group_id, $field->id);
-    ?>
 
-    <?php if ($results) : ?>
+        // Get the number of loop rows
+        if ($results) :
+
+            foreach ($results as $result)
+            {
+                $num_rows = count($result->value);
+                break;
+            }
+    ?>
+        <?php for ($i = 0; $i < $num_rows; $i++) : ?>
+
         <table class="widefat">
             <tbody>
                 <tr>
@@ -35,10 +44,10 @@ class cfs_Loop
                         <?php
                             $this->parent->create_field((object) array(
                                 'type' => $sub_field->type,
-                                'input_name' => "cfs[input][$sub_field->id][value][]",
+                                'input_name' => "cfs[input][$sub_field->id][$i][value][]",
                                 'input_class' => $sub_field->type,
                                 'options' => $sub_field->options,
-                                'value' => $sub_field->value,
+                                'value' => $sub_field->value[$i],
                             ));
                         ?>
                         </div>
@@ -48,9 +57,10 @@ class cfs_Loop
                 </tr>
             </tbody>
         </table>
-    <?php endif; ?>
+        <?php endfor; ?>
+        <?php endif; ?>
     <div class="table_footer">
-        <input type="button" class="button-primary cfs_add_field" value="Add Field" />
+        <input type="button" class="button-primary cfs_add_field" value="Add Row" />
     </div>
 
     <?php
@@ -73,14 +83,15 @@ class cfs_Loop
     <?php
     }
 
-    function admin_head($field = null)
-    {
-        
-    }
-
     function input_head($field = null)
     {
-        
+    ?>
+        <script type="text/javascript">
+        jQuery(function() {
+            //alert('hi');
+        });
+        </script>
+    <?php
     }
 
     function sub_fields_meta_box($sub_fields)

@@ -5,6 +5,7 @@ global $post, $wpdb;
 // store all field html options
 foreach ($this->fields as $field_name => $field_data)
 {
+    $options_html[$field_name] = '';
     if (method_exists($this->fields[$field_name], 'options_html'))
     {
         ob_start();
@@ -169,6 +170,19 @@ jQuery(function() {
                             </select>
                         </td>
                     </tr>
+                    <!--
+                    <tr class="field_validation">
+                        <td class="label">
+                            <label><?php _e('Validation', 'cfs'); ?></label>
+                            <p class="description"><?php _e('Prevent the field from saving if not in the proper format', 'cfs'); ?></p>
+                        </td>
+                        <td>
+                            <select name="cfs[fields][<?php echo $field->weight; ?>][validator]">
+                                <option value="">None</option>
+                            </select>
+                        </td>
+                    </tr>
+                    -->
 
                     <?php if (method_exists($this->fields[$field->type], 'options_html')) : ?>
                         <?php $this->fields[$field->type]->options_html($field->weight, $field); ?>
