@@ -62,7 +62,7 @@ class cfs_Api
         $defaults = array(
             'for_input' => false,
         );
-        $options = (object) array_merge(array(), $options);
+        $options = (object) array_merge($defaults, $options);
 
         $post_id = empty($post_id) ? $post->ID : (int) $post_id;
 
@@ -243,9 +243,13 @@ class cfs_Api
                 // Unserialize the options
                 $field->options = (@unserialize($field->options)) ? unserialize($field->options) : array();
 
-                if (!empty($values[$field->id]))
+                if (null !== $values[$field->id])
                 {
                     $field->value = $values[$field->id];
+                }
+                elseif (isset($field->options['default_value']))
+                {
+                    $field->value = $field->options['default_value'];
                 }
 
                 $fields[$field->id] = $field;

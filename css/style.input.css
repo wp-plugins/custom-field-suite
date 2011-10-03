@@ -133,8 +133,15 @@
     Loop
 ---------------------------------------------------------------------------------------------*/
 
+.cfs_loop table {
+    border: 0;
+    background: none;
+    margin: 10px 0;
+}
+
 .cfs_loop td {
-    padding:  8px;
+    padding: 8px;
+    border: 0;
 }
 
 .cfs_loop td.order {

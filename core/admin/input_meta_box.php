@@ -1,10 +1,18 @@
 <input type="hidden" name="cfs[save]" value="<?php echo wp_create_nonce('cfs_save_input'); ?>" />
 
+<script type="text/javascript">
+jQuery(function() {
+    jQuery(".cfs_loop td.remove").click(function() {
+        jQuery(this).closest("table").remove();
+    });
+});
+</script>
+
 <?php
 
 $used_types = array();
 
-// Passed from the add_meta_box call
+// Passed from add_meta_box
 $group_id = $metabox['args']['group_id'];
 
 $input_fields = $this->api->get_input_fields($group_id);
