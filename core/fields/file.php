@@ -18,7 +18,7 @@ class cfs_File
 
     function html($field)
     {
-        $file_url = empty($field->value) ? '' : wp_get_attachment_url($field->value);
+        $file_url = ctype_digit($field->value) ? wp_get_attachment_url($field->value) : $field->value;
     ?>
         <input type="button" class="file button" value="<?php _e('Add File', 'cfs'); ?>" />
         <div class="file_url"><?php echo $file_url; ?></div>

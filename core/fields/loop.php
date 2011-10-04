@@ -32,7 +32,7 @@ class cfs_Loop
                                 <p class="instructions"><?php echo $sub_field->instructions; ?></p>
                                 <?php endif; ?>
 
-                                <div class="cfs_<?php echo $sub_field->type; ?>">
+                                <div class="field cfs_<?php echo $sub_field->type; ?>">
                                 <?php
                                     $this->parent->create_field((object) array(
                                         'type' => $sub_field->type,
@@ -44,7 +44,9 @@ class cfs_Loop
                                 </div>
                             <?php endforeach; ?>
                             </td>
-                            <td class="remove"></td>
+                            <td class="remove">
+                                <span></span>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -62,7 +64,7 @@ class cfs_Loop
 
             for ($i = 0; $i < $num_rows; $i++) :
     ?>
-            <input type="hidden" class="loop_count" value="<?php echo $num_rows; ?>" />
+            <input type="hidden" class="row_count" value="<?php echo $num_rows; ?>" />
 
             <table class="widefat">
                 <tbody>
@@ -89,7 +91,9 @@ class cfs_Loop
                             </div>
                         <?php endforeach; ?>
                         </td>
-                        <td class="remove"></td>
+                        <td class="remove">
+                            <span></span>
+                        </td>
                     </tr>
                 </tbody>
             </table>

@@ -9,10 +9,6 @@
     border-bottom: 1px solid #dfdfdf;
 }
 
-.cfs_input .field:last-child {
-    border-bottom: none;
-}
-
 .cfs_input .field input[type="text"],
 .cfs_input .field textarea,
 .cfs_input .field select {
@@ -134,13 +130,16 @@
 ---------------------------------------------------------------------------------------------*/
 
 .cfs_input .cfs_loop label {
+    padding: 6px 0 0 0;
+}
+
+.cfs_input .cfs_loop .field {
+    border: none;
     padding: 6px 0;
 }
 
 .cfs_loop table {
-    border: 0;
-    background: none;
-    margin: 8px 0;
+    margin-bottom: 6px;
 }
 
 .cfs_loop td {
@@ -149,10 +148,21 @@
 }
 
 .cfs_loop td.order {
-    width: 20px;
-    cursor: move;
+    width: 16px;
 }
 
 .cfs_loop td.remove {
     width: 16px;
+}
+
+.cfs_loop td.remove span {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: url(../images/button_remove.png) no-repeat;
+    cursor: pointer;
+}
+
+.cfs_loop td.remove span:hover {
+    background-position: 0 100%;
 }
