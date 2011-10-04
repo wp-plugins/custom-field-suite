@@ -133,10 +133,14 @@
     Loop
 ---------------------------------------------------------------------------------------------*/
 
+.cfs_input .cfs_loop label {
+    padding: 6px 0;
+}
+
 .cfs_loop table {
     border: 0;
     background: none;
-    margin: 10px 0;
+    margin: 8px 0;
 }
 
 .cfs_loop td {

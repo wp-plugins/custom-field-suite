@@ -16,7 +16,41 @@ class cfs_Loop
     function html($field)
     {
         $results = $this->parent->api->get_input_fields($field->group_id, $field->id);
+    ?>
 
+        <div class="loop_wrapper">
+            <div class="input_clone hidden">
+                <table class="widefat">
+                    <tbody>
+                        <tr>
+                            <td class="order"></td>
+                            <td>
+                            <?php foreach ($results as $sub_field) : ?>
+                                <label><?php echo $sub_field->label; ?></label>
+
+                                <?php if (!empty($sub_field->instructions)) : ?>
+                                <p class="instructions"><?php echo $sub_field->instructions; ?></p>
+                                <?php endif; ?>
+
+                                <div class="cfs_<?php echo $sub_field->type; ?>">
+                                <?php
+                                    $this->parent->create_field((object) array(
+                                        'type' => $sub_field->type,
+                                        'input_name' => "cfs[input][$sub_field->id][clone][value][]",
+                                        'input_class' => $sub_field->type,
+                                        'options' => $sub_field->options,
+                                    ));
+                                ?>
+                                </div>
+                            <?php endforeach; ?>
+                            </td>
+                            <td class="remove"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+    <?php
         // Get the number of loop rows
         if ($results) :
 
@@ -25,40 +59,44 @@ class cfs_Loop
                 $num_rows = count($result->value);
                 break;
             }
+
+            for ($i = 0; $i < $num_rows; $i++) :
     ?>
-        <?php for ($i = 0; $i < $num_rows; $i++) : ?>
 
-        <table class="widefat">
-            <tbody>
-                <tr>
-                    <td class="order"></td>
-                    <td>
-                    <?php foreach ($results as $sub_field) : ?>
-                        <label><?php echo $sub_field->label; ?></label>
+            <table class="widefat">
+                <tbody>
+                    <tr>
+                        <td class="order"></td>
+                        <td>
+                        <?php foreach ($results as $sub_field) : ?>
+                            <label><?php echo $sub_field->label; ?></label>
 
-                        <?php if (!empty($sub_field->instructions)) : ?>
-                        <p class="instructions"><?php echo $sub_field->instructions; ?></p>
-                        <?php endif; ?>
+                            <?php if (!empty($sub_field->instructions)) : ?>
+                            <p class="instructions"><?php echo $sub_field->instructions; ?></p>
+                            <?php endif; ?>
 
-                        <div class="cfs_<?php echo $sub_field->type; ?>">
-                        <?php
-                            $this->parent->create_field((object) array(
-                                'type' => $sub_field->type,
-                                'input_name' => "cfs[input][$sub_field->id][$i][value][]",
-                                'input_class' => $sub_field->type,
-                                'options' => $sub_field->options,
-                                'value' => $sub_field->value[$i],
-                            ));
-                        ?>
-                        </div>
-                    <?php endforeach; ?>
-                    </td>
-                    <td class="remove"></td>
-                </tr>
-            </tbody>
-        </table>
-        <?php endfor; ?>
-        <?php endif; ?>
+                            <div class="cfs_<?php echo $sub_field->type; ?>">
+                            <?php
+                                $this->parent->create_field((object) array(
+                                    'type' => $sub_field->type,
+                                    'input_name' => "cfs[input][$sub_field->id][$i][value][]",
+                                    'input_class' => $sub_field->type,
+                                    'options' => $sub_field->options,
+                                    'value' => $sub_field->value[$i],
+                                ));
+                            ?>
+                            </div>
+                        <?php endforeach; ?>
+                        </td>
+                        <td class="remove"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <?php endfor; endif; ?>
+
+        </div>
+
     <div class="table_footer">
         <input type="button" class="button-primary cfs_add_field" value="Add Row" />
     </div>
@@ -86,11 +124,7 @@ class cfs_Loop
     function input_head($field = null)
     {
     ?>
-        <script type="text/javascript">
-        jQuery(function() {
-            //alert('hi');
-        });
-        </script>
+        
     <?php
     }
 

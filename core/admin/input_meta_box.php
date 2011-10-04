@@ -2,8 +2,15 @@
 
 <script type="text/javascript">
 jQuery(function() {
-    jQuery(".cfs_loop td.remove").click(function() {
+    jQuery(".cfs_loop td.remove").live("click", function() {
         jQuery(this).closest("table").remove();
+    });
+
+    // Add a new field
+    jQuery(".cfs_add_field").click(function() {
+        var parent = jQuery(this).closest(".table_footer").siblings(".loop_wrapper");
+        var html = parent.find(".input_clone").html().replace(/\[clone\]/g, "[xyz]");
+        parent.append(html);
     });
 });
 </script>
