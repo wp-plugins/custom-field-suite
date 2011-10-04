@@ -33,9 +33,9 @@ if (version_compare($last_version, $this->version, '<'))
     $sql = "CREATE TABLE {$wpdb->prefix}cfs_rules (
         id INT unsigned not null auto_increment primary key,
         group_id INT unsigned,
-        param TEXT,
-        operator TEXT,
-        value TEXT
+        rule TEXT,
+        value TEXT,
+        weight INT unsigned
     ) DEFAULT CHARSET=utf8";
     dbDelta($sql);
 

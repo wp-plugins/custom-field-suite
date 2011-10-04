@@ -57,6 +57,11 @@ jQuery(function() {
         parent.find(".field:last .field_label a.cfs_edit_field").click();
         parent.find(".field:last .cfs_input .field_type select").change();
         field_index = field_index + 1;
+
+        // Remove the "loop" type if already within a loop
+        if (jQuery(this).hasClass("cfs_add_sub_field")) {
+            parent.find('.field:last .cfs_input .field_type option[value="loop"]').remove();
+        }
     });
 
     // Delete a field

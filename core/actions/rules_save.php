@@ -2,11 +2,21 @@
 
 global $wpdb;
 
-$cfs_options = $_POST['cfs']['options'];
+$cfs_rules = $_POST['cfs']['rules'];
+$table_name = $wpdb->prefix . 'cfs_rules';
 
-if (empty($cfs_options))
+$wpdb->query("DELETE FROM $table_name WHERE group_id = '$post_id'");
+
+if (!empty($cfs_rules['post_types']))
 {
-    $cfs_options = array();
+    foreach ($cfs_rules['post_types'] as $post_type)
+    {
+        $data = array(
+            'group_id' => $post_id,
+            'rule' => 'post_type ==',
+            'value' => $post_type,
+            'weight' => 0,
+        );
+        $wpdb->insert($table_name, $data);
+    }
 }
-
-update_post_meta($post_id, 'cfs_options', $cfs_options);

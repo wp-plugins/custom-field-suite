@@ -137,25 +137,18 @@ class Cfs
         $matches = array();
         $post_type = get_post_type($post_id);
 
-        $sql = "SELECT p.ID, p.post_title, m.meta_value
-        FROM $wpdb->posts p
-        INNER JOIN $wpdb->postmeta m ON m.post_id = p.ID AND m.meta_key = 'cfs_options'
-        WHERE p.post_type = 'cfs' AND p.post_status = 'publish'";
+        $sql = "
+        SELECT p.ID, p.post_title
+        FROM {$wpdb->prefix}cfs_rules r
+        INNER JOIN $wpdb->posts p ON p.ID = r.group_id
+        WHERE r.rule = 'post_type ==' AND r.value = '$post_type'";
         $results = $wpdb->get_results($sql);
 
         if ($results)
         {
             foreach ($results as $result)
             {
-                $meta_value = @unserialize($result->meta_value);
-
-                if ($meta_value && isset($meta_value['post_types']))
-                {
-                    if (in_array($post_type, $meta_value['post_types']))
-                    {
-                        $matches[$result->ID] = $result->post_title;
-                    }
-                }
+                $matches[$result->ID] = $result->post_title;
             }
         }
         return $matches;
@@ -260,10 +253,8 @@ class Cfs
         {
             include($this->dir . '/core/actions/input_save.php');
         }
-        else
-        {
-            return $post_id;
-        }
+
+        return $post_id;
     }
 
 

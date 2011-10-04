@@ -1,9 +1,12 @@
 <?php
 
-global $post;
+global $post, $wpdb;
 
-$options = (object) get_post_meta($post->ID, 'cfs_options', true);
-
+$sql = "
+SELECT value
+FROM {$wpdb->prefix}cfs_rules
+WHERE group_id = '$post->ID' AND rule = 'post_type =='";
+$post_types = $wpdb->get_col($sql);
 ?>
 
 <table>
@@ -22,10 +25,10 @@ $options = (object) get_post_meta($post->ID, 'cfs_options', true);
 
                 $this->create_field((object) array(
                     'type' => 'select',
-                    'input_name' => "cfs[options][post_types]",
+                    'input_name' => "cfs[rules][post_types]",
                     'input_class' => '',
                     'options' => array('multiple' => '1', 'choices' => implode("\n", $choices)),
-                    'value' => $options->post_types,
+                    'value' => $post_types,
                 ));
             ?>
         </td>
