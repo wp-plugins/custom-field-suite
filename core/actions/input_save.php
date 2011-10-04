@@ -64,7 +64,7 @@ if (isset($_POST['cfs']['input']))
         // Loop field
         elseif (is_array($values))
         {
-            foreach ($values as $value)
+            foreach ($values as $key => $value)
             {
                 $sub_weight = 0;
                 foreach ((array) $value['value'] as $v)

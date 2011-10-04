@@ -249,7 +249,7 @@ class cfs_Api
                 }
                 elseif (isset($field->options['default_value']))
                 {
-                    $field->value = $field->options['default_value'];
+                    $field->value = (array) $field->options['default_value'];
                 }
 
                 $fields[$field->id] = $field;
