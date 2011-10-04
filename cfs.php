@@ -2,7 +2,7 @@
 /*
 Plugin Name: Custom Field Suite
 Plugin URI: http://uproot.us/custom-field-suite/
-Description: Create groups of custom fields.
+Description: Visually create custom field groups.
 Version: 1.0.0
 Author: Matt Gibbs
 Author URI: http://uproot.us/
@@ -167,6 +167,25 @@ class Cfs
     function create_field($field)
     {
         $this->fields[$field->type]->html($field);
+    }
+
+
+    /*--------------------------------------------------------------------------------------
+    *
+    *    get field values from api
+    *
+    *    @author Matt Gibbs
+    *    @since 1.0.0
+    *
+    *-------------------------------------------------------------------------------------*/
+
+    function get($field_name = false, $post_id = false)
+    {
+        if (false != $field_name)
+        {
+            return $this->api->get_field($field_name, $post_id);
+        }
+        return $this->api->get_fields($post_id);
     }
 
 

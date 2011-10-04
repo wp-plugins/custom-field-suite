@@ -6,7 +6,7 @@ Requires at least: 3.2
 Tested up to: 3.2.1
 Stable tag: trunk
 
-Custom Field Suite is the easiest way to create custom fields.
+Custom Field Suite is the easiest way to visually manage custom fields.
 
 == Description ==
 
@@ -15,7 +15,7 @@ Visually create groups of custom fields that can be displayed on any edit page.
 * Easily create groups of fields
 * Assign edit pages that a field group should appear on
 * Customize the field group layout (via drag-n-drop) on edit pages
-* Create your own field types using the `cfs_field_types` hook!
+* Create your own field types using the `cfs_field_types` plugin hook!
 
 = Field Types =
 * Text (api returns text)
@@ -31,8 +31,8 @@ Visually create groups of custom fields that can be displayed on any edit page.
 = API =
 The plugin includes a friendly API for displaying a post's field data.
 
-* Get all fields: $fields = $cfs->api->get_fields();
-* Get a single field: $field = $cfs->api->get_field('my_field_name');
+* Get all fields: $fields = $cfs->get();
+* Get a single field: $field = $cfs->get('my_field_name');
 
 = Website =
 http://uproot.us/custom-field-suite/
