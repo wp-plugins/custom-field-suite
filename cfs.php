@@ -13,12 +13,6 @@ Copyright: Matt Gibbs
 $cfs = new Cfs();
 $cfs->version = '1.0.0';
 
-/*
- * @TODO: public forms
- * @TODO: conditional fields
- * @TODO: field validation (validate() method in field class)
- * @TODO: custom query_posts (dot-traversal)
- */
 class Cfs
 {
     public $dir;
