@@ -50,5 +50,8 @@ Your votes really make a difference! Thanks.
 
 == Changelog ==
 
+= 1.0.1 =
+* Bugfix: default values were not appearing
+
 = 1.0.0 =
 * Custom Field Suite.

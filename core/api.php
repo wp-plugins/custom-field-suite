@@ -243,13 +243,19 @@ class cfs_Api
                 // Unserialize the options
                 $field->options = (@unserialize($field->options)) ? unserialize($field->options) : array();
 
-                if (null !== $values[$field->id])
+                $field->value = $values[$field->id];
+
+                if (isset($field->options['default_value']) && empty($field->value))
                 {
-                    $field->value = $values[$field->id];
-                }
-                elseif (isset($field->options['default_value']))
-                {
-                    $field->value = (array) $field->options['default_value'];
+                    // Sub-fields expect an array
+                    if (false !== $parent_id)
+                    {
+                        $field->value = (array) $field->options['default_value'];
+                    }
+                    else
+                    {
+                        $field->value = $field->options['default_value'];
+                    }
                 }
 
                 $fields[$field->id] = $field;
