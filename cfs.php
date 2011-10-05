@@ -175,7 +175,7 @@ class Cfs
 
     function get($field_name = false, $post_id = false)
     {
-        if (false != $field_name)
+        if (false !== $field_name)
         {
             return $this->api->get_field($field_name, $post_id);
         }
