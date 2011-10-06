@@ -102,12 +102,12 @@ jQuery(function() {
 
     jQuery(".cfs_input tr.field_label input").live("keyup", function() {
         var val = jQuery(this).val();
-        jQuery(this).closest(".field").find("td.field_label a").html(val);
+        jQuery(this).closest(".field").find("td.field_label:first a").html(val);
     });
 
     jQuery(".cfs_input tr.field_name input").live("keyup", function() {
         var val = jQuery(this).val();
-        jQuery(this).closest(".field").find("td.field_name").html(val);
+        jQuery(this).closest(".field").find("td.field_name:first").html(val);
     });
 });
 </script>
