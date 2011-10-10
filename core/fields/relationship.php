@@ -17,7 +17,7 @@ class cfs_Relationship
     {
         global $wpdb;
 
-        $available_posts = $wpdb->get_results("SELECT ID, post_type, post_title FROM wp_posts WHERE post_status = 'publish' ORDER BY post_title");
+        $available_posts = $wpdb->get_results("SELECT ID, post_type, post_title FROM $wpdb->posts WHERE post_status = 'publish' ORDER BY post_title");
         $selected_posts = array();
 
         if (!empty($field->value))
