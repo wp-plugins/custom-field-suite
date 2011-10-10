@@ -50,6 +50,10 @@ Your votes really make a difference! Thanks.
 
 == Changelog ==
 
+= 1.0.2 =
+* Bugfix: renaming a Loop field would also rename subfields
+* Bugfix: relationship field showing ALL db posts (thx Monika)
+
 = 1.0.1 =
 * Bugfix: default values were not appearing
 
