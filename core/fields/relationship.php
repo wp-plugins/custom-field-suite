@@ -205,12 +205,12 @@ class cfs_Relationship
                 $value = explode(',', $value[0]);
                 foreach ($value as $v)
                 {
-                    $return[] = $v;//get_post($v);
+                    $return[] = $v;
                 }
             }
             else
             {
-                $return = array($v[0]);//array(get_post($value[0]));
+                $return = array($value[0]);
             }
         }
 
