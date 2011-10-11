@@ -44,9 +44,7 @@ class cfs_Loop
                                 </div>
                             <?php endforeach; ?>
                             </td>
-                            <td class="remove">
-                                <span></span>
-                            </td>
+                            <td class="remove"><span></span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -91,9 +89,7 @@ class cfs_Loop
                             </div>
                         <?php endforeach; ?>
                         </td>
-                        <td class="remove">
-                            <span></span>
-                        </td>
+                        <td class="remove"><span></span></td>
                     </tr>
                 </tbody>
             </table>
@@ -102,16 +98,16 @@ class cfs_Loop
 
         </div>
 
-    <div class="table_footer">
-        <input type="button" class="button-primary cfs_add_field" value="Add Row" />
-    </div>
+        <div class="table_footer">
+            <input type="button" class="button-primary cfs_add_field" value="Add Row" />
+        </div>
 
     <?php
     }
 
     function options_html($key, $field)
     {
-        $results = $this->parent->api->get_input_fields($field->post_id, $field->id);
+        $sub_fields = $this->parent->api->get_input_fields($field->post_id, $field->id);
     ?>
         <tr class="field_option field_option_<?php echo $this->name; ?>">
             <td class="label">
@@ -119,126 +115,23 @@ class cfs_Loop
             </td>
             <td>
                 <div class="loop_wrapper">
-                    <?php $this->sub_fields_meta_box($results); ?>
+                    <div class="fields">
+
+                    <?php
+                        foreach ($sub_fields as $field)
+                        {
+                            $field->sub_field = true;
+                            $this->parent->field_html($field);
+                        }
+                    ?>
+                    </div>
+
+                    <div class="table_footer">
+                        <input type="button" class="button-primary cfs_add_field cfs_add_sub_field" value="Add New Field" />
+                    </div>
                 </div>
             </td>
         </tr>
-    <?php
-    }
-
-    function input_head($field = null)
-    {
-    ?>
-        
-    <?php
-    }
-
-    function sub_fields_meta_box($sub_fields)
-    {
-    ?>
-    <div class="fields">
-
-    <?php foreach ($sub_fields as $field) : ?>
-
-        <div class="field">
-            <div class="field_meta">
-                <table class="cfs widefat">
-                    <tr>
-                        <td class="field_order">
-
-                        </td>
-                        <td class="field_label">
-                            <strong>
-                                <a class="cfs_edit_field row-title" title="Edit field" href="javascript:;"><?php echo $field->label; ?></a>
-                            </strong>
-                        </td>
-                        <td class="field_name">
-                            <?php echo $field->name; ?>
-                        </td>
-                        <td class="field_type">
-                            <?php echo $field->type; ?>
-                        </td>
-                        <td class="field_delete">
-                            <span class="cfs_delete_field"></span>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-            <div class="field_form_mask">
-                <table class="cfs_input widefat">
-                    <tbody>
-                        <tr class="field_label">
-                            <td class="label">
-                                <label><span class="required">*</span><?php _e('Field Label', 'cfs'); ?></label>
-                                <p class="description"><?php _e('The field name that editors will see', 'cfs'); ?></p>
-                            </td>
-                            <td>
-                                <input type="text" name="cfs[fields][<?php echo $field->weight; ?>][label]" value="<?php echo $field->label; ?>" />
-                            </td>
-                        </tr>
-                        <tr class="field_name">
-                            <td class="label">
-                                <label><span class="required">*</span><?php _e('Field Name', 'cfs'); ?></label>
-                                <p class="description"><?php _e('Only lowercase letters and underscores', 'cfs'); ?></p>
-                            </td>
-                            <td>
-                                <input type="text" name="cfs[fields][<?php echo $field->weight; ?>][name]" value="<?php echo $field->name; ?>" />
-                            </td>
-                        </tr>
-                        <tr class="field_type">
-                            <td class="label">
-                                <label><span class="required">*</span><?php _e('Field Type', 'cfs'); ?></label>
-                            </td>
-                            <td>
-                                <select name="cfs[fields][<?php echo $field->weight; ?>][type]">
-                                <?php foreach ($this->parent->fields as $type) : ?>
-                                    <?php if ('loop' != $type->name) : ?>
-                                        <?php $selected = ($type->name == $field->type) ? ' selected' : ''; ?>
-                                        <option value="<?php echo $type->name; ?>"<?php echo $selected; ?>><?php echo $type->label; ?></option>
-                                    <?php endif; ?>
-                                <?php endforeach; ?>
-                                </select>
-                            </td>
-                        </tr>
-
-                        <?php if (method_exists($this->parent->fields[$field->type], 'options_html')) : ?>
-                            <?php $this->parent->fields[$field->type]->options_html($field->weight, $field); ?>
-                        <?php endif; ?>
-
-                        <tr class="field_instructions">
-                            <td class="label">
-                                <label><?php _e('Field Instructions', 'cfs'); ?></label>
-                                <p class="description"><?php _e('Instructions for authors when entering field data', 'cfs'); ?></p>
-                            </td>
-                            <td>
-                                <textarea name="cfs[fields][<?php echo $field->weight; ?>][instructions]" rows="4"><?php echo $field->instructions; ?></textarea>
-                            </td>
-                        </tr>
-                        <tr class="field_save">
-                            <td class="label">
-                                <label><?php _e('Save Field', 'cfs'); ?></label>
-                            </td>
-                            <td>
-                                <input type="hidden" name="cfs[fields][<?php echo $field->weight; ?>][id]" value="<?php echo $field->id; ?>" />
-                                <input type="hidden" name="cfs[fields][<?php echo $field->weight; ?>][sub_field]" value="1" />
-                                <input type="submit" value="Save Field" class="button-primary" />
-                                <a class="cfs_edit_field" title="continue editing" href="javascript:;">or continue editing</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-    <?php endforeach; ?>
-
-    </div>
-
-    <div class="table_footer">
-        <input type="button" class="button-primary cfs_add_field cfs_add_sub_field" value="Add New Field" />
-    </div>
-
     <?php
     }
 }

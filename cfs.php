@@ -3,7 +3,7 @@
 Plugin Name: Custom Field Suite
 Plugin URI: http://uproot.us/custom-field-suite/
 Description: Visually create custom field groups.
-Version: 1.0.2
+Version: 1.0.3
 Author: Matt Gibbs
 Author URI: http://uproot.us/
 License: GPL
@@ -11,7 +11,7 @@ Copyright: Matt Gibbs
 */
 
 $cfs = new Cfs();
-$cfs->version = '1.0.2';
+$cfs->version = '1.0.3';
 
 class Cfs
 {
@@ -194,7 +194,10 @@ class Cfs
 
     function admin_head()
     {
-        include($this->dir . '/core/actions/admin_head.php');
+        if (in_array($GLOBALS['pagenow'], array('post.php', 'post-new.php')))
+        {
+            include($this->dir . '/core/actions/admin_head.php');
+        }
     }
 
 
@@ -376,6 +379,22 @@ class Cfs
     function _input_meta_box($post, $metabox)
     {
         include($this->dir . '/core/admin/input_meta_box.php');
+    }
+
+    /*--------------------------------------------------------------------------------------
+    *
+    *    field_html
+    *
+    *    @author Matt Gibbs
+    *    @since 1.0.3
+    *
+    *-------------------------------------------------------------------------------------*/
+
+    function field_html($field)
+    {
+        $field->sub_field = isset($field->sub_field) ? 1 : '{sub_field}';
+
+        include($this->dir . '/core/admin/field_html.php');
     }
 
 

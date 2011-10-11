@@ -243,7 +243,8 @@ class cfs_Api
                 // Unserialize the options
                 $field->options = (@unserialize($field->options)) ? unserialize($field->options) : array();
 
-                $field->value = $values[$field->id];
+                // If no field value exists, set it to NULL
+                $field->value = isset($values[$field->id]) ? $values[$field->id] : null;
 
                 if (isset($field->options['default_value']) && empty($field->value))
                 {

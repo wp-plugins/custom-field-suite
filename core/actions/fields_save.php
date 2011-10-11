@@ -39,7 +39,7 @@ if (isset($_POST['cfs']['fields']))
             );
 
             // use an existing ID if available
-            if (isset($field['id']))
+            if (0 < (int) $field['id'])
             {
                 $data['id'] = (int) $field['id'];
             }

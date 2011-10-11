@@ -18,7 +18,7 @@ class cfs_File
 
     function html($field)
     {
-        $file_url = ctype_digit($field->value) ? wp_get_attachment_url($field->value) : $field->value;
+        $file_url = is_numeric($field->value) ? wp_get_attachment_url($field->value) : $field->value;
     ?>
         <input type="button" class="file button" value="<?php _e('Add File', 'cfs'); ?>" />
         <div class="file_url"><?php echo $file_url; ?></div>
@@ -67,7 +67,7 @@ class cfs_File
 
     function format_value_for_api($value)
     {
-        if (ctype_digit($value[0]))
+        if (is_numeric($value[0]))
         {
             return wp_get_attachment_url($value[0]);
         }
