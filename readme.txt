@@ -54,6 +54,7 @@ Your votes really make a difference! Thanks.
 * Code cleanup
 * Bugfix: resolved several PHP notices
 * Bugfix: relationship with 1 value would return null (thx Monika)
+* Bugfix: file upload field now shows "Gallery" tab if available
 * Improved CSS styling
 
 = 1.0.2 =

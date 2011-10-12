@@ -20,7 +20,7 @@ class cfs_File
     {
         $file_url = is_numeric($field->value) ? wp_get_attachment_url($field->value) : $field->value;
     ?>
-        <input type="button" class="file button" value="<?php _e('Add File', 'cfs'); ?>" />
+        <input type="button" class="media button" value="<?php _e('Add File', 'cfs'); ?>" />
         <div class="file_url"><?php echo $file_url; ?></div>
         <input type="hidden" name="<?php echo $field->input_name; ?>" class="<?php echo $field->input_class; ?>" value="<?php echo $field->value; ?>" />
     <?php
@@ -44,20 +44,21 @@ class cfs_File
 
     function input_head($field = null)
     {
+        global $post;
     ?>
         <script type="text/javascript">
         jQuery(function() {
-            jQuery(".cfs_input .file.button").click(function() {
-                jQuery(".cfs_input input.file.button").removeClass("active");
+            jQuery(".cfs_input .media.button").click(function() {
+                jQuery(".cfs_input input.media.button").removeClass("active");
                 jQuery(this).addClass("active");
-                tb_show('', 'media-upload.php?type=file&TB_iframe=true');
+                tb_show('', 'media-upload.php?post_id=<?php echo $post->ID; ?>&TB_iframe=true');
                 return false;
             });
 
             window.send_to_editor = function(html) {
                 var file = jQuery.parseJSON(html);
-                jQuery(".cfs_input .file.button.active").closest(".field").find(".file_url").html(file.url);
-                jQuery(".cfs_input .file.button.active").closest(".field").find(".file:last").val(file.id);
+                jQuery(".cfs_input .media.button.active").closest(".field").find(".file_url").html(file.url);
+                jQuery(".cfs_input .media.button.active").closest(".field").find(".file:last").val(file.id);
                 tb_remove();
             }
         });
