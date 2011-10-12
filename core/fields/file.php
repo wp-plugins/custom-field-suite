@@ -18,9 +18,11 @@ class cfs_File
 
     function html($field)
     {
+        global $post;
+
         $file_url = is_numeric($field->value) ? wp_get_attachment_url($field->value) : $field->value;
     ?>
-        <input type="button" class="media button" value="<?php _e('Add File', 'cfs'); ?>" />
+        <a href="media-upload.php?post_id=<?php echo $post->ID; ?>&TB_iframe=1&width=640&height=480" class="thickbox media button"><?php _e('Add File', 'cfs'); ?></a>
         <div class="file_url"><?php echo $file_url; ?></div>
         <input type="hidden" name="<?php echo $field->input_name; ?>" class="<?php echo $field->input_class; ?>" value="<?php echo $field->value; ?>" />
     <?php
@@ -44,15 +46,12 @@ class cfs_File
 
     function input_head($field = null)
     {
-        global $post;
     ?>
         <script type="text/javascript">
         jQuery(function() {
-            jQuery(".cfs_input .media.button").click(function() {
+            jQuery(".cfs_input .media.button").live("click", function() {
                 jQuery(".cfs_input input.media.button").removeClass("active");
                 jQuery(this).addClass("active");
-                tb_show('', 'media-upload.php?post_id=<?php echo $post->ID; ?>&TB_iframe=true');
-                return false;
             });
 
             window.send_to_editor = function(html) {
