@@ -1,39 +1,77 @@
 <?php
 
-global $post;
+global $post, $wpdb;
+
+/*---------------------------------------------------------------------------------------------
+    Field management screen
+---------------------------------------------------------------------------------------------*/
+
+if ('cfs' == $GLOBALS['post_type'])
+{
+    foreach ($this->fields as $field_name => $field_data)
+    {
+        $options_html[$field_name] = '';
+        if (method_exists($this->fields[$field_name], 'options_html'))
+        {
+            ob_start();
+            $this->fields[$field_name]->options_html('clone', $field);
+            $options_html[$field_name] = ob_get_clean();
+        }
+    }
+
+    $field_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}cfs_fields WHERE post_id = '$post->ID'");
+    $results = $this->api->get_input_fields($post->ID, 0);
+?>
+
+    <script type="text/javascript">
+
+    field_index = <?php echo $field_count; ?>;
+    options_html = <?php echo json_encode($options_html); ?>;
+
+    </script>
+
+    <script type="text/javascript" src="<?php echo $this->url; ?>/js/functions.fields.js"></script>
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/css/style.fields.css" />
+
+<?php
+
+    add_meta_box('cfs_fields', 'Fields', array($this, '_fields_meta_box'), 'cfs', 'normal', 'high');
+    add_meta_box('cfs_rules', 'Placement Rules', array($this, '_rules_meta_box'), 'cfs', 'normal', 'high');
+}
+
+/*---------------------------------------------------------------------------------------------
+    Field input
+---------------------------------------------------------------------------------------------*/
+
+else
+{
+    $field_group_ids = $this->get_matching_groups($post->ID);
+
+    if (!empty($field_group_ids))
+    {
+?>
+
+    <script type="text/javascript" src="<?php echo $this->url; ?>/js/functions.input.js"></script>
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/css/style.input.css" />
+
+<?php
+        // Support for multiple metaboxes
+        foreach ($field_group_ids as $group_id => $title)
+        {
+            add_meta_box('cfs_input_' . $group_id, $title, array($this, '_input_meta_box'), $post->post_type, 'normal', 'high', array('group_id' => $group_id));
+
+            // Add .cfs_input to the metabox CSS
+            add_filter("postbox_classes_{$post->post_type}_cfs_input_{$group_id}", 'cfs_postbox_classes');
+        }
+    }
+}
+
+/*---------------------------------------------------------------------------------------------
+    Helper functions
+---------------------------------------------------------------------------------------------*/
 
 function cfs_postbox_classes($classes)
 {
     $classes[] = 'cfs_input';
     return $classes;
-}
-
-if (in_array($GLOBALS['pagenow'], array('post.php', 'post-new.php')))
-{
-    // Building custom post types
-    if ('cfs' == $GLOBALS['post_type'])
-    {
-        echo '<link rel="stylesheet" type="text/css" href="' . $this->url . '/css/style.fields.css" />';
-        add_meta_box('cfs_fields', 'Fields', array($this, '_fields_meta_box'), 'cfs', 'normal', 'high');
-        add_meta_box('cfs_rules', 'Placement Rules', array($this, '_rules_meta_box'), 'cfs', 'normal', 'high');
-    }
-
-    // Displaying fields on post edit pages
-    else
-    {
-        $field_group_ids = $this->get_matching_groups($post->ID);
-
-        if (!empty($field_group_ids))
-        {
-            echo '<link rel="stylesheet" type="text/css" href="' . $this->url . '/css/style.input.css" />';
-
-            foreach ($field_group_ids as $group_id => $title)
-            {
-                add_meta_box('cfs_input_' . $group_id, $title, array($this, '_input_meta_box'), $post->post_type, 'normal', 'high', array('group_id' => $group_id));
-
-                // Add the "cfs_input" CSS class to the meta box
-                add_filter("postbox_classes_{$post->post_type}_cfs_input_{$group_id}", 'cfs_postbox_classes');
-            }
-        }
-    }
 }

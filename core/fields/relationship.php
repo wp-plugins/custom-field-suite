@@ -64,6 +64,7 @@ class cfs_Relationship
 
     function options_html($key, $field)
     {
+        $post_types = isset($field->options['post_types']) ? $field->options['post_types'] : null;
         $choices = get_post_types(array('exclude_from_search' => false));
         $choices = implode("\n", $choices);
     ?>
@@ -79,7 +80,7 @@ class cfs_Relationship
                         'input_name' => "cfs[fields][$key][options][post_types]",
                         'input_class' => '',
                         'options' => array('choices' => $choices, 'multiple' => '1'),
-                        'value' => $field->options['post_types'],
+                        'value' => $post_types,
                     ));
                 ?>
             </td>
@@ -204,12 +205,12 @@ class cfs_Relationship
                 $value = explode(',', $value[0]);
                 foreach ($value as $v)
                 {
-                    $return[] = $v;//get_post($v);
+                    $return[] = $v;
                 }
             }
             else
             {
-                $return = array($v[0]);//array(get_post($value[0]));
+                $return = array($value[0]);
             }
         }
 

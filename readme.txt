@@ -35,7 +35,7 @@ The plugin includes a friendly API for displaying a post's field data.
 * Get a single field: $field = $cfs->get('my_field_name');
 
 = Website =
-http://uproot.us/custom-field-suite/
+http://uproot.us/
 
 = Please Vote and Enjoy =
 Your votes really make a difference! Thanks.
@@ -49,6 +49,13 @@ Your votes really make a difference! Thanks.
 
 
 == Changelog ==
+
+= 1.0.3 =
+* Code cleanup
+* Bugfix: resolved several PHP notices
+* Bugfix: relationship with 1 value would return null (thx Monika)
+* Bugfix: file upload field now shows "Gallery" tab if available
+* Improved CSS styling
 
 = 1.0.2 =
 * Bugfix: renaming a Loop field would also rename subfields
