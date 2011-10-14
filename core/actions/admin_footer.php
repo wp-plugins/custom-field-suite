@@ -13,18 +13,21 @@ jQuery(function() {
             <div class="inside">
                 <div class="field">
                     <h4><?php _e('Changelog', 'cfs'); ?></h4>
-                    <p><?php _e('See updates for', 'cfs'); ?> <a class="thickbox" href="<?php bloginfo('url'); ?>/wp-admin/plugin-install.php?tab=plugin-information&plugin=custom-field-suite&section=changelog&TB_iframe=true&width=640&height=559">v<?php echo $this->version; ?></a></p>
+                    <p><?php _e('See updates for', 'cfs'); ?> <a class="thickbox" href="<?php bloginfo('url'); ?>/wp-admin/plugin-install.php?tab=plugin-information&plugin=custom-field-suite&section=changelog&TB_iframe=1&width=640&height=480">v<?php echo $this->version; ?></a></p>
+                </div>
+                <div class="field">
+                    <h4>Getting Started?</h4>
+                    <p>
+                        <a href="http://uproot.us/custom-field-suite/documentation/" target="_blank">Documentation</a> |
+                        <a href="http://uproot.us/support/" target="_blank">Support</a> |
+                        <a href="http://uproot.us/custom-field-suite/roadmap/" target="_blank">Roadmap</a>
+                    </p>
                 </div>
                 <div class="field">
                     <h4><?php _e('Developed by', 'cfs'); ?> Matt Gibbs</h4>
                     <p>
-                        <a href="http://wordpress.org/extend/plugins/custom-field-suite/" target="_blank">Vote for CFS</a> |
-                        <a href="http://twitter.com/logikal16/" target="_blank">Twitter</a>
-                    </p>
-                </div>
-                <div class="field">
-                    <p>
-                        Adapted from Elliot Condon's wonderful <a href="http://wordpress.org/extend/plugins/advanced-custom-fields/" target="_blank">Advanced Custom Fields</a> plugin.
+                        <a href="http://twitter.com/logikal16/" target="_blank">Twitter</a> |
+                        <a href="http://wordpress.org/extend/plugins/custom-field-suite/" target="_blank">Vote for this plugin</a>
                     </p>
                 </div>
             </div>

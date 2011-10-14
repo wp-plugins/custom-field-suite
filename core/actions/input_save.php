@@ -32,6 +32,9 @@ if (isset($_POST['cfs']['input']))
         $weight = 0;
         $sub_weight = 0;
 
+        // clean the values
+        $values = stripslashes_deep($values);
+
         // Basic field
         if (isset($values['value']))
         {

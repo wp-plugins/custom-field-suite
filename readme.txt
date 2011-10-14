@@ -50,6 +50,10 @@ Your votes really make a difference! Thanks.
 
 == Changelog ==
 
+= 1.0.4 =
+* Bugfix: slashes being added before quotes
+* Added Documentation links to overview page
+
 = 1.0.3 =
 * Code cleanup
 * Bugfix: resolved several PHP notices
