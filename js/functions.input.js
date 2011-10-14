@@ -1,9 +1,11 @@
 jQuery(function() {
+
+    // Remove a loop row
     jQuery(".cfs_loop td.remove span").live("click", function() {
         jQuery(this).closest("table").remove();
     });
 
-    // Add a new field
+    // Add a new loop row
     jQuery(".cfs_add_field").click(function() {
         var parent = jQuery(this).closest(".table_footer").siblings(".loop_wrapper");
         var count = parent.find("input.row_count");
