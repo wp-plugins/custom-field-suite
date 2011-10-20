@@ -50,6 +50,9 @@ Your votes really make a difference! Thanks.
 
 == Changelog ==
 
+= 1.0.5 =
+* Bugfix: wysiwyg hyperlink buton not working
+
 = 1.0.4 =
 * Bugfix: slashes being added before quotes
 * Added Documentation links to overview page

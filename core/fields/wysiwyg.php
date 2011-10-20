@@ -11,6 +11,14 @@ class cfs_Wysiwyg
         $this->name = 'wysiwyg';
         $this->label = __('Wysiwyg Editor', 'cfs');
         $this->parent = $parent;
+
+        // extra actions
+        add_action('admin_head', array($this, 'admin_head'));
+    }
+
+    function admin_head()
+    {
+        wp_tiny_mce();
     }
 
     function html($field)
@@ -22,7 +30,6 @@ class cfs_Wysiwyg
 
     function input_head()
     {
-        wp_tiny_mce();
     ?>
         <script type="text/javascript">
         jQuery(function() {

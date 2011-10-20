@@ -1,38 +1,5 @@
 <?php
 
-/*--------------------------------------------------------------------------------------
-*
-*    Supported field methods:
-*
-*    __construct($parent)
-*        Add plugin hooks, basic field settings
-*
-*    html($field)
-*        Build the field HTML
-*
-*    options_html($key, $field)
-*        Build the field options area
-*
-*    admin_head($field = null)
-*        Add styles/JS above the field management form
-*
-*    input_head($field = null)
-*        Add styles/JS above the input form
-*
-*    format_value_for_api($value)
-*        Format the value for get_field()
-*
-*    format_value_for_input($value)
-*        Format the value for the HTML input
-*
-*    load_value($field)
-*        Override how the plugin loads the value
-*
-*    save_value($field)
-*        Override how the plugin saves the value
-*
-*-------------------------------------------------------------------------------------*/
-
 class cfs_Text
 {
     public $name;

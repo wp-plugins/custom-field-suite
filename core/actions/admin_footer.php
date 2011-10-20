@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/css/style.screen_extra.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/css/screen_extra.css" />
 <script type="text/javascript">
 jQuery(function() {
     jQuery(".wp-list-table").before(jQuery("#posts-sidebar-box").html());
