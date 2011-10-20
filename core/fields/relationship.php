@@ -1,10 +1,7 @@
 <?php
 
-class cfs_Relationship
+class cfs_Relationship extends cfs_Field
 {
-    public $name;
-    public $label;
-    public $parent;
 
     function __construct($parent)
     {
@@ -186,11 +183,6 @@ class cfs_Relationship
         });
         </script>
     <?php
-    }
-
-    function format_value_for_input($value)
-    {
-        return $value[0];
     }
 
     function format_value_for_api($value)

@@ -19,14 +19,7 @@ class cfs_Wysiwyg extends cfs_Field
 
     function input_head()
     {
-        if (function_exists('wp_editor'))
-        {
-            wp_editor('', 'content');
-        }
-        else
-        {
-            wp_tiny_mce();
-        }
+        wp_tiny_mce();
     ?>
         <script type="text/javascript">
         jQuery(function() {

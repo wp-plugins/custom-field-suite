@@ -89,7 +89,7 @@ class Cfs
 
     function get_field_types()
     {
-        // include the base field
+        // include the parent field type
         include($this->dir . '/core/fields/field.php');
 
         $field_types = array(
@@ -313,7 +313,7 @@ class Cfs
 
     function admin_print_scripts()
     {
-        $scripts = array('jquery', 'jquery-ui-core', 'thickbox');
+        $scripts = array('jquery', 'jquery-ui-core', 'media-upload', 'thickbox', 'editor');
         wp_enqueue_script($scripts);
     }
 
