@@ -30,13 +30,13 @@ if ('cfs' == $GLOBALS['post_type'])
 
     </script>
 
-    <script type="text/javascript" src="<?php echo $this->url; ?>/js/functions.fields.js"></script>
-    <link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/css/style.fields.css" />
+    <script type="text/javascript" src="<?php echo $this->url; ?>/js/fields.js"></script>
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/css/fields.css" />
 
 <?php
 
-    add_meta_box('cfs_fields', 'Fields', array($this, '_fields_meta_box'), 'cfs', 'normal', 'high');
-    add_meta_box('cfs_rules', 'Placement Rules', array($this, '_rules_meta_box'), 'cfs', 'normal', 'high');
+    add_meta_box('cfs_fields', 'Fields', array($this, 'meta_box_fields'), 'cfs', 'normal', 'high');
+    add_meta_box('cfs_rules', 'Placement Rules', array($this, 'meta_box_rules'), 'cfs', 'normal', 'high');
 }
 
 /*---------------------------------------------------------------------------------------------
@@ -51,14 +51,14 @@ else
     {
 ?>
 
-    <script type="text/javascript" src="<?php echo $this->url; ?>/js/functions.input.js"></script>
-    <link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/css/style.input.css" />
+    <script type="text/javascript" src="<?php echo $this->url; ?>/js/input.js"></script>
+    <link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/css/input.css" />
 
 <?php
         // Support for multiple metaboxes
         foreach ($field_group_ids as $group_id => $title)
         {
-            add_meta_box('cfs_input_' . $group_id, $title, array($this, '_input_meta_box'), $post->post_type, 'normal', 'high', array('group_id' => $group_id));
+            add_meta_box('cfs_input_' . $group_id, $title, array($this, 'meta_box_input'), $post->post_type, 'normal', 'high', array('group_id' => $group_id));
 
             // Add .cfs_input to the metabox CSS
             add_filter("postbox_classes_{$post->post_type}_cfs_input_{$group_id}", 'cfs_postbox_classes');

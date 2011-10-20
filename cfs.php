@@ -3,7 +3,7 @@
 Plugin Name: Custom Field Suite
 Plugin URI: http://uproot.us/custom-field-suite/
 Description: Visually create custom field groups.
-Version: 1.0.4
+Version: 1.0.5
 Author: Matt Gibbs
 Author URI: http://uproot.us/
 License: GPL
@@ -11,7 +11,7 @@ Copyright: Matt Gibbs
 */
 
 $cfs = new Cfs();
-$cfs->version = '1.0.4';
+$cfs->version = '1.0.5';
 
 class Cfs
 {
@@ -262,12 +262,11 @@ class Cfs
 
         if (wp_verify_nonce($_POST['cfs']['save'], 'cfs_save_fields'))
         {
-            include($this->dir . '/core/actions/fields_save.php');
-            include($this->dir . '/core/actions/rules_save.php');
+            include($this->dir . '/core/actions/save_fields.php');
         }
         elseif (wp_verify_nonce($_POST['cfs']['save'], 'cfs_save_input'))
         {
-            include($this->dir . '/core/actions/input_save.php');
+            include($this->dir . '/core/actions/save_input.php');
         }
 
         return $post_id;
@@ -311,14 +310,8 @@ class Cfs
 
     function admin_print_scripts()
     {
-        // jquery
-        wp_enqueue_script('jquery');
-        wp_enqueue_script('jquery-ui-core');
-
-        // file upload
-        wp_enqueue_script('media-upload');
-        wp_enqueue_script('thickbox');
-        wp_enqueue_script('editor');
+        $scripts = array('jquery', 'jquery-ui-core', 'media-upload', 'thickbox', 'editor', 'tiny_mce');
+        wp_enqueue_script($scripts);
     }
 
 
@@ -346,9 +339,9 @@ class Cfs
     *
     *-------------------------------------------------------------------------------------*/
 
-    function _fields_meta_box()
+    function meta_box_fields()
     {
-        include($this->dir . '/core/admin/fields_meta_box.php');
+        include($this->dir . '/core/admin/meta_box_fields.php');
     }
 
 
@@ -361,9 +354,9 @@ class Cfs
     *
     *-------------------------------------------------------------------------------------*/
 
-    function _rules_meta_box()
+    function meta_box_rules()
     {
-        include($this->dir . '/core/admin/rules_meta_box.php');
+        include($this->dir . '/core/admin/meta_box_rules.php');
     }
 
 
@@ -376,9 +369,9 @@ class Cfs
     *
     *-------------------------------------------------------------------------------------*/
 
-    function _input_meta_box($post, $metabox)
+    function meta_box_input($post, $metabox)
     {
-        include($this->dir . '/core/admin/input_meta_box.php');
+        include($this->dir . '/core/admin/meta_box_input.php');
     }
 
     /*--------------------------------------------------------------------------------------
@@ -409,7 +402,7 @@ class Cfs
 
     function upgrade()
     {
-        include($this->dir . '/core/upgrade.php');
+
     }
 
 
