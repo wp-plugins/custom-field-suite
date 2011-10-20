@@ -50,8 +50,11 @@ Your votes really make a difference! Thanks.
 
 == Changelog ==
 
+= 1.0.6 =
+* Custom field types now extend cfs_Field
+
 = 1.0.5 =
-* Bugfix: wysiwyg hyperlink buton not working
+* Bugfix: wysiwyg hyperlink button not working
 
 = 1.0.4 =
 * Bugfix: slashes being added before quotes

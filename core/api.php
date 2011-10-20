@@ -96,11 +96,9 @@ class cfs_Api
                 $field->options = (@unserialize($field->options)) ? unserialize($field->options) : array();
 
                 // Load the value if necessary
-                if (method_exists($this->parent->fields[$field->type], 'load_value'))
-                {
-                    $value = $this->parent->fields[$field->type]->load_value($field);
-                }
-                else
+                $value = $this->parent->fields[$field->type]->load_value($field);
+
+                if (null === $value)
                 {
                     $sql = "
                     SELECT v.value, v.weight
@@ -183,27 +181,13 @@ class cfs_Api
         // Format value for input
         if (false !== $options->for_input)
         {
-            if (method_exists($this->parent->fields[$field->type], 'format_value_for_input'))
-            {
-                $value = $this->parent->fields[$field->type]->format_value_for_input($value);
-            }
-            else
-            {
-                $value = $value[0];
-            }
+            $value = $this->parent->fields[$field->type]->format_value_for_input($value);
         }
 
         // Format value for api
         else
         {
-            if (method_exists($this->parent->fields[$field->type], 'format_value_for_api'))
-            {
-                $value = $this->parent->fields[$field->type]->format_value_for_api($value);
-            }
-            else
-            {
-                $value = $value[0];
-            }
+            $value = $this->parent->fields[$field->type]->format_value_for_api($value);
         }
 
         return $value;

@@ -1,23 +1,13 @@
 <?php
 
-class cfs_Text
+class cfs_Text extends cfs_Field
 {
-    public $name;
-    public $label;
-    public $parent;
 
     function __construct($parent)
     {
         $this->name = 'text';
         $this->label = __('Text', 'cfs');
         $this->parent = $parent;
-    }
-
-    function html($field)
-    {
-    ?>
-        <input type="text" name="<?php echo $field->input_name; ?>" class="<?php echo $field->input_class; ?>" value="<?php echo $field->value; ?>" />
-    <?php
     }
 
     function options_html($key, $field)

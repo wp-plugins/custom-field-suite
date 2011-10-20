@@ -14,11 +14,8 @@ foreach ($input_fields as $key => $field)
 {
     if (!isset($used_types[$field->type]))
     {
-        if (method_exists($this->fields[$field->type], 'input_head'))
-        {
-            $this->fields[$field->type]->input_head($field);
-            $used_types[$field->type] = true;
-        }
+        $this->fields[$field->type]->input_head($field);
+        $used_types[$field->type] = true;
     }
 
     // Ignore sub-fields

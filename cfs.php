@@ -3,7 +3,7 @@
 Plugin Name: Custom Field Suite
 Plugin URI: http://uproot.us/custom-field-suite/
 Description: Visually create custom field groups.
-Version: 1.0.5
+Version: 1.0.6
 Author: Matt Gibbs
 Author URI: http://uproot.us/
 License: GPL
@@ -11,7 +11,7 @@ Copyright: Matt Gibbs
 */
 
 $cfs = new Cfs();
-$cfs->version = '1.0.5';
+$cfs->version = '1.0.6';
 
 class Cfs
 {
@@ -89,6 +89,9 @@ class Cfs
 
     function get_field_types()
     {
+        // include the base field
+        include($this->dir . '/core/fields/field.php');
+
         $field_types = array(
             'text' => $this->dir . '/core/fields/text.php',
             'textarea' => $this->dir . '/core/fields/textarea.php',
@@ -310,7 +313,7 @@ class Cfs
 
     function admin_print_scripts()
     {
-        $scripts = array('jquery', 'jquery-ui-core', 'media-upload', 'thickbox', 'editor', 'tiny_mce');
+        $scripts = array('jquery', 'jquery-ui-core', 'thickbox');
         wp_enqueue_script($scripts);
     }
 

@@ -62,9 +62,7 @@
                     </td>
                 </tr>
 
-                <?php if (method_exists($this->fields[$field->type], 'options_html')) : ?>
-                    <?php $this->fields[$field->type]->options_html($field->weight, $field); ?>
-                <?php endif; ?>
+                <?php $this->fields[$field->type]->options_html($field->weight, $field); ?>
 
                 <tr class="field_instructions">
                     <td class="label">

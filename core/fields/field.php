@@ -2,6 +2,8 @@
 
 class cfs_Field
 {
+    public $name;
+    public $label;
     public $parent;
 
     /*--------------------------------------------------------------------------------------
@@ -15,7 +17,9 @@ class cfs_Field
 
     function __construct($parent)
     {
-
+        $this->name = 'text';
+        $this->label = __('Text', 'cfs');
+        $this->parent = $parent;
     }
 
 
@@ -30,7 +34,9 @@ class cfs_Field
 
     function html($field)
     {
-
+    ?>
+        <input type="text" name="<?php echo $field->input_name; ?>" class="<?php echo $field->input_class; ?>" value="<?php echo $field->value; ?>" />
+    <?php
     }
 
 
@@ -90,7 +96,7 @@ class cfs_Field
 
     function format_value_for_api($value)
     {
-
+        return $value[0];
     }
 
 
@@ -105,7 +111,7 @@ class cfs_Field
 
     function format_value_for_input($value)
     {
-
+        return $value[0];
     }
 
 

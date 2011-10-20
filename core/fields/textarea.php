@@ -1,10 +1,7 @@
 <?php
 
-class cfs_Textarea
+class cfs_Textarea extends cfs_Field
 {
-    public $name;
-    public $label;
-    public $parent;
 
     function __construct($parent)
     {
