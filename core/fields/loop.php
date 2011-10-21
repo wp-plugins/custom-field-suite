@@ -1,10 +1,7 @@
 <?php
 
-class cfs_Loop
+class cfs_Loop extends cfs_Field
 {
-    public $name;
-    public $label;
-    public $parent;
 
     function __construct($parent)
     {

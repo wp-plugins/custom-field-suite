@@ -1,10 +1,7 @@
 <?php
 
-class cfs_File
+class cfs_File extends cfs_Field
 {
-    public $name;
-    public $label;
-    public $parent;
 
     function __construct($parent)
     {
@@ -13,7 +10,7 @@ class cfs_File
         $this->parent = $parent;
 
         // alter the media_send_to_editor response
-        add_filter('media_send_to_editor', array($this, 'media_send_to_editor'), 10, 3);
+        add_filter('media_send_to_editor', array($this, 'media_send_to_editor'), 20, 3);
     }
 
     function html($field)
@@ -26,11 +23,6 @@ class cfs_File
         <div class="file_url"><?php echo $file_url; ?></div>
         <input type="hidden" name="<?php echo $field->input_name; ?>" class="<?php echo $field->input_class; ?>" value="<?php echo $field->value; ?>" />
     <?php
-    }
-
-    function options_html($key, $field)
-    {
-
     }
 
     function media_send_to_editor($html, $id, $attachment)

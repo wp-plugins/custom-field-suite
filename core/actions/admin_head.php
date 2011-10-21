@@ -10,13 +10,9 @@ if ('cfs' == $GLOBALS['post_type'])
 {
     foreach ($this->fields as $field_name => $field_data)
     {
-        $options_html[$field_name] = '';
-        if (method_exists($this->fields[$field_name], 'options_html'))
-        {
-            ob_start();
-            $this->fields[$field_name]->options_html('clone', $field);
-            $options_html[$field_name] = ob_get_clean();
-        }
+        ob_start();
+        $this->fields[$field_name]->options_html('clone', $field);
+        $options_html[$field_name] = ob_get_clean();
     }
 
     $field_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}cfs_fields WHERE post_id = '$post->ID'");

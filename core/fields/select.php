@@ -1,10 +1,7 @@
 <?php
 
-class cfs_Select
+class cfs_Select extends cfs_Field
 {
-    public $name;
-    public $label;
-    public $parent;
 
     function __construct($parent)
     {

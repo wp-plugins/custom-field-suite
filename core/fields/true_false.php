@@ -1,10 +1,7 @@
 <?php
 
-class cfs_True_false
+class cfs_True_false extends cfs_Field
 {
-    public $name;
-    public $label;
-    public $parent;
 
     function __construct($parent)
     {
