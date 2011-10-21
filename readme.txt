@@ -48,10 +48,16 @@ Your votes really make a difference! Thanks.
 3. Click on Settings -> Custom Field Suite
 
 
+== Screenshots ==
+1. A custom field group, with several fields added.
+
+
 == Changelog ==
 
 = 1.0.6 =
-* Custom field types now extend cfs_Field
+* Custom field types now extend cfs_Field class
+* Bugfix: white screen with File Upload field
+* Added screenshot
 
 = 1.0.5 =
 * Bugfix: wysiwyg hyperlink button not working
