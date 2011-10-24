@@ -24,20 +24,20 @@ Visually create groups of custom fields that can be displayed on any edit page.
 * Date (api returns text)
 * True / False (api returns boolean)
 * Select (api returns array of values)
-* Relationship (api returns array of post objects)
+* Relationship (api returns array of post IDs)
 * File Upload (api returns file url)
 * Loop (repeatable fields!)
 
 = API =
 The plugin includes a friendly API for displaying a post's field data.
 
-* Get all fields: $fields = $cfs->get();
-* Get a single field: $field = $cfs->get('my_field_name');
+* Get all fields: `$fields = $cfs->get();`
+* Get a single field: `$field = $cfs->get('my_field_name');`
 
 = Documentation and Support =
-http://uproot.us/custom-field-suite/
-http://uproot.us/custom-field-suite/documentation/
-http://uproot.us/support/
+* http://uproot.us/custom-field-suite/
+* http://uproot.us/custom-field-suite/documentation/
+* http://uproot.us/support/
 
 
 == Installation ==
