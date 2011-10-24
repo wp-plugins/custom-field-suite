@@ -34,11 +34,10 @@ The plugin includes a friendly API for displaying a post's field data.
 * Get all fields: $fields = $cfs->get();
 * Get a single field: $field = $cfs->get('my_field_name');
 
-= Website =
-http://uproot.us/
-
-= Please Vote and Enjoy =
-Your votes really make a difference! Thanks.
+= Documentation and Support =
+http://uproot.us/custom-field-suite/
+http://uproot.us/custom-field-suite/documentation/
+http://uproot.us/support/
 
 
 == Installation ==
@@ -53,6 +52,9 @@ Your votes really make a difference! Thanks.
 
 
 == Changelog ==
+
+= 1.0.8 =
+* Bugfix: File field interfering with WP editor uploader
 
 = 1.0.7 =
 * Bugfix: upgrade script
