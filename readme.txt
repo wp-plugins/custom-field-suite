@@ -54,6 +54,10 @@ Your votes really make a difference! Thanks.
 
 == Changelog ==
 
+= 1.0.7 =
+* Bugfix: upgrade script
+* Bugfix: "Add New Field" not working
+
 = 1.0.6 =
 * Custom field types now extend cfs_Field class
 * Bugfix: white screen with File Upload field
