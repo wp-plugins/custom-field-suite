@@ -10,48 +10,70 @@ class cfs_File extends cfs_Field
         $this->parent = $parent;
 
         // alter the media_send_to_editor response
+        add_action('admin_head-media-upload-popup', array($this, 'popup_head'));
         add_filter('media_send_to_editor', array($this, 'media_send_to_editor'), 20, 3);
     }
 
     function html($field)
     {
-        global $post;
-
         $file_url = is_numeric($field->value) ? wp_get_attachment_url($field->value) : $field->value;
     ?>
-        <a href="media-upload.php?post_id=<?php echo $post->ID; ?>&TB_iframe=1&width=640&height=480" class="thickbox media button"><?php _e('Add File', 'cfs'); ?></a>
-        <div class="file_url"><?php echo $file_url; ?></div>
+        <input type="button" class="media button" value="<?php _e('Add File', 'cfs'); ?>" />
         <input type="hidden" name="<?php echo $field->input_name; ?>" class="<?php echo $field->input_class; ?>" value="<?php echo $field->value; ?>" />
+        <div class="file_url"><?php echo $file_url; ?></div>
     <?php
+    }
+
+    function popup_head()
+    {
+        // Don't interfere with the standard Media Uploader
+        if (isset($_GET['cfs_file']))
+        {
+    ?>
+        <script type="text/javascript">
+        jQuery(function() {
+            jQuery("form#filter").each(function() {
+                jQuery(this).append('<input type="hidden" name="cfs_file" value="1" />');
+            });
+        });
+        </script>
+    <?php
+        }
     }
 
     function media_send_to_editor($html, $id, $attachment)
     {
-        $media = array(
-            'id' => $id,
-            'url' => $attachment['url'],
-        );
+        parse_str($_POST["_wp_http_referer"], $postdata);
 
-        // return "html" param
-        return json_encode($media);
+        if (isset($postdata['cfs_file']))
+        {
+    ?>
+        <script type="text/javascript">
+        self.parent.cfs_div.siblings(".file_url").html("<?php echo $attachment['url']; ?>");
+        self.parent.cfs_div.siblings(".file").val("<?php echo $id; ?>");
+        self.parent.cfs_div = null;
+        self.parent.tb_remove();
+        </script>
+    <?php
+            exit;
+        }
+        else
+        {
+            return $html;
+        }
     }
 
     function input_head($field = null)
     {
+        global $post;
     ?>
         <script type="text/javascript">
         jQuery(function() {
             jQuery(".cfs_input .media.button").live("click", function() {
-                jQuery(".cfs_input input.media.button").removeClass("active");
-                jQuery(this).addClass("active");
+                window.cfs_div = jQuery(this);
+                tb_show("Attach file", "media-upload.php?post_id=<?php echo $post->ID; ?>&cfs_file=1&TB_iframe=1&width=640&height=480");
+                return false;
             });
-
-            window.send_to_editor = function(html) {
-                var file = jQuery.parseJSON(html);
-                jQuery(".cfs_input .media.button.active").closest(".field").find(".file_url").html(file.url);
-                jQuery(".cfs_input .media.button.active").closest(".field").find(".file:last").val(file.id);
-                tb_remove();
-            }
         });
         </script>
     <?php
