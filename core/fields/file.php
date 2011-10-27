@@ -17,10 +17,19 @@ class cfs_File extends cfs_Field
     function html($field)
     {
         $file_url = is_numeric($field->value) ? wp_get_attachment_url($field->value) : $field->value;
+        if (empty($field->value))
+        {
+            $css_hide = array('add' => '', 'remove' => ' hidden');
+        }
+        else
+        {
+            $css_hide = array('add' => ' hidden', 'remove' => '');
+        }
     ?>
-        <input type="button" class="media button" value="<?php _e('Add File', 'cfs'); ?>" />
+        <input type="button" class="media button add<?php echo $css_hide['add']; ?>" value="<?php _e('Add File', 'cfs'); ?>" />
+        <input type="button" class="media button remove<?php echo $css_hide['remove']; ?>" value="<?php _e('Remove', 'cfs'); ?>" />
         <input type="hidden" name="<?php echo $field->input_name; ?>" class="<?php echo $field->input_class; ?>" value="<?php echo $field->value; ?>" />
-        <div class="file_url"><?php echo $file_url; ?></div>
+        <span class="file_url"><?php echo $file_url; ?></span>
     <?php
     }
 
@@ -69,10 +78,18 @@ class cfs_File extends cfs_Field
     ?>
         <script type="text/javascript">
         jQuery(function() {
-            jQuery(".cfs_input .media.button").live("click", function() {
+            jQuery(".cfs_input .media.button.add").live("click", function() {
                 window.cfs_div = jQuery(this);
                 tb_show("Attach file", "media-upload.php?post_id=<?php echo $post->ID; ?>&cfs_file=1&TB_iframe=1&width=640&height=480");
+                jQuery(this).siblings(".media.button.remove").show();
+                jQuery(this).hide();
                 return false;
+            });
+            jQuery(".cfs_input .media.button.remove").live("click", function() {
+                jQuery(this).siblings(".file_url").html("");
+                jQuery(this).siblings(".file").val("");
+                jQuery(this).siblings(".media.button.add").show();
+                jQuery(this).hide();
             });
         });
         </script>

@@ -3,7 +3,7 @@
 Plugin Name: Custom Field Suite
 Plugin URI: http://uproot.us/custom-field-suite/
 Description: Visually create custom field groups.
-Version: 1.0.8
+Version: 1.0.9
 Author: Matt Gibbs
 Author URI: http://uproot.us/
 License: GPL
@@ -11,7 +11,7 @@ Copyright: Matt Gibbs
 */
 
 $cfs = new Cfs();
-$cfs->version = '1.0.8';
+$cfs->version = '1.0.9';
 
 class Cfs
 {
@@ -292,6 +292,7 @@ class Cfs
         if ('cfs' == get_post_type($post_id))
         {
             $wpdb->query("DELETE FROM {$wpdb->prefix}cfs_fields WHERE post_id = '$post_id'");
+            $wpdb->query("DELETE FROM {$wpdb->prefix}cfs_rules WHERE group_id = '$post_id'");
         }
         else
         {
