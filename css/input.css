@@ -16,9 +16,9 @@
 }
 
 .cfs_input .field label {
-    color: #21759b;
     font-weight: bold;
     padding: 0 0 6px 0;
+    cursor: default;
     display: block;
 }
 
@@ -145,10 +145,6 @@
 .cfs_loop td {
     padding: 8px;
     border: 0;
-}
-
-.cfs_loop td.order {
-    width: 16px;
 }
 
 .cfs_loop td.remove {

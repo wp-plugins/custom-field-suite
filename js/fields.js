@@ -42,7 +42,7 @@ jQuery(function() {
 
     // Delete a field
     jQuery(".cfs_delete_field").live("click", function() {
-        if (confirm("Are you sure you want to delete this field?")) {
+        if (confirm("Really delete this field?")) {
             jQuery(this).closest(".field").remove();
         }
     });

@@ -12,7 +12,7 @@ Custom Field Suite is the easiest way to visually manage custom fields.
 
 Visually create groups of custom fields that can be displayed on any edit page.
 
-* Easily create groups of fields
+* Easily create groups of custom fields
 * Assign edit pages that a field group should appear on
 * Customize the field group layout (via drag-n-drop) on edit pages
 * Create your own field types using the `cfs_field_types` plugin hook!
@@ -52,6 +52,11 @@ The plugin includes a friendly API for displaying a post's field data.
 
 
 == Changelog ==
+
+= 1.0.9 =
+* Added "remove" button to file field
+* Bugfix: filter relationship field by post type
+* Bugfix: field group rules were not getting deleted
 
 = 1.0.8 =
 * Bugfix: File field interfering with WP editor uploader

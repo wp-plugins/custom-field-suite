@@ -14,7 +14,20 @@ class cfs_Relationship extends cfs_Field
     {
         global $wpdb;
 
-        $available_posts = $wpdb->get_results("SELECT ID, post_type, post_title FROM $wpdb->posts WHERE post_status = 'publish' ORDER BY post_title");
+        $where = '';
+
+        // Limit to chosen post types
+        if (isset($field->options['post_types']))
+        {
+            $where = array();
+            foreach ($field->options['post_types'] as $type)
+            {
+                $where[] = $type;
+            }
+            $where = " AND post_type IN ('" . implode("','", $where) . "')";
+        }
+
+        $available_posts = $wpdb->get_results("SELECT ID, post_type, post_title FROM $wpdb->posts WHERE post_status = 'publish' $where ORDER BY post_title");
         $selected_posts = array();
 
         if (!empty($field->value))

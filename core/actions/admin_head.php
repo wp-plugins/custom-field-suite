@@ -47,7 +47,9 @@ else
     {
 ?>
 
+    <!--
     <script type="text/javascript" src="<?php echo $this->url; ?>/js/input.js"></script>
+    -->
     <link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/css/input.css" />
 
 <?php
