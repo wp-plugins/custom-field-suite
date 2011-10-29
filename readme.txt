@@ -22,7 +22,7 @@ Visually create groups of custom fields that can be displayed on any edit page.
 * Textarea (api returns text with `<br />`)
 * Wysiwyg Editor (api returns html)
 * Date (api returns text)
-* True / False (api returns boolean)
+* True / False (api returns 0 or 1)
 * Select (api returns array of values)
 * Relationship (api returns array of post IDs)
 * File Upload (api returns file url)
@@ -52,6 +52,10 @@ The plugin includes a friendly API for displaying a post's field data.
 
 
 == Changelog ==
+
+= 1.1.0 =
+* Bugfix: true_false field not outputting false
+* true/false field now returns an INTEGER (1 or 0)
 
 = 1.0.9 =
 * Added "remove" button to file field

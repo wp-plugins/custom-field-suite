@@ -43,6 +43,6 @@ class cfs_True_false extends cfs_Field
 
     function format_value_for_api($value)
     {
-        return ('1' == (string) $value) ? true : false;
+        return ('1' == (string) $value[0]) ? 1 : 0;
     }
 }
