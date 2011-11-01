@@ -53,6 +53,10 @@ The plugin includes a friendly API for displaying a post's field data.
 
 == Changelog ==
 
+= 1.1.1 =
+* Added support for Select field label (VA : Virginia)
+* Added translation support
+
 = 1.1.0 =
 * Bugfix: true_false field not outputting false
 * true/false field now returns an INTEGER (1 or 0)

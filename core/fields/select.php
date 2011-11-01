@@ -13,10 +13,22 @@ class cfs_Select extends cfs_Field
     function html($field)
     {
         $multiple = '';
-        $choices = explode("\n", $field->options['choices']);
-        foreach ($choices as $key => $val)
+        $choices = array();
+
+        // Handle choice labels (value : label)
+        $temp = explode("\n", $field->options['choices']);
+
+        foreach ($temp as $val)
         {
-            $choices[$key] = trim($val);
+            if (false !== strpos($val, ' : '))
+            {
+                $choice = explode(' : ', $val);
+                $choices[$choice[0]] = $choice[1];
+            }
+            else
+            {
+                $choices[$val] = $val;
+            }
         }
 
         // Multi-select
@@ -41,9 +53,9 @@ class cfs_Select extends cfs_Field
         }
     ?>
         <select name="<?php echo $field->input_name; ?>" class="<?php echo $field->input_class; ?>"<?php echo $multiple; ?>>
-        <?php foreach ($choices as $choice) : ?>
-            <?php $selected = in_array($choice, (array) $field->value) ? ' selected' : ''; ?>
-            <option value="<?php echo htmlspecialchars($choice); ?>"<?php echo $selected; ?>><?php echo htmlspecialchars($choice); ?></option>
+        <?php foreach ($choices as $val => $label) : ?>
+            <?php $selected = in_array($val, (array) $field->value) ? ' selected' : ''; ?>
+            <option value="<?php echo htmlspecialchars($val); ?>"<?php echo $selected; ?>><?php echo htmlspecialchars($label); ?></option>
         <?php endforeach; ?>
         </select>
     <?php
