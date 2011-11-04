@@ -249,4 +249,50 @@ class cfs_Api
 
         return $fields;
     }
+
+
+    /*--------------------------------------------------------------------------------------
+    *
+    *    update_fields
+    *
+    *    @author Matt Gibbs
+    *    @since 1.1.2
+    *
+    *-------------------------------------------------------------------------------------*/
+
+    function update_fields($data, $post_id = false, $field_groups = array(), $options = array())
+    {
+        /*
+        global $wpdb;
+
+        $fields = array();
+
+        if (false !== $post_id)
+        {
+            // Get fields associated with the post ID
+            $groups = $this->parent->get_matching_groups($post_id);
+            foreach ($groups as $group_id => $group_name)
+            {
+                $fields = array_merge($fields, $this->get_input_fields($group_id));
+            }
+        }
+        elseif (!empty($field_groups))
+        {
+            // Get the field group IDs from their names
+            $group_names = implode("','", $field_groups);
+            $results = $wpdb->get_results("SELECT ID from {$wpdb->posts} WHERE post_type = 'cfs' AND post_title IN ('$group_names')");
+            foreach ($results as $result)
+            {
+                $fields = array_merge($fields, $this->get_input_fields($result->ID));
+            }
+        }
+        else
+        {
+            return array('error' => 'Post ID or field groups needed');
+        }
+
+        // Loop through $data
+        var_dump($fields);
+        */
+    }
 }

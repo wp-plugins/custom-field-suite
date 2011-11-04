@@ -10,12 +10,7 @@ Custom Field Suite is the easiest way to visually manage custom fields.
 
 == Description ==
 
-Visually create groups of custom fields that can be displayed on any edit page.
-
-* Easily create groups of custom fields
-* Assign edit pages that a field group should appear on
-* Customize the field group layout (via drag-n-drop) on edit pages
-* Create your own field types using the `cfs_field_types` plugin hook!
+Visually create custom field groups that can be used on any edit page.
 
 = Field Types =
 * Text (api returns text)
@@ -28,11 +23,9 @@ Visually create groups of custom fields that can be displayed on any edit page.
 * File Upload (api returns file url)
 * Loop (repeatable fields!)
 
-= API =
-The plugin includes a friendly API for displaying a post's field data.
-
-* Get all fields: `$fields = $cfs->get();`
-* Get a single field: `$field = $cfs->get('my_field_name');`
+= Usage =
+* Get all fields: `<?php $fields = $cfs->get(); ?>`
+* Get a single field: `<?php echo $cfs->get('field_name'); ?>`
 
 = Documentation and Support =
 * http://uproot.us/custom-field-suite/
@@ -52,6 +45,9 @@ The plugin includes a friendly API for displaying a post's field data.
 
 
 == Changelog ==
+
+= 1.1.2 =
+* Bugfix: cannot edit fields without a label
 
 = 1.1.1 =
 * Added support for Select field label (VA : Virginia)
