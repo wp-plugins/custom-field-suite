@@ -6,9 +6,7 @@
 
                 </td>
                 <td class="field_label">
-                    <strong>
-                        <a class="cfs_edit_field row-title" title="Edit field" href="javascript:;"><?php echo $field->label; ?></a>
-                    </strong>
+                    <a class="cfs_edit_field row-title" title="Edit field" href="javascript:;"><?php echo $field->label; ?>&nbsp;</a>
                 </td>
                 <td class="field_name">
                     <?php echo $field->name; ?>
