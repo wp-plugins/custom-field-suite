@@ -253,46 +253,175 @@ class cfs_Api
 
     /*--------------------------------------------------------------------------------------
     *
-    *    update_fields
+    *    save_fields
     *
     *    @author Matt Gibbs
-    *    @since 1.1.2
+    *    @since 1.1.3
     *
     *-------------------------------------------------------------------------------------*/
 
-    function update_fields($data, $post_id = false, $field_groups = array(), $options = array())
+    function save_fields($field_data = array(), $post_data = array(), $options = array())
     {
-        /*
         global $wpdb;
 
-        $fields = array();
+        $defaults = array(
+            'raw_input' => false,
+        );
+        $options = (object) array_merge($defaults, $options);
 
-        if (false !== $post_id)
+        // Create the post if $post_data['ID'] is missing
+        $post_id = empty($post_data['ID']) ? wp_insert_post($post_data) : $post_data['ID'];
+
+        // If NOT "raw_input", then flatten the data!
+        if (false === $options->raw_input)
         {
-            // Get fields associated with the post ID
-            $groups = $this->parent->get_matching_groups($post_id);
-            foreach ($groups as $group_id => $group_name)
-            {
-                $fields = array_merge($fields, $this->get_input_fields($group_id));
-            }
-        }
-        elseif (!empty($field_groups))
-        {
-            // Get the field group IDs from their names
-            $group_names = implode("','", $field_groups);
-            $results = $wpdb->get_results("SELECT ID from {$wpdb->posts} WHERE post_type = 'cfs' AND post_title IN ('$group_names')");
+            // Get available fields for this post (we need to find the field IDs)
+            $field_groups = $this->parent->get_matching_groups($post_id);
+            $group_ids = array_keys($field_groups);
+
+            // Get the fields
+            $fields = array();
+            $cfs_input = array();
+            $field_name_lookup = array();
+
+            $results = $wpdb->get_results("SELECT id, name, type, parent_id FROM {$wpdb->prefix}cfs_fields WHERE post_id IN (" . implode(',', $group_ids) . ") ORDER BY parent_id, weight");
             foreach ($results as $result)
             {
-                $fields = array_merge($fields, $this->get_input_fields($result->ID));
+                $field_name_lookup[$result->id] = $result->name;
+
+                if (0 < (int) $result->parent_id)
+                {
+                    $parent_name = $field_name_lookup[$result->parent_id];
+                    $fields["$parent_name $result->name"] = array('id' => $result->id, 'type' => $result->type);
+                }
+                else
+                {
+                    $fields[$result->name] = array('id' => $result->id, 'type' => $result->type);
+                }
+            }
+
+            // Loop through the fields
+            foreach ($field_data as $field_name => $field_value)
+            {
+                $the_field = $fields[$field_name];
+
+                // Get the field type
+                $field_type = $the_field['type'];
+
+                if ('loop' == $field_type)
+                {
+                    foreach ($field_value as $loop_row)
+                    {
+                        foreach ($loop_row as $sub_field_name => $sub_field_value)
+                        {
+                            $sub_field_id = $fields["$field_name $sub_field_name"]['id'];
+                            $cfs_input[$sub_field_id][]['value'][] = $sub_field_value;
+                        }
+                    }
+                }
+                else
+                {
+                    if ('relationship' == $field_type)
+                    {
+                        $field_value = implode(',', (array) $field_value);
+                    }
+
+                    $cfs_input[$the_field['id']]['value'] = $field_value;
+                }
             }
         }
         else
         {
-            return array('error' => 'Post ID or field groups needed');
+            $cfs_input = $field_data;
         }
 
-        // Loop through $data
-        var_dump($fields);
-        */
+        $field_names = array();
+        $field_ids = implode(',', array_keys($cfs_input));
+
+        // Delete from cfs_values and postmeta
+        $sql = "DELETE v, m
+        FROM {$wpdb->prefix}cfs_values v
+        LEFT JOIN {$wpdb->postmeta} m ON m.meta_id = v.meta_id
+        WHERE v.post_id = '$post_id' and v.field_id IN ($field_ids)";
+        $wpdb->query($sql);
+
+        $results = $wpdb->get_results("SELECT id, name FROM {$wpdb->prefix}cfs_fields WHERE id IN ($field_ids)");
+        foreach ($results as $result)
+        {
+            $field_names[$result->id] = $result->name;
+        }
+
+        // Save each field
+        foreach ($cfs_input as $field_id => $values)
+        {
+            $weight = 0;
+            $sub_weight = 0;
+
+            // clean the values
+            $values = stripslashes_deep($values);
+
+            // Basic field
+            if (isset($values['value']))
+            {
+                foreach ((array) $values['value'] as $v)
+                {
+                    // Insert into postmeta
+                    $data = array(
+                        'post_id' => $post_id,
+                        'meta_key' => $field_names[$field_id],
+                        'meta_value' => $v,
+                    );
+                    $wpdb->insert($wpdb->postmeta, $data);
+                    $meta_id = $wpdb->insert_id;
+
+                    // Insert into cfs_values
+                    $data = array(
+                        'field_id' => $field_id,
+                        'meta_id' => $meta_id,
+                        'post_id' => $post_id,
+                        'value' => $v,
+                        'weight' => $weight,
+                        'sub_weight' => $sub_weight,
+                    );
+
+                    $wpdb->insert($wpdb->prefix . 'cfs_values', $data);
+                    $weight++;
+                }
+            }
+
+            // Loop field
+            elseif (is_array($values))
+            {
+                foreach ($values as $key => $value)
+                {
+                    $sub_weight = 0;
+                    foreach ((array) $value['value'] as $v)
+                    {
+                        // Insert into postmeta
+                        $data = array(
+                            'post_id' => $post_id,
+                            'meta_key' => $field_names[$field_id],
+                            'meta_value' => $v,
+                        );
+                        $wpdb->insert($wpdb->postmeta, $data);
+                        $meta_id = $wpdb->insert_id;
+
+                        // Insert into cfs_values
+                        $data = array(
+                            'field_id' => $field_id,
+                            'meta_id' => $meta_id,
+                            'post_id' => $post_id,
+                            'value' => $v,
+                            'weight' => $weight,
+                            'sub_weight' => $sub_weight,
+                        );
+
+                        $wpdb->insert($wpdb->prefix . 'cfs_values', $data);
+                        $sub_weight++;
+                    }
+                    $weight++;
+                }
+            }
+        }
     }
 }
