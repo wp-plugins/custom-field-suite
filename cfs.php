@@ -3,7 +3,7 @@
 Plugin Name: Custom Field Suite
 Plugin URI: http://uproot.us/custom-field-suite/
 Description: Visually create custom field groups.
-Version: 1.1.2
+Version: 1.1.3
 Author: Matt Gibbs
 Author URI: http://uproot.us/
 License: GPL
@@ -11,7 +11,7 @@ Copyright: Matt Gibbs
 */
 
 $cfs = new Cfs();
-$cfs->version = '1.1.2';
+$cfs->version = '1.1.3';
 
 class Cfs
 {
@@ -48,7 +48,6 @@ class Cfs
         add_action('admin_menu', array($this, 'admin_menu'));
         add_action('save_post', array($this, 'save_post'));
         add_action('delete_post', array($this, 'delete_post'));
-        add_action('gform_post_submission', array($this, 'save_gravity_form'), 10, 2);
 
         // add translations
         load_plugin_textdomain('cfs', false, $this->dir . '/lang');
@@ -409,44 +408,5 @@ class Cfs
     function upgrade()
     {
         include($this->dir . '/core/upgrade.php');
-    }
-
-
-    /*--------------------------------------------------------------------------------------
-    *
-    *    third-party (plugin) integration
-    *
-    *    @author Matt Gibbs
-    *    @since 1.0.0
-    *
-    *-------------------------------------------------------------------------------------*/
-
-    function save_gravity_form($entry, $form)
-    {
-        $data = array();
-        $form_id = $entry['form_id'];
-        $post_id = $entry['post_id'];
-
-        foreach ($form['fields'] as $key => $field)
-        {
-            if (null !== $field['inputs'])
-            {
-                $value = array();
-                foreach ($field['inputs'] as $sub_field)
-                {
-                    $value[$sub_field['label']] = $entry[(string) $sub_field['id']];
-                }
-            }
-            else
-            {
-                $value = $entry[$key+1];
-            }
-
-            $data[$field['label']] = array(
-                'type' => $field['type'],
-                'value' => $value
-            );
-        }
-        //echo '<pre>';var_dump($data);echo '</pre>';die();
     }
 }

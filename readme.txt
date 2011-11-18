@@ -22,6 +22,7 @@ Visually create custom field groups that can be used on any edit page.
 * Relationship (api returns array of post IDs)
 * File Upload (api returns file url)
 * Loop (repeatable fields!)
+* + [Custom field types](http://uproot.us/custom-field-suite/documentation/custom-field-type/)
 
 = Usage =
 * Get all fields: `<?php $fields = $cfs->get(); ?>`
@@ -45,6 +46,11 @@ Visually create custom field groups that can be used on any edit page.
 
 
 == Changelog ==
+
+= 1.1.3 =
+* New API function: save_fields!
+* Bugfix: minor select box saving issue
+* Please BACK UP YOUR DATABASE before upgrading
 
 = 1.1.2 =
 * Bugfix: cannot edit fields without a label
