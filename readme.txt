@@ -10,7 +10,7 @@ Custom Field Suite is the easiest way to visually manage custom fields.
 
 == Description ==
 
-Visually create custom field groups that can be used on any edit page.
+Visually create custom fields that can be used on any edit page.
 
 = Field Types =
 * Text (api returns text)
@@ -22,11 +22,7 @@ Visually create custom field groups that can be used on any edit page.
 * Relationship (api returns array of post IDs)
 * File Upload (api returns file url)
 * Loop (repeatable fields!)
-* + [Custom field types](http://uproot.us/custom-field-suite/documentation/custom-field-type/)
-
-= Usage =
-* Get all fields: `<?php $fields = $cfs->get(); ?>`
-* Get a single field: `<?php echo $cfs->get('field_name'); ?>`
+* [Custom field types](http://uproot.us/custom-field-suite/documentation/custom-field-type/)
 
 = Documentation and Support =
 * http://uproot.us/custom-field-suite/
@@ -46,6 +42,9 @@ Visually create custom field groups that can be used on any edit page.
 
 
 == Changelog ==
+
+= 1.1.4 =
+* Added $cfs->save(), an alias of $cfs->api->save_fields()
 
 = 1.1.3 =
 * New API function: save_fields!
