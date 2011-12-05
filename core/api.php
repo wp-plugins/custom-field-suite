@@ -333,6 +333,13 @@ class cfs_Api
         else
         {
             $cfs_input = $field_data;
+
+            // If saving raw input, delete existing postdata
+            $sql = "DELETE v, m
+            FROM {$wpdb->prefix}cfs_values v
+            LEFT JOIN {$wpdb->postmeta} m ON m.meta_id = v.meta_id
+            WHERE v.post_id = '$post_id'";
+            $wpdb->query($sql);
         }
 
         $field_names = array();

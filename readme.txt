@@ -43,6 +43,9 @@ Visually create custom fields that can be used on any edit page.
 
 == Changelog ==
 
+= 1.1.5 =
+* Bugfix: unselected checkbox not saving
+
 = 1.1.4 =
 * Added $cfs->save(), an alias of $cfs->api->save_fields()
 
@@ -61,44 +64,3 @@ Visually create custom fields that can be used on any edit page.
 = 1.1.0 =
 * Bugfix: true_false field not outputting false
 * true/false field now returns an INTEGER (1 or 0)
-
-= 1.0.9 =
-* Added "remove" button to file field
-* Bugfix: filter relationship field by post type
-* Bugfix: field group rules were not getting deleted
-
-= 1.0.8 =
-* Bugfix: File field interfering with WP editor uploader
-
-= 1.0.7 =
-* Bugfix: upgrade script
-* Bugfix: "Add New Field" not working
-
-= 1.0.6 =
-* Custom field types now extend cfs_Field class
-* Bugfix: white screen with File Upload field
-* Added screenshot
-
-= 1.0.5 =
-* Bugfix: wysiwyg hyperlink button not working
-
-= 1.0.4 =
-* Bugfix: slashes being added before quotes
-* Added Documentation links to overview page
-
-= 1.0.3 =
-* Code cleanup
-* Bugfix: resolved several PHP notices
-* Bugfix: relationship with 1 value would return null (thx Monika)
-* Bugfix: file upload field now shows "Gallery" tab if available
-* Improved CSS styling
-
-= 1.0.2 =
-* Bugfix: renaming a Loop field would also rename subfields
-* Bugfix: relationship field showing ALL db posts (thx Monika)
-
-= 1.0.1 =
-* Bugfix: default values were not appearing
-
-= 1.0.0 =
-* Custom Field Suite.
