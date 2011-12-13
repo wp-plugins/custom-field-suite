@@ -66,21 +66,19 @@ if (isset($_POST['cfs']['fields']))
     Save rules
 ---------------------------------------------------------------------------------------------*/
 
+$data = array();
 $cfs_rules = $_POST['cfs']['rules'];
-$table_name = $wpdb->prefix . 'cfs_rules';
+$rule_types = array('post_types', 'user_roles', 'post_ids', 'term_ids');
 
-$wpdb->query("DELETE FROM $table_name WHERE group_id = '$post_id'");
-
-if (!empty($cfs_rules['post_types']))
+foreach ($rule_types as $type)
 {
-    foreach ($cfs_rules['post_types'] as $post_type)
+    if (!empty($cfs_rules[$type]))
     {
-        $data = array(
-            'group_id' => $post_id,
-            'rule' => 'post_type ==',
-            'value' => $post_type,
-            'weight' => 0,
+        $data[$type] = array(
+            'operator' => $cfs_rules['operator'][$type],
+            'values' => $cfs_rules[$type],
         );
-        $wpdb->insert($table_name, $data);
     }
 }
+
+update_post_meta($post_id, 'cfs_rules', $data);
