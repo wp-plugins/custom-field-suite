@@ -20,6 +20,9 @@ jQuery(function() {
         update: function(event, ui) { update_order(); }
     });
 
+    // Select box enhancement
+    jQuery(".chosen-select").chosen();
+
     // Add a new field
     jQuery(".cfs_add_field").live("click", function() {
         var parent = jQuery(this).closest(".table_footer").siblings(".fields");

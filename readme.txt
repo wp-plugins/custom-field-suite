@@ -3,7 +3,7 @@ Contributors: logikal16
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JMVGK3L35X6BU
 Tags: fields, custom fields, pods, cck, more fields, extra fields, advanced custom fields
 Requires at least: 3.2
-Tested up to: 3.2.1
+Tested up to: 3.3
 Stable tag: trunk
 
 Custom Field Suite is the easiest way to visually manage custom fields.
@@ -42,6 +42,13 @@ Visually create custom fields that can be used on any edit page.
 
 
 == Changelog ==
+
+= 1.2.0 =
+* New placement rule: User Role
+* New placement rule: Taxonomy Term
+* New placement rule: Post ID
+* Removed cfs_rules table in favor of postmeta
+* WP 3.3 compatibility
 
 = 1.1.5 =
 * Bugfix: unselected checkbox not saving

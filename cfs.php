@@ -3,7 +3,7 @@
 Plugin Name: Custom Field Suite
 Plugin URI: http://uproot.us/custom-field-suite/
 Description: Visually create custom field groups.
-Version: 1.1.5
+Version: 1.2.0
 Author: Matt Gibbs
 Author URI: http://uproot.us/
 License: GPL
@@ -11,7 +11,7 @@ Copyright: Matt Gibbs
 */
 
 $cfs = new Cfs();
-$cfs->version = '1.1.5';
+$cfs->version = '1.2.0';
 
 class Cfs
 {
@@ -130,25 +130,98 @@ class Cfs
 
     function get_matching_groups($post_id)
     {
-        global $wpdb;
+        global $wpdb, $current_user;
 
+        // Get variables
         $matches = array();
         $post_type = get_post_type($post_id);
+        $user_roles = $current_user->roles;
 
+        // Get all term ids associated with this post
         $sql = "
-        SELECT p.ID, p.post_title
-        FROM {$wpdb->prefix}cfs_rules r
-        INNER JOIN $wpdb->posts p ON p.ID = r.group_id
-        WHERE r.rule = 'post_type ==' AND r.value = '$post_type'";
+        SELECT tt.term_id
+        FROM $wpdb->term_taxonomy tt
+        INNER JOIN $wpdb->term_relationships tr ON tr.term_taxonomy_id = tt.term_taxonomy_id AND tr.object_id = '$post_id'";
+        $term_ids = $wpdb->get_results($sql, ARRAY_N);
+
+        // Get all rules
+        $sql = "
+        SELECT p.ID, p.post_title, m.meta_value AS rules
+        FROM $wpdb->posts p
+        INNER JOIN $wpdb->postmeta m ON m.post_id = p.ID AND m.meta_key = 'cfs_rules'";
         $results = $wpdb->get_results($sql);
 
-        if ($results)
+        foreach ($results as $result)
         {
-            foreach ($results as $result)
+            $rules = unserialize($result->rules);
+
+            // Post types
+            if (isset($rules['post_types']))
             {
-                $matches[$result->ID] = $result->post_title;
+                $operator = $rules['post_types']['operator'];
+                $in_array = in_array($post_type, $rules['post_types']['values']);
+                if (($in_array && '!=' == $operator) || (!$in_array && '==' == $operator))
+                {
+                    continue;
+                }
             }
+
+            // User roles
+            if (isset($rules['user_roles']))
+            {
+                $operator = $rules['user_roles']['operator'];
+
+                // Loop through user_roles
+                $in_array = false;
+                foreach ($user_roles as $role)
+                {
+                    if (in_array($role, $rules['user_roles']['values']))
+                    {
+                        $in_array = true;
+                        break;
+                    }
+                }
+                if (($in_array && '!=' == $operator) || (!$in_array && '==' == $operator))
+                {
+                    continue;
+                }
+            }
+
+            // Taxonomies
+            if (isset($rules['term_ids']))
+            {
+                $operator = $rules['term_ids']['operator'];
+
+                // Loop through term_ids
+                $in_array = false;
+                foreach ($term_ids as $term_id)
+                {
+                    if (in_array($term_id, $rules['term_ids']['values']))
+                    {
+                        $in_array = true;
+                        break;
+                    }
+                }
+                if (($in_array && '!=' == $operator) || (!$in_array && '==' == $operator))
+                {
+                    continue;
+                }
+            }
+
+            // Post IDs
+            if (isset($rules['post_ids']))
+            {
+                $operator = $rules['post_ids']['operator'];
+                $in_array = in_array($post_id, $rules['post_ids']['values']);
+                if (($in_array && '!=' == $operator) || (!$in_array && '==' == $operator))
+                {
+                    continue;
+                }
+            }
+
+            $matches[$result->ID] = $result->post_title;
         }
+
         return $matches;
     }
 
@@ -285,7 +358,13 @@ class Cfs
         }
         elseif (wp_verify_nonce($_POST['cfs']['save'], 'cfs_save_input'))
         {
-            include($this->dir . '/core/actions/save_input.php');
+            if (isset($_POST['cfs']['input']))
+            {
+                $field_data = $_POST['cfs']['input'];
+                $post_data = array('ID' => $_POST['ID']);
+                $options = array('raw_input' => true);
+                $this->api->save_fields($field_data, $post_data, $options);
+            }
         }
 
         return $post_id;
@@ -308,7 +387,6 @@ class Cfs
         if ('cfs' == get_post_type($post_id))
         {
             $wpdb->query("DELETE FROM {$wpdb->prefix}cfs_fields WHERE post_id = '$post_id'");
-            $wpdb->query("DELETE FROM {$wpdb->prefix}cfs_rules WHERE group_id = '$post_id'");
         }
         else
         {
@@ -352,47 +430,19 @@ class Cfs
 
     /*--------------------------------------------------------------------------------------
     *
-    *    _fields_meta_box
+    *    meta_box
     *
     *    @author Matt Gibbs
     *    @since 1.0.0
     *
     *-------------------------------------------------------------------------------------*/
 
-    function meta_box_fields()
+    function meta_box($post, $metabox)
     {
-        include($this->dir . '/core/admin/meta_box_fields.php');
+        $box = $metabox['args']['box'];
+        include($this->dir . "/core/admin/meta_box_$box.php");
     }
 
-
-    /*--------------------------------------------------------------------------------------
-    *
-    *    _rules_meta_box
-    *
-    *    @author Matt Gibbs
-    *    @since 1.0.0
-    *
-    *-------------------------------------------------------------------------------------*/
-
-    function meta_box_rules()
-    {
-        include($this->dir . '/core/admin/meta_box_rules.php');
-    }
-
-
-    /*--------------------------------------------------------------------------------------
-    *
-    *    _input_meta_box
-    *
-    *    @author Matt Gibbs
-    *    @since 1.0.0
-    *
-    *-------------------------------------------------------------------------------------*/
-
-    function meta_box_input($post, $metabox)
-    {
-        include($this->dir . '/core/admin/meta_box_input.php');
-    }
 
     /*--------------------------------------------------------------------------------------
     *

@@ -116,6 +116,7 @@ table.cfs_input select,
 table.cfs_input textarea,
 table.cfs_input input[type="text"] {
     width: 99.95%;
+    height: auto;
     padding: 5px;
     outline: none;
 }
@@ -179,6 +180,7 @@ span.cfs_delete_field:hover {
 #cfs_rules table textarea,
 #cfs_rules table input[type="text"] {
     width: 99.95%;
+    height: auto;
     padding: 5px;
     outline: none;
 }
