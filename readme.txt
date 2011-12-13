@@ -43,6 +43,9 @@ Visually create custom fields that can be used on any edit page.
 
 == Changelog ==
 
+= 1.2.1 =
+* Excluded tags from taxonomy rules list
+
 = 1.2.0 =
 * New placement rule: User Role
 * New placement rule: Taxonomy Term
