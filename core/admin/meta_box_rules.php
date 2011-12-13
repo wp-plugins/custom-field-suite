@@ -28,7 +28,7 @@ foreach ($results as $result)
 $sql = "
 SELECT t.term_id, t.name, tt.taxonomy
 FROM $wpdb->terms t
-INNER JOIN $wpdb->term_taxonomy tt ON tt.term_id = t.term_id
+INNER JOIN $wpdb->term_taxonomy tt ON tt.term_id = t.term_id AND tt.taxonomy != 'post_tag'
 ORDER BY tt.parent, tt.taxonomy, t.name";
 $results = $wpdb->get_results($sql);
 foreach ($results as $result)
