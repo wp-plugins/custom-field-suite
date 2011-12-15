@@ -43,6 +43,11 @@ Visually create custom fields that can be used on any edit page.
 
 == Changelog ==
 
+= 1.2.2 =
+* Bugfix: unable to add new field group (props @brewern)
+* Bugfix: file fields not working without post type "editor" support
+* Updated timepicker script
+
 = 1.2.1 =
 * Excluded tags from taxonomy rules list
 

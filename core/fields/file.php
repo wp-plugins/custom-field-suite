@@ -9,7 +9,7 @@ class cfs_File extends cfs_Field
         $this->label = __('File Upload', 'cfs');
         $this->parent = $parent;
 
-        // alter the media_send_to_editor response
+        add_action('admin_head', array($this, 'admin_head'));
         add_action('admin_head-media-upload-popup', array($this, 'popup_head'));
         add_filter('media_send_to_editor', array($this, 'media_send_to_editor'), 20, 3);
     }
@@ -33,11 +33,27 @@ class cfs_File extends cfs_Field
     <?php
     }
 
+    function admin_head()
+    {
+        $post_type = get_post_type($_GET['post']);
+        $has_editor = post_type_supports($post_type, 'editor');
+
+        if (!$has_editor)
+        {
+    ?>
+        <style type="text/css">#poststuff .postarea { display: none; }</style>
+    <?php
+        }
+    }
+
     function popup_head()
     {
-        // Don't interfere with the standard Media Uploader
+        // Don't interfere with the standard Media manager
         if (isset($_GET['cfs_file']))
         {
+            // Add the "Insert into Post" button
+            $post_type = get_post_type($_GET['post_id']);
+            add_post_type_support($post_type, 'editor');
     ?>
         <script type="text/javascript">
         jQuery(function() {

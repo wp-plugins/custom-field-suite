@@ -4,6 +4,17 @@ global $post, $wpdb, $wp_roles;
 
 $rules = get_post_meta($post->ID, 'cfs_rules', true);
 
+// Populate rules if empty
+$rule_types = array('post_types', 'user_roles', 'post_ids', 'term_ids');
+
+foreach ($rule_types as $type)
+{
+    if (!isset($rules[$type]))
+    {
+        $rules[$type] = array('operator' => array('=='), 'values' => array());
+    }
+}
+
 // Post types
 $post_types = get_post_types(array('public' => true));
 if (false !== ($key = array_search('attachment', $post_types)))
@@ -43,10 +54,14 @@ foreach ($results as $result)
             <label><?php _e('Post Types', 'cfs'); ?></label>
         </td>
         <td style="width:80px">
-            <select name="cfs[rules][operator][post_types]" style="width:80px">
-                <option value="==">equals</option>
-                <option value="!=">is not</option>
-            </select>
+            <?php
+                $this->create_field((object) array(
+                    'type' => 'select',
+                    'input_name' => "cfs[rules][operator][post_types]",
+                    'options' => array('choices' => "== : equals\n!= : is not"),
+                    'value' => $rules['post_types']['operator'],
+                ));
+            ?>
         </td>
         <td>
             <?php
@@ -65,10 +80,14 @@ foreach ($results as $result)
             <label><?php _e('User Roles', 'cfs'); ?></label>
         </td>
         <td style="width:80px">
-            <select name="cfs[rules][operator][user_roles]" style="width:80px">
-                <option value="==">equals</option>
-                <option value="!=">is not</option>
-            </select>
+            <?php
+                $this->create_field((object) array(
+                    'type' => 'select',
+                    'input_name' => "cfs[rules][operator][user_roles]",
+                    'options' => array('choices' => "== : equals\n!= : is not"),
+                    'value' => $rules['user_roles']['operator'],
+                ));
+            ?>
         </td>
         <td>
             <?php
@@ -87,10 +106,14 @@ foreach ($results as $result)
             <label><?php _e('Posts', 'cfs'); ?></label>
         </td>
         <td style="width:80px">
-            <select name="cfs[rules][operator][post_ids]" style="width:80px">
-                <option value="==">equals</option>
-                <option value="!=">is not</option>
-            </select>
+            <?php
+                $this->create_field((object) array(
+                    'type' => 'select',
+                    'input_name' => "cfs[rules][operator][post_ids]",
+                    'options' => array('choices' => "== : equals\n!= : is not"),
+                    'value' => $rules['post_ids']['operator'],
+                ));
+            ?>
         </td>
         <td>
             <?php
@@ -109,10 +132,14 @@ foreach ($results as $result)
             <label><?php _e('Taxonomy Terms', 'cfs'); ?></label>
         </td>
         <td style="width:80px">
-            <select name="cfs[rules][operator][term_ids]" style="width:80px">
-                <option value="==">equals</option>
-                <option value="!=">is not</option>
-            </select>
+            <?php
+                $this->create_field((object) array(
+                    'type' => 'select',
+                    'input_name' => "cfs[rules][operator][term_ids]",
+                    'options' => array('choices' => "== : equals\n!= : is not"),
+                    'value' => $rules['term_ids']['operator'],
+                ));
+            ?>
         </td>
         <td>
             <?php
