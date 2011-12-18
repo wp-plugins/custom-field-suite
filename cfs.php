@@ -3,7 +3,7 @@
 Plugin Name: Custom Field Suite
 Plugin URI: http://uproot.us/custom-field-suite/
 Description: Visually create custom field groups.
-Version: 1.2.2
+Version: 1.2.3
 Author: Matt Gibbs
 Author URI: http://uproot.us/
 License: GPL
@@ -11,7 +11,7 @@ Copyright: Matt Gibbs
 */
 
 $cfs = new Cfs();
-$cfs->version = '1.2.2';
+$cfs->version = '1.2.3';
 
 class Cfs
 {
@@ -151,75 +151,35 @@ class Cfs
         INNER JOIN $wpdb->postmeta m ON m.post_id = p.ID AND m.meta_key = 'cfs_rules'";
         $results = $wpdb->get_results($sql);
 
+        $rule_types = array(
+            'post_types' => $post_type,
+            'user_roles' => $user_roles,
+            'term_ids' => $term_ids,
+            'post_ids' => $post_id,
+        );
+
         foreach ($results as $result)
         {
+            $fail = false;
             $rules = unserialize($result->rules);
 
-            // Post types
-            if (isset($rules['post_types']))
+            foreach ($rule_types as $rule_type => $value)
             {
-                $operator = $rules['post_types']['operator'];
-                $in_array = in_array($post_type, $rules['post_types']['values']);
-                if (($in_array && '!=' == $operator) || (!$in_array && '==' == $operator))
+                if (isset($rules[$rule_type]))
                 {
-                    continue;
-                }
-            }
-
-            // User roles
-            if (isset($rules['user_roles']))
-            {
-                $operator = $rules['user_roles']['operator'];
-
-                // Loop through user_roles
-                $in_array = false;
-                foreach ($user_roles as $role)
-                {
-                    if (in_array($role, $rules['user_roles']['values']))
+                    $operator = (array) $rules[$rule_type]['operator'];
+                    $in_array = (0 < count(array_intersect((array) $value, $rules[$rule_type]['values'])));
+                    if (($in_array && '!=' == $operator[0]) || (!$in_array && '==' == $operator[0]))
                     {
-                        $in_array = true;
-                        break;
+                        $fail = true;
                     }
                 }
-                if (($in_array && '!=' == $operator) || (!$in_array && '==' == $operator))
-                {
-                    continue;
-                }
             }
 
-            // Taxonomies
-            if (isset($rules['term_ids']))
+            if (!$fail)
             {
-                $operator = $rules['term_ids']['operator'];
-
-                // Loop through term_ids
-                $in_array = false;
-                foreach ($term_ids as $term_id)
-                {
-                    if (in_array($term_id, $rules['term_ids']['values']))
-                    {
-                        $in_array = true;
-                        break;
-                    }
-                }
-                if (($in_array && '!=' == $operator) || (!$in_array && '==' == $operator))
-                {
-                    continue;
-                }
+                $matches[$result->ID] = $result->post_title;
             }
-
-            // Post IDs
-            if (isset($rules['post_ids']))
-            {
-                $operator = $rules['post_ids']['operator'];
-                $in_array = in_array($post_id, $rules['post_ids']['values']);
-                if (($in_array && '!=' == $operator) || (!$in_array && '==' == $operator))
-                {
-                    continue;
-                }
-            }
-
-            $matches[$result->ID] = $result->post_title;
         }
 
         return $matches;

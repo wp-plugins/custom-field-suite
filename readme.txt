@@ -43,6 +43,9 @@ Visually create custom fields that can be used on any edit page.
 
 == Changelog ==
 
+= 1.2.3 =
+* Bugfix: rule matching not working correctly
+
 = 1.2.2 =
 * Bugfix: unable to add new field group (props @brewern)
 * Bugfix: file fields not working without post type "editor" support
