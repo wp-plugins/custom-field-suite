@@ -43,6 +43,9 @@ Visually create custom fields that can be used on any edit page.
 
 == Changelog ==
 
+= 1.2.4 =
+* Bugfix: editor not appearing when adding new posts
+
 = 1.2.3 =
 * Bugfix: rule matching not working correctly
 

@@ -35,7 +35,8 @@ class cfs_File extends cfs_Field
 
     function admin_head()
     {
-        $post_type = get_post_type($_GET['post']);
+        global $post;
+        $post_type = get_post_type($post->ID);
         $has_editor = post_type_supports($post_type, 'editor');
 
         if (!$has_editor)

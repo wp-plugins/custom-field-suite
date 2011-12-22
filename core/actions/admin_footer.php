@@ -9,25 +9,22 @@ jQuery(function() {
     <div class="posts-sidebar" id="poststuff">
         <div class="postbox">
             <div class="handlediv"><br></div>
-            <h3 class="hndle"><span><?php _e('Custom Field Suite', 'cfs'); ?> v<?php echo $this->version; ?></span></h3>
+            <h3 class="hndle"><span><?php _e('Custom Field Suite', 'cfs'); ?> <?php echo $this->version; ?></span></h3>
             <div class="inside">
                 <div class="field">
                     <h4><?php _e('Changelog', 'cfs'); ?></h4>
                     <p><?php _e('See updates for', 'cfs'); ?> <a class="thickbox" href="<?php bloginfo('url'); ?>/wp-admin/plugin-install.php?tab=plugin-information&plugin=custom-field-suite&section=changelog&TB_iframe=1&width=640&height=480">v<?php echo $this->version; ?></a></p>
                 </div>
                 <div class="field">
-                    <h4>Getting Started?</h4>
+                    <h4>Getting started?</h4>
                     <p>
-                        <a href="http://uproot.us/custom-field-suite/documentation/" target="_blank">Documentation</a> |
-                        <a href="http://uproot.us/support/" target="_blank">Support</a> |
-                        <a href="http://uproot.us/custom-field-suite/roadmap/" target="_blank">Roadmap</a>
+                        <a href="http://uproot.us/custom-field-suite/" target="_blank">View the plugin website</a>
                     </p>
                 </div>
                 <div class="field">
-                    <h4><?php _e('Developed by', 'cfs'); ?> Matt Gibbs</h4>
+                    <h4><?php _e('Please show your support!', 'cfs'); ?></h4>
                     <p>
-                        <a href="http://twitter.com/logikal16/" target="_blank">Twitter</a> |
-                        <a href="http://wordpress.org/extend/plugins/custom-field-suite/" target="_blank">Vote for this plugin</a>
+                        <a href="http://wordpress.org/extend/plugins/custom-field-suite/" target="_blank">Rate the plugin</a>
                     </p>
                 </div>
             </div>
