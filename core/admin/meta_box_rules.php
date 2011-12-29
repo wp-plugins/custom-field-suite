@@ -16,10 +16,14 @@ foreach ($rule_types as $type)
 }
 
 // Post types
-$post_types = get_post_types(array('public' => true));
-if (false !== ($key = array_search('attachment', $post_types)))
+$post_types = array();
+$types = get_post_types(array('public' => true));
+foreach ($types as $post_type)
 {
-    unset($post_types[$key]);
+    if (!in_array($post_type, array('cfs', 'attachment')))
+    {
+        $post_types[] = $post_type;
+    }
 }
 
 // User roles

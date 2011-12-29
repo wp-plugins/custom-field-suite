@@ -19,7 +19,6 @@ class cfs_Wysiwyg extends cfs_Field
 
     function input_head()
     {
-        wp_tiny_mce();
     ?>
         <script type="text/javascript">
         jQuery(function() {

@@ -9,7 +9,6 @@ class cfs_File extends cfs_Field
         $this->label = __('File Upload', 'cfs');
         $this->parent = $parent;
 
-        add_action('admin_head', array($this, 'admin_head'));
         add_action('admin_head-media-upload-popup', array($this, 'popup_head'));
         add_filter('media_send_to_editor', array($this, 'media_send_to_editor'), 20, 3);
     }
@@ -17,6 +16,7 @@ class cfs_File extends cfs_Field
     function html($field)
     {
         $file_url = is_numeric($field->value) ? wp_get_attachment_url($field->value) : $field->value;
+
         if (empty($field->value))
         {
             $css_hide = array('add' => '', 'remove' => ' hidden');
@@ -33,26 +33,12 @@ class cfs_File extends cfs_Field
     <?php
     }
 
-    function admin_head()
-    {
-        global $post;
-        $post_type = get_post_type($post->ID);
-        $has_editor = post_type_supports($post_type, 'editor');
-
-        if (!$has_editor)
-        {
-    ?>
-        <style type="text/css">#poststuff .postarea { display: none; }</style>
-    <?php
-        }
-    }
-
     function popup_head()
     {
-        // Don't interfere with the standard Media manager
+        // Don't interfere with the default Media popup
         if (isset($_GET['cfs_file']))
         {
-            // Add the "Insert into Post" button
+            // Ensure that "Insert into Post" appears
             $post_type = get_post_type($_GET['post_id']);
             add_post_type_support($post_type, 'editor');
     ?>
@@ -61,6 +47,13 @@ class cfs_File extends cfs_Field
             jQuery("form#filter").each(function() {
                 jQuery(this).append('<input type="hidden" name="cfs_file" value="1" />');
             });
+
+            jQuery("tr.image_alt").hide();
+            jQuery("tr.post_excerpt").hide();
+            jQuery("tr.post_content").hide();
+            jQuery("tr.url").hide();
+            jQuery("tr.align").hide();
+            jQuery("tr.image-size").hide();
         });
         </script>
     <?php

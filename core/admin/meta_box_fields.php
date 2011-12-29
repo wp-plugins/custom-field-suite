@@ -15,11 +15,10 @@ foreach ($results as $field)
 
 </div>
 
-<!-- [BEGIN] clone field html -->
-
 <div class="field_clone hidden">
 
 <?php
+// Build clone HTML
 $field = (object) array(
     'id' => '',
     'name' => 'new_field',
@@ -33,8 +32,6 @@ $this->field_html($field);
 ?>
 
 </div>
-
-<!-- [END] clone field html -->
 
 <div class="table_footer">
     <input type="button" class="button-primary cfs_add_field" value="Add New Field" />
