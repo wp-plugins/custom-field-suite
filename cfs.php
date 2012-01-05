@@ -3,7 +3,7 @@
 Plugin Name: Custom Field Suite
 Plugin URI: http://uproot.us/custom-field-suite/
 Description: Visually create custom field groups.
-Version: 1.2.5
+Version: 1.2.6
 Author: Matt Gibbs
 Author URI: http://uproot.us/
 License: GPL
@@ -11,7 +11,7 @@ Copyright: Matt Gibbs
 */
 
 $cfs = new Cfs();
-$cfs->version = '1.2.5';
+$cfs->version = '1.2.6';
 
 class Cfs
 {
@@ -132,13 +132,18 @@ class Cfs
         $matches = array();
         $post_type = get_post_type($post_id);
         $user_roles = $current_user->roles;
+        $term_ids = array();
 
         // Get all term ids associated with this post
         $sql = "
         SELECT tt.term_id
         FROM $wpdb->term_taxonomy tt
         INNER JOIN $wpdb->term_relationships tr ON tr.term_taxonomy_id = tt.term_taxonomy_id AND tr.object_id = '$post_id'";
-        $term_ids = $wpdb->get_results($sql, ARRAY_N);
+        $results = $wpdb->get_results($sql);
+        foreach ($results as $result)
+        {
+            $term_ids[] = $result->term_id;
+        }
 
         // Get all rules
         $sql = "

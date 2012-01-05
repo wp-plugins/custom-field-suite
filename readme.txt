@@ -41,6 +41,10 @@ Visually create custom fields that can be used on any edit page.
 
 == Changelog ==
 
+= 1.2.6 =
+* Bugfix: issue with taxonomy rules / post_format (props Hylkep)
+* Changed default date format to yyyy-mm-dd
+
 = 1.2.5 =
 * Bugfix: editor issues with WP 3.3
 * Updated translation file

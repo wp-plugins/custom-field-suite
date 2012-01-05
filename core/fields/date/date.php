@@ -20,7 +20,8 @@ class cfs_Date extends cfs_Field
         <script type="text/javascript">
         jQuery(function() {
             jQuery(".cfs_input input.date").datetimepicker({
-                stepMinute: 5
+                stepMinute: 5,
+                dateFormat: "yy-mm-dd"
             });
         });
         </script>
