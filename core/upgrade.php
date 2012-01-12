@@ -9,8 +9,9 @@ if (version_compare($last_version, $this->version, '<'))
     // Add necessary tables
     if (version_compare($last_version, '1.0.0', '<'))
     {
-        $sql = "CREATE TABLE {$wpdb->prefix}cfs_fields (
-            id INT unsigned not null auto_increment primary key,
+        $sql = "
+        CREATE TABLE {$wpdb->prefix}cfs_fields (
+            id INT unsigned not null auto_increment,
             name TEXT,
             label TEXT,
             type TEXT,
@@ -18,18 +19,23 @@ if (version_compare($last_version, $this->version, '<'))
             post_id INT unsigned,
             parent_id INT unsigned default 0,
             weight INT unsigned,
-            options TEXT
+            options TEXT,
+            PRIMARY KEY (id),
+            INDEX post_id_idx (post_id)
         ) DEFAULT CHARSET=utf8";
         dbDelta($sql);
 
-        $sql = "CREATE TABLE {$wpdb->prefix}cfs_values (
-            id INT unsigned not null auto_increment primary key,
+        $sql = "
+        CREATE TABLE {$wpdb->prefix}cfs_values (
+            id INT unsigned not null auto_increment,
             field_id INT unsigned,
             meta_id INT unsigned,
             post_id INT unsigned,
-            value TEXT,
             weight INT unsigned,
-            sub_weight INT unsigned
+            sub_weight INT unsigned,
+            PRIMARY KEY (id),
+            INDEX field_id_idx (field_id),
+            INDEX post_id_idx (post_id)
         ) DEFAULT CHARSET=utf8";
         dbDelta($sql);
     }

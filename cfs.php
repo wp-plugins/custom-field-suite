@@ -3,7 +3,7 @@
 Plugin Name: Custom Field Suite
 Plugin URI: http://uproot.us/custom-field-suite/
 Description: Visually create custom field groups.
-Version: 1.2.6
+Version: 1.3.0
 Author: Matt Gibbs
 Author URI: http://uproot.us/
 License: GPL
@@ -11,7 +11,7 @@ Copyright: Matt Gibbs
 */
 
 $cfs = new Cfs();
-$cfs->version = '1.2.6';
+$cfs->version = '1.3.0';
 
 class Cfs
 {
@@ -48,6 +48,9 @@ class Cfs
         add_action('admin_menu', array($this, 'admin_menu'));
         add_action('save_post', array($this, 'save_post'));
         add_action('delete_post', array($this, 'delete_post'));
+
+        // 3rd party hooks
+        add_action('gform_post_submission', array($this, 'gform_handler'), 10, 2);
 
         // add translations
         load_plugin_textdomain('cfs', false, $this->dir . '/lang');
@@ -388,5 +391,99 @@ class Cfs
         $field->sub_field = isset($field->sub_field) ? 1 : '{sub_field}';
 
         include($this->dir . '/core/admin/field_html.php');
+    }
+
+
+    /*--------------------------------------------------------------------------------------
+    *
+    *    gform_handler (gravity forms)
+    *
+    *    @author Matt Gibbs
+    *    @since 1.3.0
+    *
+    *-------------------------------------------------------------------------------------*/
+
+    function gform_handler($entry, $form)
+    {
+        global $wpdb;
+
+        // get the form id
+        $form_id = $entry['form_id'];
+        $form_data = array();
+
+        // get submitted fields
+        foreach ($form['fields'] as $field)
+        {
+            $field_id = $field['id'];
+
+            // handle fields with children
+            if (null !== $field['inputs'])
+            {
+                $values = array();
+
+                foreach ($field['inputs'] as $sub_field)
+                {
+                    $sub_field_value = $entry[$sub_field['id']];
+
+                    if (!empty($sub_field_value))
+                    {
+                        $values[] = $sub_field_value;
+                    }
+                }
+                $value = implode("\n", $values);
+            }
+            else
+            {
+                $value = $entry[$field_id];
+            }
+
+            $form_data[$field['label']] = $value;
+        }
+
+        // see if any field groups use this form id
+        $field_groups = array();
+        $results = $wpdb->get_results("SELECT post_id, meta_value FROM {$wpdb->postmeta} WHERE meta_key = 'cfs_extras'");
+        foreach ($results as $result)
+        {
+            $meta_value = unserialize($result->meta_value);
+            $meta_value = $meta_value['gforms'];
+
+            if ($form_id == $meta_value['form_id'])
+            {
+                $fields = array();
+                $all_fields = $wpdb->get_results("SELECT name, label FROM {$wpdb->prefix}cfs_fields WHERE post_id = '{$result->post_id}'");
+                foreach ($all_fields as $field)
+                {
+                    $fields[$field->label] = $field->name;
+                }
+
+                $field_groups[$result->post_id] = array(
+                    'post_type' => $meta_value['post_type'],
+                    'fields' => $fields,
+                );
+            }
+        }
+
+        foreach ($field_groups as $post_id => $data)
+        {
+            $field_data = array();
+            $intersect = array_intersect_key($form_data, $data['fields']);
+            foreach ($intersect as $key => $field_value)
+            {
+                $field_name = $data['fields'][$key];
+                $field_data[$field_name] = $field_value;
+            }
+
+            $post_data = array(
+                'post_type' => $meta_value['post_type'],
+            );
+            if (isset($entry['post_id']))
+            {
+                $post_data['ID'] = $entry['post_id'];
+            }
+
+            // save data
+            $this->save($field_data, $post_data);
+        }
     }
 }

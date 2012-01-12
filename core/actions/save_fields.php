@@ -82,3 +82,10 @@ foreach ($rule_types as $type)
 }
 
 update_post_meta($post_id, 'cfs_rules', $data);
+
+/*---------------------------------------------------------------------------------------------
+    Save extras
+---------------------------------------------------------------------------------------------*/
+
+$cfs_extras = $_POST['cfs']['extras'];
+update_post_meta($post_id, 'cfs_extras', $cfs_extras);

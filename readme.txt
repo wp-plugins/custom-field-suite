@@ -1,9 +1,9 @@
 === Custom Field Suite ===
 Contributors: logikal16
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JMVGK3L35X6BU
-Tags: fields, custom fields, pods, cck, more fields, extra fields
+Tags: fields, custom fields, pods, cck, more fields, extra fields, gravity forms
 Requires at least: 3.2
-Tested up to: 3.3
+Tested up to: 3.3.1
 Stable tag: trunk
 
 Custom Field Suite is the easiest way to visually manage custom fields.
@@ -11,6 +11,8 @@ Custom Field Suite is the easiest way to visually manage custom fields.
 == Description ==
 
 Visually create custom fields that can be used on any edit page.
+
+Now with Gravity Forms integration!
 
 = Field Types =
 * Text (api returns text)
@@ -40,6 +42,10 @@ Visually create custom fields that can be used on any edit page.
 
 
 == Changelog ==
+
+= 1.3.0 =
+* Gravity Forms integration!
+* Better error handling for the API save() method
 
 = 1.2.6 =
 * Bugfix: issue with taxonomy rules / post_format (props Hylkep)

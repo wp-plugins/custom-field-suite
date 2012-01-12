@@ -35,6 +35,7 @@ if ('cfs' == $GLOBALS['post_type'])
 
     add_meta_box('cfs_fields', 'Fields', array($this, 'meta_box'), 'cfs', 'normal', 'high', array('box' => 'fields'));
     add_meta_box('cfs_rules', 'Placement Rules', array($this, 'meta_box'), 'cfs', 'normal', 'high', array('box' => 'rules'));
+    add_meta_box('cfs_extras', 'Extras', array($this, 'meta_box'), 'cfs', 'normal', 'high', array('box' => 'extras'));
 }
 
 /*---------------------------------------------------------------------------------------------

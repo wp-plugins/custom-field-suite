@@ -151,40 +151,49 @@ span.cfs_delete_field:hover {
     Options
 ---------------------------------------------------------------------------------------------*/
 
-#cfs_rules .inside {
+#cfs_rules .inside,
+#cfs_extras .inside {
     margin: 0;
     padding: 0;
 }
 
-#cfs_rules table td {
+#cfs_rules table td,
+#cfs_extras table td {
     padding: 10px;
 }
 
-#cfs_rules table td.label {
+#cfs_rules table td.label,
+#cfs_extras table td.label {
     width: 24%;
     vertical-align: top;
 }
 
-#cfs_rules table td.label label {
+#cfs_rules table td.label label,
+#cfs_extras table td.label label {
     font-weight: bold;
     color: #333;
 }
 
-#cfs_rules table td.label p.description {
+#cfs_rules table td.label p.description,
+#cfs_extras table td.label p.description {
     color: #666;
     font-style: normal;
     margin: 6px 0 0 0 !important;
 }
 
 #cfs_rules table select,
+#cfs_extras table select,
 #cfs_rules table textarea,
-#cfs_rules table input[type="text"] {
+#cfs_extras table textarea,
+#cfs_rules table input[type="text"],
+#cfs_extras table input[type="text"] {
     width: 99.95%;
     height: auto;
     padding: 5px;
     outline: none;
 }
 
-#wpcontent #cfs_rules table select.multiple {
+#wpcontent #cfs_rules table select.multiple,
+#wpcontent #cfs_extras table select.multiple {
     height: 100px;
 }

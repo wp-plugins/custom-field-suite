@@ -101,9 +101,10 @@ class cfs_Api
                 if (null === $value)
                 {
                     $sql = "
-                    SELECT v.value, v.weight
+                    SELECT m.meta_value AS value, v.weight
                     FROM {$wpdb->prefix}cfs_values v
-                    WHERE v.post_id = '$post_id' AND v.field_id = '$field->id'
+                    INNER JOIN {$wpdb->postmeta} m ON m.meta_id = v.meta_id
+                    WHERE m.post_id = '$post_id' AND v.field_id = '$field->id'
                     ORDER BY v.weight, v.sub_weight";
 
                     $results = $wpdb->get_results($sql);
@@ -269,8 +270,29 @@ class cfs_Api
         );
         $options = (object) array_merge($defaults, $options);
 
-        // Create the post if $post_data['ID'] is missing
-        $post_id = empty($post_data['ID']) ? wp_insert_post($post_data) : $post_data['ID'];
+        // create post if the ID is missing
+        if (empty($post_data['ID']))
+        {
+            $post_defaults = array(
+                'post_title' => 'Untitled',
+                'post_content' => '',
+                'post_content_filtered' => '',
+                'post_excerpt' => '',
+                'to_ping' => '',
+                'pinged' => '',
+            );
+            $post_data = array_merge($post_defaults, $post_data);
+            $post_id = wp_insert_post($post_data);
+        }
+        else
+        {
+            $post_id = $post_data['ID'];
+
+            if (1 < count($post_data))
+            {
+                $wpdb->update($wpdb->posts, $post_data, array('ID' => $post_id));
+            }
+        }
 
         // If NOT "raw_input", then flatten the data!
         if (false === $options->raw_input)
@@ -335,7 +357,8 @@ class cfs_Api
             $cfs_input = $field_data;
 
             // If saving raw input, delete existing postdata
-            $sql = "DELETE v, m
+            $sql = "
+            DELETE v, m
             FROM {$wpdb->prefix}cfs_values v
             LEFT JOIN {$wpdb->postmeta} m ON m.meta_id = v.meta_id
             WHERE v.post_id = '$post_id'";
@@ -346,7 +369,8 @@ class cfs_Api
         $field_ids = implode(',', array_keys($cfs_input));
 
         // Delete from cfs_values and postmeta
-        $sql = "DELETE v, m
+        $sql = "
+        DELETE v, m
         FROM {$wpdb->prefix}cfs_values v
         LEFT JOIN {$wpdb->postmeta} m ON m.meta_id = v.meta_id
         WHERE v.post_id = '$post_id' and v.field_id IN ($field_ids)";
@@ -386,7 +410,6 @@ class cfs_Api
                         'field_id' => $field_id,
                         'meta_id' => $meta_id,
                         'post_id' => $post_id,
-                        'value' => $v,
                         'weight' => $weight,
                         'sub_weight' => $sub_weight,
                     );
@@ -418,7 +441,6 @@ class cfs_Api
                             'field_id' => $field_id,
                             'meta_id' => $meta_id,
                             'post_id' => $post_id,
-                            'value' => $v,
                             'weight' => $weight,
                             'sub_weight' => $sub_weight,
                         );
