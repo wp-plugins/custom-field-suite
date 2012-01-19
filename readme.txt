@@ -43,6 +43,9 @@ Now with Gravity Forms integration!
 
 == Changelog ==
 
+= 1.3.1 =
+* Added private posts to relationship field
+
 = 1.3.0 =
 * Gravity Forms integration!
 * Better error handling for the API save() method

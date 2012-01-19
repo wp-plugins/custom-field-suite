@@ -15,6 +15,8 @@ class cfs_Relationship extends cfs_Field
         global $wpdb;
 
         $where = '';
+        $selected_posts = array();
+        $available_posts = array();
 
         // Limit to chosen post types
         if (isset($field->options['post_types']))
@@ -27,14 +29,20 @@ class cfs_Relationship extends cfs_Field
             $where = " AND post_type IN ('" . implode("','", $where) . "')";
         }
 
-        $available_posts = $wpdb->get_results("SELECT ID, post_type, post_title FROM $wpdb->posts WHERE post_status = 'publish' $where ORDER BY post_title");
-        $selected_posts = array();
+
+        $results = $wpdb->get_results("SELECT ID, post_type, post_status, post_title FROM $wpdb->posts WHERE post_status IN ('publish','private') $where ORDER BY post_title");
+        foreach ($results as $result)
+        {
+            $result->post_title = ('private' == $result->post_status) ? '(Private) ' . $result->post_title : $result->post_title;
+            $available_posts[] = $result;
+        }
 
         if (!empty($field->value))
         {
-            $results = $wpdb->get_results("SELECT ID, post_title FROM $wpdb->posts WHERE ID IN ($field->value) ORDER BY FIELD(ID,$field->value)");
+            $results = $wpdb->get_results("SELECT ID, post_status, post_title FROM $wpdb->posts WHERE ID IN ($field->value) ORDER BY FIELD(ID,$field->value)");
             foreach ($results as $result)
             {
+                $result->post_title = ('private' == $result->post_status) ? '(Private) ' . $result->post_title : $result->post_title;
                 $selected_posts[$result->ID] = $result;
             }
         }
