@@ -75,7 +75,7 @@ class cfs_Api
         $field_data = array();
 
         // Get all field groups for this post
-        $group_ids = $this->parent->get_matching_groups($post_id);
+        $group_ids = $this->parent->get_matching_groups($post_id, true);
 
         if (!empty($group_ids))
         {

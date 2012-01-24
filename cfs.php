@@ -3,7 +3,7 @@
 Plugin Name: Custom Field Suite
 Plugin URI: http://uproot.us/custom-field-suite/
 Description: Visually create custom field groups.
-Version: 1.3.1
+Version: 1.3.2
 Author: Matt Gibbs
 Author URI: http://uproot.us/
 License: GPL
@@ -11,7 +11,7 @@ Copyright: Matt Gibbs
 */
 
 $cfs = new Cfs();
-$cfs->version = '1.3.1';
+$cfs->version = '1.3.2';
 
 class Cfs
 {
@@ -127,7 +127,7 @@ class Cfs
     *
     *-------------------------------------------------------------------------------------*/
 
-    function get_matching_groups($post_id)
+    function get_matching_groups($post_id, $is_public = false)
     {
         global $wpdb, $current_user;
 
@@ -152,7 +152,8 @@ class Cfs
         $sql = "
         SELECT p.ID, p.post_title, m.meta_value AS rules
         FROM $wpdb->posts p
-        INNER JOIN $wpdb->postmeta m ON m.post_id = p.ID AND m.meta_key = 'cfs_rules'";
+        INNER JOIN $wpdb->postmeta m ON m.post_id = p.ID AND m.meta_key = 'cfs_rules'
+        WHERE p.post_status = 'publish'";
         $results = $wpdb->get_results($sql);
 
         $rule_types = array(
@@ -161,6 +162,12 @@ class Cfs
             'term_ids' => $term_ids,
             'post_ids' => $post_id,
         );
+
+        // Ignore user_roles if used within get_fields
+        if (false !== $is_public)
+        {
+            unset($rule_types['user_roles']);
+        }
 
         foreach ($results as $result)
         {

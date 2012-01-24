@@ -12,7 +12,7 @@ Custom Field Suite is the easiest way to visually manage custom fields.
 
 Visually create custom fields that can be used on any edit page.
 
-Now with Gravity Forms integration!
+Now with [Gravity Forms integration!](http://uproot.us/custom-field-suite/documentation/gravity-forms-integration/)
 
 = Field Types =
 * Text (api returns text)
@@ -42,6 +42,10 @@ Now with Gravity Forms integration!
 
 
 == Changelog ==
+
+= 1.3.2 =
+* Bugfix: in some cases, the "User Roles" placement rule prevented values from displaying
+* Bugfix: only published field groups should appear on edit pages
 
 = 1.3.1 =
 * Added private posts to relationship field
