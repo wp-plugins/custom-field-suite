@@ -21,20 +21,31 @@ class cfs_Wysiwyg extends cfs_Field
     {
     ?>
         <script type="text/javascript">
-        jQuery(function() {
+        (function($) {
             var wysiwyg_count = 0;
 
-            jQuery(".cfs_input .field .wysiwyg").each(function() {
+            $(function() {
+                $('.cfs_add_field').click(function() {
+                    $('.cfs_wysiwyg:not(.ready)').init_wysiwyg();
+                });
+                $('.cfs_wysiwyg').init_wysiwyg();
+            });
 
-                // generate CSS id
-                wysiwyg_count = wysiwyg_count + 1;
-                var input_id = "cfs_wysiwyg_" + wysiwyg_count;
-                jQuery(this).attr("id", input_id);
+            $.fn.init_wysiwyg = function() {
+                this.each(function() {
+                    $(this).addClass('ready');
 
-                // create wysiwyg
-                tinyMCE.execCommand("mceAddControl", false, input_id);
-            })
-        });
+                    // generate css id
+                    wysiwyg_count = wysiwyg_count + 1;
+                    var input_id = 'cfs_wysiwyg_' + wysiwyg_count;
+                    $(this).find('.wysiwyg').attr('id', input_id);
+
+                    // create wysiwyg
+                    tinyMCE.settings.theme_advanced_buttons2 += ',code';
+                    tinyMCE.execCommand('mceAddControl', false, input_id);
+                });
+            };
+        })(jQuery);
         </script>
     <?php
     }

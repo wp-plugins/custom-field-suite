@@ -112,96 +112,100 @@ class cfs_Relationship extends cfs_Field
         <link rel="stylesheet" type="text/css" href="<?php echo $this->parent->url; ?>/js/tipTip/tipTip.css" />
         <script type="text/javascript" src="<?php echo $this->parent->url; ?>/js/tipTip/jquery.tipTip.js"></script>
         <script type="text/javascript">
-        function update_relationship_values(field) {
-            var post_ids = [];
-            field.find(".selected_posts div").each(function(idx) {
-                post_ids[idx] = jQuery(this).attr("rel");
-            });
-            field.find("input.relationship").val(post_ids.join(","));
-        }
-
-        jQuery(function() {
-
-            // tooltip
-            jQuery(".cfs_filter_help").tipTip({
-                maxWidth: "400px",
-                content: jQuery(this).find(".cfs_help_text").html()
-            });
-
-            // sortable
-            jQuery(".cfs_relationship .selected_posts").sortable({
-                axis: "y",
-                update: function(event, ui) {
-                    var parent = jQuery(this).closest(".field");
-                    update_relationship_values(parent);
-                }
-            });
-
-            // add selected post
-            jQuery(".cfs_relationship .available_posts div").click(function() {
-                var div = jQuery(this);
-                var parent = div.closest(".field");
-                var post_id = div.attr("rel");
-                var html = div.html();
-                div.addClass("used");
-                parent.find(".selected_posts").append('<div rel="'+post_id+'"><span class="remove"></span>'+html+'</div>');
-                update_relationship_values(parent);
-            });
-
-            // remove selected post
-            jQuery(".cfs_relationship .selected_posts span.remove").live("click", function() {
-                var div = jQuery(this).parent();
-                var parent = div.closest(".field");
-                var post_id = div.attr("rel");
-                parent.find(".available_posts div[rel="+post_id+"]").removeClass("used");
-                div.remove();
-                update_relationship_values(parent);
-            });
-
-            // filter available posts
-            jQuery(".cfs_filter_input").keyup(function() {
-
-                var input = jQuery(this).val();
-                var output = { types: [], keywords: [] };
-                var pieces = output.keywords = input.split(" ");
-                var parent = jQuery(this).closest(".field");
-
-                for (i in pieces) {
-                    var piece = pieces[i];
-                    if ("type:" == piece.substr(0, 5)) {
-                        output.types = piece.substr(5);
-                        if (output.types.indexOf(",") !== -1) {
-                            output.types = output.types.split(",");
-                        }
-                        else {
-                            output.types = [output.types];
-                        }
-                        output.keywords.splice(i, 1);
-                    }
-                }
-                output.keywords = output.keywords.join(" ");
-
-                var regex = new RegExp(output.keywords, "i");
-
-                parent.find(".available_posts div:not(.used)").each(function() {
-
-                    var div = jQuery(this);
-                    var post_type = div.attr("post_type");
-
-                    if (output.types.length > 0 && jQuery.inArray(post_type, output.types) < 0) {
-                        div.addClass("hidden");
-                        return;
-                    }
-
-                    if (-1 < div.html().search(regex)) {
-                        div.removeClass("hidden");
-                    }
-                    else {
-                        div.addClass("hidden");
-                    }
+        (function($) {
+            update_relationship_values = function(field) {
+                var post_ids = [];
+                field.find('.selected_posts div').each(function(idx) {
+                    post_ids[idx] = $(this).attr('rel');
                 });
-            });
-        });
+                field.find('input.relationship').val(post_ids.join(','));
+            }
+
+            $(function() {
+                $('.cfs_add_field').click(function() {
+                    $('.cfs_relationship:not(.ready)').init_relationship();
+                });
+                $('.cfs_relationship').init_relationship();
+            })
+
+            $.fn.init_relationship = function() {
+                this.each(function() {
+                    var $this = $(this);
+                    $this.addClass('ready');
+
+                    // tooltip
+                    $this.find('.cfs_filter_help').tipTip({
+                        maxWidth: '400px',
+                        content: $this.find('.cfs_help_text').html()
+                    });
+
+                    // sortable
+                    $this.find('.selected_posts').sortable({
+                        axis: 'y',
+                        update: function(event, ui) {
+                            var parent = $(this).closest('.field');
+                            update_relationship_values(parent);
+                        }
+                    });
+
+                    // add selected post
+                    $this.find('.available_posts div').click(function() {
+                        var parent = $(this).closest('.field');
+                        var post_id = $(this).attr('rel');
+                        var html = $(this).html();
+                        $(this).addClass('used');
+                        parent.find('.selected_posts').append('<div rel="'+post_id+'"><span class="remove"></span>'+html+'</div>');
+                        update_relationship_values(parent);
+                    });
+
+                    // remove selected post
+                    $this.find('.selected_posts span.remove').live('click', function() {
+                        var div = $(this).parent();
+                        var parent = div.closest('.field');
+                        var post_id = div.attr('rel');
+                        parent.find('.available_posts div[rel='+post_id+']').removeClass('used');
+                        div.remove();
+                        update_relationship_values(parent);
+                    });
+
+                    // filter posts
+                    $this.find('.cfs_filter_input').keyup(function() {
+                        var input = $(this).val();
+                        var output = { types: [], keywords: [] };
+                        var pieces = output.keywords = input.split(' ');
+                        var parent = $(this).closest('.field');
+                        for (i in pieces) {
+                            var piece = pieces[i];
+                            if ('type:' == piece.substr(0, 5)) {
+                                output.types = piece.substr(5);
+                                if (output.types.indexOf(',') !== -1) {
+                                    output.types = output.types.split(',');
+                                }
+                                else {
+                                    output.types = [output.types];
+                                }
+                                output.keywords.splice(i, 1);
+                            }
+                        }
+                        output.keywords = output.keywords.join(' ');
+                        var regex = new RegExp(output.keywords, 'i');
+                        parent.find('.available_posts div:not(.used)').each(function() {
+                            var post_type = $(this).attr('post_type');
+                            if (output.types.length > 0 && $.inArray(post_type, output.types)) {
+                                $(this).addClass('hidden');
+                                return;
+                            }
+                            if (-1 < $(this).html().search(regex)) {
+                                $(this).removeClass('hidden');
+                            }
+                            else {
+                                $(this).addClass('hidden');
+                            }
+                        });
+                    });
+                });
+            }
+        })(jQuery);
         </script>
     <?php
     }

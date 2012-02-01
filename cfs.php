@@ -3,7 +3,7 @@
 Plugin Name: Custom Field Suite
 Plugin URI: http://uproot.us/custom-field-suite/
 Description: Visually create custom field groups.
-Version: 1.3.2
+Version: 1.3.3
 Author: Matt Gibbs
 Author URI: http://uproot.us/
 License: GPL
@@ -11,7 +11,7 @@ Copyright: Matt Gibbs
 */
 
 $cfs = new Cfs();
-$cfs->version = '1.3.2';
+$cfs->version = '1.3.3';
 
 class Cfs
 {
@@ -228,6 +228,21 @@ class Cfs
             return $this->api->get_field($field_name, $post_id);
         }
         return $this->api->get_fields($post_id);
+    }
+
+
+    /*--------------------------------------------------------------------------------------
+    *
+    *    get_labels
+    *
+    *    @author Matt Gibbs
+    *    @since 1.3.3
+    *
+    *-------------------------------------------------------------------------------------*/
+
+    function get_labels($field_name = false, $post_id = false)
+    {
+        return $this->api->get_labels($field_name, $post_id);
     }
 
 

@@ -18,12 +18,13 @@ class cfs_Date extends cfs_Field
         <script type="text/javascript" src="<?php echo $this->parent->url; ?>/core/fields/date/jquery.ui.datepicker.js"></script>
         <script type="text/javascript" src="<?php echo $this->parent->url; ?>/core/fields/date/jquery.ui.timepicker.js"></script>
         <script type="text/javascript">
-        jQuery(function() {
-            jQuery(".cfs_input input.date").datetimepicker({
-                stepMinute: 5,
-                dateFormat: "yy-mm-dd"
+        (function($) {
+            $('.cfs_date input.date').live('focus', function() {
+                if (!$(this).hasClass('ready')) {
+                    $(this).addClass('ready').datetimepicker({ stepMinute: 5, dateFormat: 'yy-mm-dd' });
+                }
             });
-        });
+        })(jQuery);
         </script>
     <?php
     }

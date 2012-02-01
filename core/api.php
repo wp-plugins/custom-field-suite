@@ -170,6 +170,46 @@ class cfs_Api
 
     /*--------------------------------------------------------------------------------------
     *
+    *    get_labels
+    *
+    *    @author Matt Gibbs
+    *    @since 1.3.3
+    *
+    *-------------------------------------------------------------------------------------*/
+
+    function get_labels($field_name = false, $post_id = false)
+    {
+        global $post, $wpdb;
+
+        $post_id = empty($post_id) ? $post->ID : (int) $post_id;
+
+        // Get all field groups for this post
+        $group_ids = $this->parent->get_matching_groups($post_id, true);
+
+        $labels = array();
+
+        if (!empty($group_ids))
+        {
+            $group_ids = implode(',', array_keys($group_ids));
+            $results = $wpdb->get_results("SELECT name, label FROM {$wpdb->prefix}cfs_fields WHERE post_id IN ($group_ids) ORDER BY weight");
+            foreach ($results as $result)
+            {
+                if (empty($field_name))
+                {
+                    $labels[$result->name] = $result->label;
+                }
+                elseif ($result->name == $field_name)
+                {
+                    $labels = $result->label;
+                }
+            }
+        }
+        return $labels;
+    }
+
+
+    /*--------------------------------------------------------------------------------------
+    *
     *    apply_value_filters
     *
     *    @author Matt Gibbs

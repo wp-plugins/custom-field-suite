@@ -43,6 +43,11 @@ Now with [Gravity Forms integration!](http://uproot.us/custom-field-suite/docume
 
 == Changelog ==
 
+= 1.3.3 =
+* Upgraded chosen.js
+* Added get_labels() API method
+* Bugfix: Javascript issues for some fields within loop (wysiwyg, date, relationship)
+
 = 1.3.2 =
 * Bugfix: in some cases, the "User Roles" placement rule prevented values from displaying
 * Bugfix: only published field groups should appear on edit pages

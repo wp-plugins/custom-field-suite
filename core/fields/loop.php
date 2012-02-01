@@ -16,35 +16,36 @@ class cfs_Loop extends cfs_Field
     ?>
 
         <div class="loop_wrapper">
-            <div class="input_clone hidden">
-                <table class="widefat">
-                    <tbody>
-                        <tr>
-                            <td>
-                            <?php foreach ($results as $sub_field) : ?>
-                                <label><?php echo $sub_field->label; ?></label>
+            <?php ob_start(); ?>
+            <table class="widefat">
+                <tbody>
+                    <tr>
+                        <td>
+                        <?php foreach ($results as $sub_field) : ?>
+                            <label><?php echo $sub_field->label; ?></label>
 
-                                <?php if (!empty($sub_field->instructions)) : ?>
-                                <p class="instructions"><?php echo $sub_field->instructions; ?></p>
-                                <?php endif; ?>
+                            <?php if (!empty($sub_field->instructions)) : ?>
+                            <p class="instructions"><?php echo $sub_field->instructions; ?></p>
+                            <?php endif; ?>
 
-                                <div class="field cfs_<?php echo $sub_field->type; ?>">
-                                <?php
-                                    $this->parent->create_field((object) array(
-                                        'type' => $sub_field->type,
-                                        'input_name' => "cfs[input][$sub_field->id][clone][value][]",
-                                        'input_class' => $sub_field->type,
-                                        'options' => $sub_field->options,
-                                    ));
-                                ?>
-                                </div>
-                            <?php endforeach; ?>
-                            </td>
-                            <td class="remove"><span></span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                            <div class="field cfs_<?php echo $sub_field->type; ?>">
+                            <?php
+                                $this->parent->create_field((object) array(
+                                    'type' => $sub_field->type,
+                                    'input_name' => "cfs[input][$sub_field->id][clone][value][]",
+                                    'input_class' => $sub_field->type,
+                                    'options' => $sub_field->options,
+                                ));
+                            ?>
+                            </div>
+                        <?php endforeach; ?>
+                        </td>
+                        <td class="remove"><span></span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <?php $contents = ob_get_clean(); ?>
+            <textarea class="input_clone hidden"><?php echo htmlspecialchars($contents); ?></textarea>
 
     <?php
         // Get the number of loop rows
@@ -145,14 +146,9 @@ class cfs_Loop extends cfs_Field
             jQuery(".cfs_add_field").click(function() {
                 var parent = jQuery(this).closest(".table_footer").siblings(".loop_wrapper");
                 var count = parent.find("input.row_count");
-                var html = parent.find(".input_clone").html().replace(/\[clone\]/g, "["+count.val()+"]");
+                var html = parent.find(".input_clone").val().replace(/\[clone\]/g, "["+count.val()+"]");
                 count.val(parseInt(count.val()) + 1);
                 parent.append(html);
-            });
-
-            // Remove clone fields on save
-            jQuery("#publish").click(function() {
-                jQuery(".loop_wrapper .input_clone").remove();
             });
         });
         </script>
