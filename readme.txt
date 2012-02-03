@@ -10,9 +10,7 @@ Custom Field Suite is the easiest way to visually manage custom fields.
 
 == Description ==
 
-Visually create custom fields that can be used on any edit page.
-
-Now with [Gravity Forms integration!](http://uproot.us/custom-field-suite/documentation/gravity-forms-integration/)
+Use Custom Field Suite to add custom fields to your WordPress edit screens.
 
 = Field Types =
 * Text (api returns text)
@@ -24,7 +22,11 @@ Now with [Gravity Forms integration!](http://uproot.us/custom-field-suite/docume
 * Relationship (api returns array of post IDs)
 * File Upload (api returns file url)
 * Loop (repeatable fields!)
-* [Custom field types](http://uproot.us/custom-field-suite/documentation/custom-field-type/)
+
+= More Features =
+* [Create your own field types](http://uproot.us/custom-field-suite/docs/custom-field-type/)
+* [Gravity Forms integration](http://uproot.us/custom-field-suite/docs/gravity-forms-integration/)
+* Custom Field Import (migrate existing custom fields into CFS)
 
 = Documentation and Support =
 * http://uproot.us/
