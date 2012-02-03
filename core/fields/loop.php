@@ -135,22 +135,23 @@ class cfs_Loop extends cfs_Field
     {
     ?>
         <script type="text/javascript">
-        jQuery(function() {
+        (function($) {
+            $(function() {
+                // Remove a loop row
+                $('.cfs_loop td.remove span').live('click', function() {
+                    $(this).closest('table').remove();
+                });
 
-            // Remove a loop row
-            jQuery(".cfs_loop td.remove span").live("click", function() {
-                jQuery(this).closest("table").remove();
+                // Add a new loop row
+                $('.cfs_add_field').click(function() {
+                    var parent = $(this).closest('.table_footer').siblings('.loop_wrapper');
+                    var count = parent.find('input.row_count');
+                    var html = parent.find('.input_clone').val().replace(/\[clone\]/g, '['+count.val()+']');
+                    count.val(parseInt(count.val()) + 1);
+                    parent.append(html);
+                });
             });
-
-            // Add a new loop row
-            jQuery(".cfs_add_field").click(function() {
-                var parent = jQuery(this).closest(".table_footer").siblings(".loop_wrapper");
-                var count = parent.find("input.row_count");
-                var html = parent.find(".input_clone").val().replace(/\[clone\]/g, "["+count.val()+"]");
-                count.val(parseInt(count.val()) + 1);
-                parent.append(html);
-            });
-        });
+        })(jQuery);
         </script>
     <?php
     }

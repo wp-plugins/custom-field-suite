@@ -43,18 +43,20 @@ class cfs_File extends cfs_Field
             add_post_type_support($post_type, 'editor');
     ?>
         <script type="text/javascript">
-        jQuery(function() {
-            jQuery("form#filter").each(function() {
-                jQuery(this).append('<input type="hidden" name="cfs_file" value="1" />');
-            });
+        (function($) {
+            $(function() {
+                $('form#filter').each(function() {
+                    $(this).append('<input type="hidden" name="cfs_file" value="1" />');
+                });
 
-            jQuery("tr.image_alt").hide();
-            jQuery("tr.post_excerpt").hide();
-            jQuery("tr.post_content").hide();
-            jQuery("tr.url").hide();
-            jQuery("tr.align").hide();
-            jQuery("tr.image-size").hide();
-        });
+                $('tr.image_alt').hide();
+                $('tr.post_excerpt').hide();
+                $('tr.post_content').hide();
+                $('tr.url').hide();
+                $('tr.align').hide();
+                $('tr.image-size').hide();
+            });
+        })(jQuery);
         </script>
     <?php
         }
@@ -62,14 +64,14 @@ class cfs_File extends cfs_Field
 
     function media_send_to_editor($html, $id, $attachment)
     {
-        parse_str($_POST["_wp_http_referer"], $postdata);
+        parse_str($_POST['_wp_http_referer'], $postdata);
 
         if (isset($postdata['cfs_file']))
         {
     ?>
         <script type="text/javascript">
-        self.parent.cfs_div.siblings(".file_url").html("<?php echo $attachment['url']; ?>");
-        self.parent.cfs_div.siblings(".file").val("<?php echo $id; ?>");
+        self.parent.cfs_div.siblings('.file_url').html('<?php echo $attachment['url']; ?>');
+        self.parent.cfs_div.siblings('.file').val('<?php echo $id; ?>');
         self.parent.cfs_div = null;
         self.parent.tb_remove();
         </script>
@@ -87,21 +89,23 @@ class cfs_File extends cfs_Field
         global $post;
     ?>
         <script type="text/javascript">
-        jQuery(function() {
-            jQuery(".cfs_input .media.button.add").live("click", function() {
-                window.cfs_div = jQuery(this);
-                tb_show("Attach file", "media-upload.php?post_id=<?php echo $post->ID; ?>&cfs_file=1&TB_iframe=1&width=640&height=480");
-                jQuery(this).siblings(".media.button.remove").show();
-                jQuery(this).hide();
-                return false;
+        (function($) {
+            $(function() {
+                $('.cfs_input .media.button.add').live('click', function() {
+                    window.cfs_div = $(this);
+                    tb_show('Attach file', 'media-upload.php?post_id=<?php echo $post->ID; ?>&cfs_file=1&TB_iframe=1&width=640&height=480');
+                    $(this).siblings('.media.button.remove').show();
+                    $(this).hide();
+                    return false;
+                });
+                $('.cfs_input .media.button.remove').live('click', function() {
+                    $(this).siblings('.file_url').html('');
+                    $(this).siblings('.file').val('');
+                    $(this).siblings('.media.button.add').show();
+                    $(this).hide();
+                });
             });
-            jQuery(".cfs_input .media.button.remove").live("click", function() {
-                jQuery(this).siblings(".file_url").html("");
-                jQuery(this).siblings(".file").val("");
-                jQuery(this).siblings(".media.button.add").show();
-                jQuery(this).hide();
-            });
-        });
+        })(jQuery);
         </script>
     <?php
     }

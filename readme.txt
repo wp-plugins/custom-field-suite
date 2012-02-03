@@ -27,7 +27,7 @@ Now with [Gravity Forms integration!](http://uproot.us/custom-field-suite/docume
 * [Custom field types](http://uproot.us/custom-field-suite/documentation/custom-field-type/)
 
 = Documentation and Support =
-* http://uproot.us/custom-field-suite/
+* http://uproot.us/
 * http://uproot.us/forums/
 
 
@@ -42,6 +42,9 @@ Now with [Gravity Forms integration!](http://uproot.us/custom-field-suite/docume
 
 
 == Changelog ==
+
+= 1.3.4 =
+* Added custom field import / mapping script
 
 = 1.3.3 =
 * Upgraded chosen.js

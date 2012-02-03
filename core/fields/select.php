@@ -64,6 +64,29 @@ class cfs_Select extends cfs_Field
     <?php
     }
 
+    function input_head()
+    {
+    ?>
+        <script type="text/javascript">
+        (function($) {
+            $(function() {
+                $('.cfs_add_field').click(function() {
+                    $('.cfs_select:not(.ready)').init_select();
+                });
+                $('.cfs_select').init_select();
+            });
+
+            $.fn.init_select = function() {
+                this.each(function() {
+                    var $this = $(this);
+                    $this.addClass('ready');
+                });
+            }
+        })(jQuery);
+        </script>
+    <?php
+    }
+
     function options_html($key, $field)
     {
     ?>
