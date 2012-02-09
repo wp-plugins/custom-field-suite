@@ -49,12 +49,14 @@ class cfs_File extends cfs_Field
                     $(this).append('<input type="hidden" name="cfs_file" value="1" />');
                 });
 
-                $('tr.image_alt').hide();
-                $('tr.post_excerpt').hide();
-                $('tr.post_content').hide();
-                $('tr.url').hide();
-                $('tr.align').hide();
-                $('tr.image-size').hide();
+                $('#media-items').bind('DOMNodeInserted', function() {
+                    $('tr.image_alt').hide();
+                    $('tr.post_excerpt').hide();
+                    $('tr.url').hide();
+                    $('tr.align').hide();
+                    $('tr.image-size').hide();
+                    $('tr.submit input.button').val('<?php _e('Attach File', 'cfs'); ?>');
+                }).trigger('DOMNodeInserted');
             });
         })(jQuery);
         </script>
@@ -70,6 +72,8 @@ class cfs_File extends cfs_Field
         {
     ?>
         <script type="text/javascript">
+        self.parent.cfs_div.hide();
+        self.parent.cfs_div.siblings('.media.button.remove').show();
         self.parent.cfs_div.siblings('.file_url').html('<?php echo $attachment['url']; ?>');
         self.parent.cfs_div.siblings('.file').val('<?php echo $id; ?>');
         self.parent.cfs_div = null;
@@ -94,8 +98,6 @@ class cfs_File extends cfs_Field
                 $('.cfs_input .media.button.add').live('click', function() {
                     window.cfs_div = $(this);
                     tb_show('Attach file', 'media-upload.php?post_id=<?php echo $post->ID; ?>&cfs_file=1&TB_iframe=1&width=640&height=480');
-                    $(this).siblings('.media.button.remove').show();
-                    $(this).hide();
                     return false;
                 });
                 $('.cfs_input .media.button.remove').live('click', function() {

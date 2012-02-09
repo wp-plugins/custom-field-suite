@@ -45,6 +45,12 @@ Use Custom Field Suite to add custom fields to your WordPress edit screens.
 
 == Changelog ==
 
+= 1.3.5 =
+* Bugfix: rare bug with relationship select boxes
+* Bugfix: private posts now appear within Placement Rules
+* Bugfix: prevent "navigate away from page" box on save
+* Upload button appears as "Attach File" instead of "Insert into Post"
+
 = 1.3.4 =
 * Added custom field import / mapping script
 

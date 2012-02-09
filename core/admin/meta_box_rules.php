@@ -33,7 +33,7 @@ foreach ($wp_roles->roles as $key => $role)
 }
 
 // Post IDs
-$results = $wpdb->get_results("SELECT ID, post_title FROM $wpdb->posts WHERE post_status = 'publish' ORDER BY post_title");
+$results = $wpdb->get_results("SELECT ID, post_title FROM $wpdb->posts WHERE post_status IN ('publish', 'private') ORDER BY post_title");
 foreach ($results as $result)
 {
     $post_ids[] = "$result->ID : $result->post_title";

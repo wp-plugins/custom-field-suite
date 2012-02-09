@@ -57,7 +57,7 @@ class cfs_Select extends cfs_Field
     ?>
         <select name="<?php echo $field->input_name; ?>" class="<?php echo $field->input_class; ?>"<?php echo $multiple; ?>>
         <?php foreach ($choices as $val => $label) : ?>
-            <?php $selected = in_array($val, array_map('trim', $field->value)) ? ' selected' : ''; ?>
+            <?php $selected = in_array($val, (array) $field->value) ? ' selected' : ''; ?>
             <option value="<?php echo htmlspecialchars($val); ?>"<?php echo $selected; ?>><?php echo htmlspecialchars($label); ?></option>
         <?php endforeach; ?>
         </select>
