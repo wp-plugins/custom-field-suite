@@ -122,7 +122,7 @@ class cfs_Relationship extends cfs_Field
             }
 
             $(function() {
-                $('.cfs_add_field').click(function() {
+                $('.cfs_add_field').bind('go', function() {
                     $('.cfs_relationship:not(.ready)').init_relationship();
                 });
                 $('.cfs_relationship').init_relationship();

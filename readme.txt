@@ -45,6 +45,11 @@ Use Custom Field Suite to add custom fields to your WordPress edit screens.
 
 == Changelog ==
 
+= 1.3.6 =
+* Added thumbnail for uploaded images
+* Bugfix: loop not displaying properly when saving first 2+ rows
+* Bugfix: wysiwyg field not loading when adding dynamically within loop
+
 = 1.3.5 =
 * Bugfix: rare bug with relationship select boxes
 * Bugfix: private posts now appear within Placement Rules

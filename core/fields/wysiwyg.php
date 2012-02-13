@@ -25,7 +25,7 @@ class cfs_Wysiwyg extends cfs_Field
             var wysiwyg_count = 0;
 
             $(function() {
-                $('.cfs_add_field').click(function() {
+                $('.cfs_add_field').bind('go', function() {
                     $('.cfs_wysiwyg:not(.ready)').init_wysiwyg();
                 });
                 $('.cfs_wysiwyg').init_wysiwyg();

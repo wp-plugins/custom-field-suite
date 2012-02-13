@@ -59,7 +59,6 @@ class cfs_Loop extends cfs_Field
 
             for ($i = 0; $i < $num_rows; $i++) :
     ?>
-            <input type="hidden" class="row_count" value="<?php echo $num_rows; ?>" />
 
             <table class="widefat">
                 <tbody>
@@ -95,7 +94,7 @@ class cfs_Loop extends cfs_Field
         </div>
 
         <div class="table_footer">
-            <input type="button" class="button-primary cfs_add_field" value="Add Row" />
+            <input type="button" class="button-primary cfs_add_field" value="Add Row" data-rows="<?php echo (int) $num_rows; ?>" />
         </div>
 
     <?php
@@ -145,10 +144,11 @@ class cfs_Loop extends cfs_Field
                 // Add a new loop row
                 $('.cfs_add_field').click(function() {
                     var parent = $(this).closest('.table_footer').siblings('.loop_wrapper');
-                    var count = parent.find('input.row_count');
-                    var html = parent.find('.input_clone').val().replace(/\[clone\]/g, '['+count.val()+']');
-                    count.val(parseInt(count.val()) + 1);
+                    var num_rows = $(this).attr('data-rows');
+                    var html = parent.find('.input_clone').val().replace(/\[clone\]/g, '['+num_rows+']');
                     parent.append(html);
+                    $(this).attr('data-rows', parseInt(num_rows)+1);
+                    $(this).trigger('go');
                 });
             });
         })(jQuery);

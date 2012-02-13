@@ -15,7 +15,19 @@ class cfs_File extends cfs_Field
 
     function html($field)
     {
-        $file_url = is_numeric($field->value) ? wp_get_attachment_url($field->value) : $field->value;
+        $file_url = $field->value;
+
+        if (is_numeric($field->value))
+        {
+            if (wp_attachment_is_image($field->value))
+            {
+                $file_url = wp_get_attachment_image($field->value);
+            }
+            else
+            {
+                $file_url = wp_get_attachment_url($field->value);
+            }
+        }
 
         if (empty($field->value))
         {
@@ -26,10 +38,10 @@ class cfs_File extends cfs_Field
             $css_hide = array('add' => ' hidden', 'remove' => '');
         }
     ?>
+        <span class="file_url"><?php echo $file_url; ?></span>
         <input type="button" class="media button add<?php echo $css_hide['add']; ?>" value="<?php _e('Add File', 'cfs'); ?>" />
         <input type="button" class="media button remove<?php echo $css_hide['remove']; ?>" value="<?php _e('Remove', 'cfs'); ?>" />
         <input type="hidden" name="<?php echo $field->input_name; ?>" class="<?php echo $field->input_class; ?>" value="<?php echo $field->value; ?>" />
-        <span class="file_url"><?php echo $file_url; ?></span>
     <?php
     }
 
@@ -50,12 +62,13 @@ class cfs_File extends cfs_Field
                 });
 
                 $('#media-items').bind('DOMNodeInserted', function() {
-                    $('tr.image_alt').hide();
-                    $('tr.post_excerpt').hide();
-                    $('tr.url').hide();
-                    $('tr.align').hide();
-                    $('tr.image-size').hide();
-                    $('tr.submit input.button').val('<?php _e('Attach File', 'cfs'); ?>');
+                    var $this = $(this);
+                    $this.find('tr.image_alt').hide();
+                    $this.find('tr.post_excerpt').hide();
+                    $this.find('tr.url').hide();
+                    $this.find('tr.align').hide();
+                    $this.find('tr.image-size').hide();
+                    $this.find('tr.submit input.button').val('<?php _e('Attach File', 'cfs'); ?>');
                 }).trigger('DOMNodeInserted');
             });
         })(jQuery);
@@ -70,11 +83,12 @@ class cfs_File extends cfs_Field
 
         if (isset($postdata['cfs_file']))
         {
+            $file_url = wp_attachment_is_image($id) ? wp_get_attachment_image($id) : $attachment['url'];
     ?>
         <script type="text/javascript">
         self.parent.cfs_div.hide();
         self.parent.cfs_div.siblings('.media.button.remove').show();
-        self.parent.cfs_div.siblings('.file_url').html('<?php echo $attachment['url']; ?>');
+        self.parent.cfs_div.siblings('.file_url').html('<?php echo $file_url; ?>');
         self.parent.cfs_div.siblings('.file').val('<?php echo $id; ?>');
         self.parent.cfs_div = null;
         self.parent.tb_remove();
