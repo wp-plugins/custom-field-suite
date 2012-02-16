@@ -1,7 +1,7 @@
 === Custom Field Suite ===
 Contributors: logikal16
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JMVGK3L35X6BU
-Tags: fields, custom fields, pods, cck, more fields, extra fields, gravity forms
+Tags: custom, fields, custom fields, cck, post types, gravity forms, field permissions
 Requires at least: 3.2
 Tested up to: 3.3.1
 Stable tag: trunk
@@ -24,6 +24,7 @@ Use Custom Field Suite to add custom fields to your WordPress edit screens.
 * Loop (repeatable fields!)
 
 = More Features =
+* Customize where each field group will appear
 * [Create your own field types](http://uproot.us/custom-field-suite/docs/custom-field-type/)
 * [Gravity Forms integration](http://uproot.us/custom-field-suite/docs/gravity-forms-integration/)
 * Custom Field Import (migrate existing custom fields into CFS)
@@ -44,6 +45,9 @@ Use Custom Field Suite to add custom fields to your WordPress edit screens.
 
 
 == Changelog ==
+
+= 1.3.7 =
+* Bugfix: gravity form data not saving to correct post type
 
 = 1.3.6 =
 * Added thumbnail for uploaded images

@@ -2,8 +2,8 @@
 /*
 Plugin Name: Custom Field Suite
 Plugin URI: http://uproot.us/custom-field-suite/
-Description: Visually create custom field groups.
-Version: 1.3.6
+Description: Visually create custom fields for your edit pages.
+Version: 1.3.7
 Author: Matt Gibbs
 Author URI: http://uproot.us/
 License: GPL
@@ -11,7 +11,7 @@ Copyright: Matt Gibbs
 */
 
 $cfs = new Cfs();
-$cfs->version = '1.3.6';
+$cfs->version = '1.3.7';
 
 class Cfs
 {
@@ -535,7 +535,7 @@ class Cfs
             }
 
             $post_data = array(
-                'post_type' => $meta_value['post_type'],
+                'post_type' => $data['post_type'],
             );
             if (isset($entry['post_id']))
             {
