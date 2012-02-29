@@ -46,6 +46,9 @@ Use Custom Field Suite to add custom fields to your WordPress edit screens.
 
 == Changelog ==
 
+= 1.3.8 =
+* Bugfix: custom translation file path incorrect
+
 = 1.3.7 =
 * Bugfix: gravity form data not saving to correct post type
 

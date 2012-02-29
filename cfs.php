@@ -3,7 +3,7 @@
 Plugin Name: Custom Field Suite
 Plugin URI: http://uproot.us/custom-field-suite/
 Description: Visually create custom fields for your edit pages.
-Version: 1.3.7
+Version: 1.3.8
 Author: Matt Gibbs
 Author URI: http://uproot.us/
 License: GPL
@@ -11,7 +11,7 @@ Copyright: Matt Gibbs
 */
 
 $cfs = new Cfs();
-$cfs->version = '1.3.7';
+$cfs->version = '1.3.8';
 
 class Cfs
 {
@@ -54,7 +54,7 @@ class Cfs
         add_action('gform_post_submission', array($this, 'gform_handler'), 10, 2);
 
         // add translations
-        load_plugin_textdomain('cfs', false, $this->dir . '/lang');
+        load_plugin_textdomain('cfs', false, 'custom-field-suite/lang');
     }
 
 
@@ -291,7 +291,7 @@ class Cfs
 
     function admin_footer()
     {
-        if ('cfs' == $GLOBALS['post_type'] && 'edit.php' == $GLOBALS['pagenow'])
+        if (isset($GLOBALS['post_type']) && 'cfs' == $GLOBALS['post_type'] && 'edit.php' == $GLOBALS['pagenow'])
         {
             include($this->dir . '/core/actions/admin_footer.php');
         }
@@ -328,7 +328,7 @@ class Cfs
         global $post;
 
         // disable autosave (prevent "Navigate away from page" box)
-        if ('cfs' == get_post_type($post->ID))
+        if (is_object($post) && 'cfs' == get_post_type($post->ID))
         {
             wp_deregister_script('autosave');
         }
