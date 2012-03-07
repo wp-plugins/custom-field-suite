@@ -46,6 +46,10 @@ Use Custom Field Suite to add custom fields to your WordPress edit screens.
 
 == Changelog ==
 
+= 1.3.9 =
+* Updated translation file
+* Cleaned up PHP notices
+
 = 1.3.8 =
 * Bugfix: custom translation file path incorrect
 
@@ -81,34 +85,3 @@ Use Custom Field Suite to add custom fields to your WordPress edit screens.
 = 1.3.0 =
 * Gravity Forms integration!
 * Better error handling for the API save() method
-
-= 1.2.6 =
-* Bugfix: issue with taxonomy rules / post_format (props Hylkep)
-* Changed default date format to yyyy-mm-dd
-
-= 1.2.5 =
-* Bugfix: editor issues with WP 3.3
-* Updated translation file
-* CFS post type excluded from rules list (props @thecorkboard)
-* Minor code cleanup
-
-= 1.2.4 =
-* Bugfix: editor not appearing when adding new posts
-
-= 1.2.3 =
-* Bugfix: rule matching not working correctly
-
-= 1.2.2 =
-* Bugfix: unable to add new field group (props @brewern)
-* Bugfix: file fields not working without post type "editor" support
-* Updated timepicker script
-
-= 1.2.1 =
-* Excluded tags from taxonomy rules list
-
-= 1.2.0 =
-* New placement rule: User Role
-* New placement rule: Taxonomy Term
-* New placement rule: Post ID
-* Removed cfs_rules table in favor of postmeta
-* WP 3.3 compatibility
