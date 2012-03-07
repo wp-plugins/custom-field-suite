@@ -79,16 +79,16 @@ $results = $wpdb->get_results($sql);
 
 <div class="wrap">
     <div id="icon-tools" class="icon32"><br /></div>
-    <h2>Custom Field Import</h2>
+    <h2><?php _e('Custom Field Import', 'cfs'); ?></h2>
 
     <?php if (isset($_POST['groups'])) : ?>
     <div id="message" class="updated">
-        <p>Data import successful.</p>
+        <p><?php _e('Import Successful', 'cfs'); ?></p>
     </div>
     <?php endif; ?>
 
-    <p>This tool will scan your existing custom fields, mapping values into Custom Field Suite.</p>
-    <p>Select the Field Groups you'd like to populate:</p>
+    <p><?php _e('This tool will scan your existing custom fields, mapping values into Custom Field Suite.', 'cfs'); ?></p>
+    <p><?php _e('Select the field groups to populate:', 'cfs'); ?></p>
     <form method="post" action="">
         <table class="widefat">
             <thead>
@@ -113,7 +113,7 @@ $results = $wpdb->get_results($sql);
             </tfoot>
         </table>
         <div class="tablenav bottom">
-            <input type="submit" class="button-secondary" value="Import Field Data" />
+            <input type="submit" class="button-secondary" value="<?php _e('Import Field Data', 'cfs'); ?>" />
         </div>
     </form>
 </div>

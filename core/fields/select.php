@@ -35,7 +35,7 @@ class cfs_Select extends cfs_Field
         }
 
         // Multi-select
-        if ('1' == $field->options['multiple'])
+        if (isset($field->options['multiple']) && '1' == $field->options['multiple'])
         {
             $multiple = ' multiple';
 

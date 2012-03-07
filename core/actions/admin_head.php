@@ -33,9 +33,9 @@ if ('cfs' == $GLOBALS['post_type'])
 
 <?php
 
-    add_meta_box('cfs_fields', 'Fields', array($this, 'meta_box'), 'cfs', 'normal', 'high', array('box' => 'fields'));
-    add_meta_box('cfs_rules', 'Placement Rules', array($this, 'meta_box'), 'cfs', 'normal', 'high', array('box' => 'rules'));
-    add_meta_box('cfs_extras', 'Extras', array($this, 'meta_box'), 'cfs', 'normal', 'high', array('box' => 'extras'));
+    add_meta_box('cfs_fields', __('Fields', 'cfs'), array($this, 'meta_box'), 'cfs', 'normal', 'high', array('box' => 'fields'));
+    add_meta_box('cfs_rules', __('Placement Rules', 'cfs'), array($this, 'meta_box'), 'cfs', 'normal', 'high', array('box' => 'rules'));
+    add_meta_box('cfs_extras', __('Extras', 'cfs'), array($this, 'meta_box'), 'cfs', 'normal', 'high', array('box' => 'extras'));
 }
 
 /*---------------------------------------------------------------------------------------------

@@ -34,5 +34,5 @@ $this->field_html($field);
 </div>
 
 <div class="table_footer">
-    <input type="button" class="button-primary cfs_add_field" value="Add New Field" />
+    <input type="button" class="button-primary cfs_add_field" value="<?php _e('Add New Field', 'cfs'); ?>" />
 </div>
