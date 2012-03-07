@@ -1,4 +1,4 @@
-=== Custom Field Suite ===
+﻿=== Custom Field Suite ===
 Contributors: logikal16
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JMVGK3L35X6BU
 Tags: custom, fields, custom fields, cck, post types, gravity forms, field permissions
