@@ -17,10 +17,10 @@ foreach ($rule_types as $type)
 
 // Post types
 $post_types = array();
-$types = get_post_types(array('public' => true));
+$types = get_post_types();
 foreach ($types as $post_type)
 {
-    if (!in_array($post_type, array('cfs', 'attachment')))
+    if (!in_array($post_type, array('cfs', 'attachment', 'revision', 'nav_menu_item')))
     {
         $post_types[] = $post_type;
     }

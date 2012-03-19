@@ -46,6 +46,9 @@ Use Custom Field Suite to add custom fields to your WordPress edit screens.
 
 == Changelog ==
 
+= 1.4.0 =
+* Ability to select private posts in placement rules (props @jevets)
+
 = 1.3.9 =
 * Updated translation file
 * Cleaned up PHP notices
