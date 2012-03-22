@@ -19,17 +19,17 @@ if ('cfs' == $GLOBALS['post_type'])
     $results = $this->api->get_input_fields($post->ID, 0);
 ?>
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
-    field_index = <?php echo $field_count; ?>;
-    options_html = <?php echo json_encode($options_html); ?>;
+field_index = <?php echo $field_count; ?>;
+options_html = <?php echo json_encode($options_html); ?>;
 
-    </script>
+</script>
 
-    <script type="text/javascript" src="<?php echo $this->url; ?>/js/chosen.jquery.min.js"></script>
-    <script type="text/javascript" src="<?php echo $this->url; ?>/js/fields.js"></script>
-    <link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/css/fields.css" />
-    <link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/css/chosen.jquery.css" />
+<script type="text/javascript" src="<?php echo $this->url; ?>/js/chosen.jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo $this->url; ?>/js/fields.js"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/css/fields.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/css/chosen.jquery.css" />
 
 <?php
 
@@ -50,7 +50,7 @@ else
     {
 ?>
 
-    <link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/css/input.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/css/input.css" />
 
 <?php
         // Support for multiple metaboxes
@@ -65,24 +65,23 @@ else
                 );
             }
 
-            // Force editor support
-            $post_type = get_post_type($post->ID);
-            $has_editor = post_type_supports($post_type, 'editor');
-            add_post_type_support($post_type, 'editor');
-
-            if (!$has_editor)
-            {
-?>
-
-    <style type="text/css">#poststuff .postarea { display: none; }</style>
-
-<?php
-            }
-
             add_meta_box("cfs_input_$group_id", $title, array($this, 'meta_box'), $post->post_type, 'normal', 'high', array('box' => 'input', 'group_id' => $group_id));
 
             // Add .cfs_input to the metabox CSS
             add_filter("postbox_classes_{$post->post_type}_cfs_input_{$group_id}", 'cfs_postbox_classes');
+        }
+
+        // Force editor support
+        $has_editor = post_type_supports($post->post_type, 'editor');
+        add_post_type_support($post->post_type, 'editor');
+
+        if (!$has_editor)
+        {
+?>
+
+<style type="text/css">#poststuff .postarea { display: none; }</style>
+
+<?php
         }
     }
 }

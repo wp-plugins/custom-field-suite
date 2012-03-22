@@ -8,6 +8,8 @@ class cfs_Wysiwyg extends cfs_Field
         $this->name = 'wysiwyg';
         $this->label = __('Wysiwyg Editor', 'cfs');
         $this->parent = $parent;
+
+        add_filter('wp_default_editor', array($this, 'wp_default_editor'));
     }
 
     function html($field)
@@ -48,6 +50,11 @@ class cfs_Wysiwyg extends cfs_Field
         })(jQuery);
         </script>
     <?php
+    }
+
+    function wp_default_editor()
+    {
+        return 'tinymce'; // html or tinymce
     }
 
     function format_value_for_input($value)

@@ -46,6 +46,9 @@ Use Custom Field Suite to add custom fields to your WordPress edit screens.
 
 == Changelog ==
 
+= 1.4.1 =
+* Bugfix: wysiwyg field breaks if editor defaults to HTML tab
+
 = 1.4.0 =
 * Ability to select private posts in placement rules (props @jevets)
 
