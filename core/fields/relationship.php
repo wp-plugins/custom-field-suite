@@ -210,27 +210,24 @@ class cfs_Relationship extends cfs_Field
     <?php
     }
 
+    function format_value_for_input($value)
+    {
+        return empty($value) ? '' : implode(',', $value);
+    }
+
     function format_value_for_api($value)
     {
-        $return = false;
+        return $value;
+    }
 
-        if (!empty($value[0]))
+    function pre_save($value)
+    {
+        if (!empty($value))
         {
-            if (false !== strpos($value[0], ','))
-            {
-                $return = array();
-                $value = explode(',', $value[0]);
-                foreach ($value as $v)
-                {
-                    $return[] = $v;
-                }
-            }
-            else
-            {
-                $return = array($value[0]);
-            }
+            // Inside a loop, the value is $value[0]
+            $value = (array) $value;
+            return explode(',', $value[0]);
         }
-
-        return $return;
+        return array();
     }
 }

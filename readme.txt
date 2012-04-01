@@ -33,18 +33,21 @@ Use Custom Field Suite to add custom fields to your WordPress edit screens.
 * http://uproot.us/
 * http://uproot.us/forums/
 
-
 == Installation ==
 
 1. Download and activate the plugin.
 2. Browse to `Settings > Custom Field Suite` to configure.
 
-
 == Screenshots ==
 1. A custom field group, with several fields added.
 
-
 == Changelog ==
+
+= 1.4.2 =
+* BACK UP YOUR DATABASE before upgrading!
+* Improved how relationship fields save data
+* Updated multiselect script (Chosen)
+* Updated timepicker script
 
 = 1.4.1 =
 * Bugfix: wysiwyg field breaks if editor defaults to HTML tab
@@ -91,3 +94,8 @@ Use Custom Field Suite to add custom fields to your WordPress edit screens.
 = 1.3.0 =
 * Gravity Forms integration!
 * Better error handling for the API save() method
+
+== Upgrade Notice ==
+
+= 1.4.2 =
+BACK UP YOUR DATABASE BEFORE UPGRADING! Data migration is necessary to improve relationship fields.

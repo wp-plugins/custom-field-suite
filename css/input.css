@@ -69,7 +69,7 @@
     float: left;
     width: 50%;
     background: #fff;
-    height: 200px;
+    height: 125px;
     overflow-y: scroll;
 }
 
@@ -99,7 +99,6 @@
     float: right;
     width: 16px;
     height: 16px;
-    margin-top: -2px;
     background: url(../images/button_remove.png) no-repeat;
     cursor: pointer;
 }

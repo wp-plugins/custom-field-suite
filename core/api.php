@@ -383,11 +383,6 @@ class cfs_Api
                 }
                 else
                 {
-                    if ('relationship' == $field_type)
-                    {
-                        $field_value = implode(',', (array) $field_value);
-                    }
-
                     $cfs_input[$the_field['id']]['value'] = $field_value;
                 }
             }
@@ -406,6 +401,7 @@ class cfs_Api
         }
 
         $field_names = array();
+        $field_types = array();
         $field_ids = implode(',', array_keys($cfs_input));
 
         // Delete from cfs_values and postmeta
@@ -416,10 +412,11 @@ class cfs_Api
         WHERE v.post_id = '$post_id' and v.field_id IN ($field_ids)";
         $wpdb->query($sql);
 
-        $results = $wpdb->get_results("SELECT id, name FROM {$wpdb->prefix}cfs_fields WHERE id IN ($field_ids)");
+        $results = $wpdb->get_results("SELECT id, type, name FROM {$wpdb->prefix}cfs_fields WHERE id IN ($field_ids)");
         foreach ($results as $result)
         {
             $field_names[$result->id] = $result->name;
+            $field_types[$result->id] = $result->type;
         }
 
         // Save each field
@@ -434,6 +431,9 @@ class cfs_Api
             // Basic field
             if (isset($values['value']))
             {
+                // Trigger the pre_save field hook
+                $values['value'] = $this->parent->fields[$field_types[$field_id]]->pre_save($values['value']);
+
                 foreach ((array) $values['value'] as $v)
                 {
                     // Insert into postmeta
@@ -465,6 +465,10 @@ class cfs_Api
                 foreach ($values as $key => $value)
                 {
                     $sub_weight = 0;
+
+                    // Trigger the pre_save field hook
+                    $value['value'] = $this->parent->fields[$field_types[$field_id]]->pre_save($value['value']);
+
                     foreach ((array) $value['value'] as $v)
                     {
                         // Insert into postmeta
