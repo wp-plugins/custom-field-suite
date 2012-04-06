@@ -74,14 +74,11 @@
                     </td>
                 </tr>
                 <tr class="field_save">
-                    <td class="label">
-                        <label><?php _e('Save Field', 'cfs'); ?></label>
-                    </td>
+                    <td class="label"></td>
                     <td>
                         <input type="hidden" name="cfs[fields][<?php echo $field->weight; ?>][id]" value="<?php echo $field->id; ?>" />
                         <input type="hidden" name="cfs[fields][<?php echo $field->weight; ?>][sub_field]" value="<?php echo $field->sub_field; ?>" />
-                        <input type="submit" value="<?php _e('Save Field', 'cfs'); ?>" class="button-primary" />
-                        <a class="cfs_edit_field" title="continue editing" href="javascript:;"><?php _e('or continue editing', 'cfs'); ?></a>
+                        <input type="button" value="<?php _e('Close'); ?>" class="button-secondary cfs_edit_field" />
                     </td>
                 </tr>
             </tbody>

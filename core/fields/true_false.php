@@ -33,7 +33,7 @@ class cfs_True_false extends cfs_Field
                         'type' => 'text',
                         'input_name' => "cfs[fields][$key][options][message]",
                         'input_class' => '',
-                        'value' => $field->options['message'],
+                        'value' => $this->get_option($field, 'message'),
                     ));
                 ?>
             </td>

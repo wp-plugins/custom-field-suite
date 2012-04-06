@@ -12,7 +12,12 @@ class cfs_Loop extends cfs_Field
 
     function html($field)
     {
-        $results = $this->parent->api->get_input_fields($field->group_id, $field->id);
+        $results = array();
+
+        if (isset($field->id))
+        {
+            $results = $this->parent->api->get_input_fields($field->group_id, $field->id);
+        }
     ?>
 
         <div class="loop_wrapper">
@@ -102,7 +107,12 @@ class cfs_Loop extends cfs_Field
 
     function options_html($key, $field)
     {
-        $sub_fields = $this->parent->api->get_input_fields($field->post_id, $field->id);
+        $sub_fields = array();
+
+        if (isset($field->id))
+        {
+            $sub_fields = $this->parent->api->get_input_fields($field->post_id, $field->id);
+        }
     ?>
         <tr class="field_option field_option_<?php echo $this->name; ?>">
             <td class="label">
@@ -154,5 +164,15 @@ class cfs_Loop extends cfs_Field
         })(jQuery);
         </script>
     <?php
+    }
+
+    function format_value_for_api($value)
+    {
+        return $value;
+    }
+
+    function format_value_for_input($value)
+    {
+        return $value;
     }
 }

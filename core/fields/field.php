@@ -145,4 +145,23 @@ class cfs_Field
     {
 
     }
+
+
+    /*--------------------------------------------------------------------------------------
+    *
+    *    get_option($field, $option_name, $default_value)
+    *
+    *    @author Matt Gibbs
+    *    @since 1.4.3
+    *
+    *-------------------------------------------------------------------------------------*/
+
+    function get_option($field, $option_name, $default_value = '')
+    {
+        if (isset($field->options[$option_name]))
+        {
+            return $field->options[$option_name];
+        }
+        return $default_value;
+    }
 }

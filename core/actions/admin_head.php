@@ -11,7 +11,7 @@ if ('cfs' == $GLOBALS['post_type'])
     foreach ($this->fields as $field_name => $field_data)
     {
         ob_start();
-        $this->fields[$field_name]->options_html('clone', $field);
+        $this->fields[$field_name]->options_html('clone', $field_data);
         $options_html[$field_name] = ob_get_clean();
     }
 

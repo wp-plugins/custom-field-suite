@@ -43,6 +43,9 @@ Use Custom Field Suite to add custom fields to your WordPress edit screens.
 
 == Changelog ==
 
+= 1.4.3 =
+* Fixed a bunch of PHP notices (for those using WP_DEBUG)
+
 = 1.4.2 =
 * BACK UP YOUR DATABASE before upgrading!
 * Improved how relationship fields save data

@@ -98,7 +98,7 @@ class cfs_Relationship extends cfs_Field
                         'input_name' => "cfs[fields][$key][options][post_types]",
                         'input_class' => '',
                         'options' => array('choices' => $choices, 'multiple' => '1'),
-                        'value' => $post_types,
+                        'value' => $this->get_option($field, 'post_types'),
                     ));
                 ?>
             </td>

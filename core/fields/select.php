@@ -101,7 +101,7 @@ class cfs_Select extends cfs_Field
                         'type' => 'textarea',
                         'input_name' => "cfs[fields][$key][options][choices]",
                         'input_class' => '',
-                        'value' => $field->options['choices'],
+                        'value' => $this->get_option($field, 'choices'),
                     ));
                 ?>
             </td>
@@ -116,7 +116,7 @@ class cfs_Select extends cfs_Field
                         'type' => 'true_false',
                         'input_name' => "cfs[fields][$key][options][multiple]",
                         'input_class' => '',
-                        'value' => $field->options['multiple'],
+                        'value' => $this->get_option($field, 'multiple'),
                         'options' => array('message' => 'This a multi-select field'),
                     ));
                 ?>

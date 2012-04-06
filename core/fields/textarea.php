@@ -30,7 +30,7 @@ class cfs_Textarea extends cfs_Field
                         'type' => 'textarea',
                         'input_name' => "cfs[fields][$key][options][default_value]",
                         'input_class' => '',
-                        'value' => $field->options['default_value'],
+                        'value' => $this->get_option($field, 'default_value'),
                     ));
                 ?>
             </td>
