@@ -173,13 +173,23 @@ class cfs_Api
     *    get_reverse_related
     *
     *    @author Matt Gibbs
-    *    @since 1.4.3
+    *    @since 1.4.4
     *
     *-------------------------------------------------------------------------------------*/
 
     function get_reverse_related($field_name, $post_id)
     {
+        global $wpdb;
 
+        $sql = $wpdb->prepare("SELECT post_id FROM $wpdb->postmeta WHERE meta_key = %s AND meta_value = %s", $field_name, $post_id);
+        $results = $wpdb->get_results($sql);
+        $output = array();
+
+        foreach ($results as $result)
+        {
+            $output[] = $result->post_id;
+        }
+        return $output;
     }
 
 

@@ -43,6 +43,10 @@ Use Custom Field Suite to add custom fields to your WordPress edit screens.
 
 == Changelog ==
 
+= 1.4.4 =
+* Added new field type: User
+* Added reverse lookup method: get_reverse_related
+
 = 1.4.3 =
 * Fixed a bunch of PHP notices (for those using WP_DEBUG)
 

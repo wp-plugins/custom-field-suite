@@ -3,7 +3,7 @@
 Plugin Name: Custom Field Suite
 Plugin URI: http://uproot.us/custom-field-suite/
 Description: Visually create custom fields for your edit pages.
-Version: 1.4.3
+Version: 1.4.4
 Author: Matt Gibbs
 Author URI: http://uproot.us/
 License: GPL
@@ -11,7 +11,7 @@ Copyright: Matt Gibbs
 */
 
 $cfs = new Cfs();
-$cfs->version = '1.4.3';
+$cfs->version = '1.4.4';
 
 class Cfs
 {
@@ -100,6 +100,7 @@ class Cfs
             'true_false' => $this->dir . '/core/fields/true_false.php',
             'select' => $this->dir . '/core/fields/select.php',
             'relationship' => $this->dir . '/core/fields/relationship.php',
+            'user' => $this->dir . '/core/fields/user.php',
             'file' => $this->dir . '/core/fields/file.php',
             'loop' => $this->dir . '/core/fields/loop.php',
         );
@@ -243,6 +244,21 @@ class Cfs
     function get_labels($field_name = false, $post_id = false)
     {
         return $this->api->get_labels($field_name, $post_id);
+    }
+
+
+    /*--------------------------------------------------------------------------------------
+    *
+    *    get_reverse_related
+    *
+    *    @author Matt Gibbs
+    *    @since 1.4.4
+    *
+    *-------------------------------------------------------------------------------------*/
+
+    function get_reverse_related($field_name, $post_id)
+    {
+        return $this->api->get_reverse_related($field_name, $post_id);
     }
 
 

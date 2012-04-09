@@ -62,10 +62,11 @@
 }
 
 /*---------------------------------------------------------------------------------------------
-    Relationship
+    Relationship, User
 ---------------------------------------------------------------------------------------------*/
 
-.cfs_relationship .post_list {
+.cfs_relationship .post_list,
+.cfs_user .post_list {
     float: left;
     width: 50%;
     background: #fff;
@@ -73,29 +74,35 @@
     overflow-y: scroll;
 }
 
-.cfs_relationship .post_list div {
+.cfs_relationship .post_list div,
+.cfs_user .post_list div {
     padding: 4px 6px;
     border-bottom: 1px solid #eee;
     cursor: pointer;
 }
 
-.cfs_relationship .post_list div:last-child {
+.cfs_relationship .post_list div:last-child,
+.cfs_user .post_list div:last-child {
     border-bottom: none;
 }
 
-.cfs_relationship .post_list div:hover {
+.cfs_relationship .post_list div:hover,
+.cfs_user .post_list div:hover {
     background: #eee;
 }
 
-.cfs_relationship .available_posts div.used {
+.cfs_relationship .available_posts div.used,
+.cfs_user .available_posts div.used{
     display: none;
 }
 
-.cfs_relationship .selected_posts div {
+.cfs_relationship .selected_posts div,
+.cfs_user .selected_posts div {
     cursor: move;
 }
 
-.cfs_relationship .selected_posts div span.remove {
+.cfs_relationship .selected_posts div span.remove,
+.cfs_user .selected_posts div span.remove {
     float: right;
     width: 16px;
     height: 16px;
@@ -103,19 +110,23 @@
     cursor: pointer;
 }
 
-.cfs_relationship .selected_posts div span.remove:hover {
+.cfs_relationship .selected_posts div span.remove:hover,
+.cfs_user .selected_posts div span.remove:hover{
     background-position: 0 100%;
 }
 
-.cfs_relationship .filter_posts {
+.cfs_relationship .filter_posts,
+.cfs_user .filter_posts {
     margin-bottom: 5px;
 }
 
-.cfs_input .field .cfs_relationship .cfs_filter_input {
+.cfs_input .field .cfs_relationship .cfs_filter_input,
+.cfs_input .field .cfs_user .cfs_filter_input{
     width: 220px;
 }
 
-.cfs_relationship .cfs_filter_help {
+.cfs_relationship .cfs_filter_help,
+.cfs_user .cfs_filter_help {
     display: inline-block;
     width: 16px;
     height: 16px;
