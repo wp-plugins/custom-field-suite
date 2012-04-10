@@ -13,16 +13,16 @@ jQuery(function() {
             <div class="inside">
                 <div class="field">
                     <h4><?php _e('Changelog', 'cfs'); ?></h4>
-                    <p><?php _e('See updates for', 'cfs'); ?> <a class="thickbox" href="<?php bloginfo('url'); ?>/wp-admin/plugin-install.php?tab=plugin-information&plugin=custom-field-suite&section=changelog&TB_iframe=1&width=640&height=480">v<?php echo $this->version; ?></a></p>
+                    <p><?php _e('See updates for', 'cfs'); ?> <a class="thickbox" href="<?php echo admin_url('plugin-install.php'); ?>?tab=plugin-information&plugin=custom-field-suite&section=changelog&TB_iframe=1&width=640&height=480">v<?php echo $this->version; ?></a></p>
                 </div>
                 <div class="field">
                     <h4><?php _e('Getting started?', 'cfs'); ?></h4>
                     <p>
-                        <a href="http://uproot.us/custom-field-suite/" target="_blank"><?php _e('View the plugin website', 'cfs'); ?></a>
+                        <a href="http://uproot.us/" target="_blank"><?php _e('View the plugin website', 'cfs'); ?></a>
                     </p>
                 </div>
                 <div class="field">
-                    <h4><?php _e('Please show your support!', 'cfs'); ?></h4>
+                    <h4><?php _e('Please support us!', 'cfs'); ?></h4>
                     <p>
                         <a href="http://wordpress.org/extend/plugins/custom-field-suite/" target="_blank"><?php _e('Rate the plugin', 'cfs'); ?></a>
                     </p>

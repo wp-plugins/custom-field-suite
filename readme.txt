@@ -20,6 +20,7 @@ Use Custom Field Suite to add custom fields to your WordPress edit screens.
 * True / False (api returns 0 or 1)
 * Select (api returns array of values)
 * Relationship (api returns array of post IDs)
+* User (api returns array of user IDs)
 * File Upload (api returns file url)
 * Loop (repeatable fields!)
 
@@ -42,6 +43,11 @@ Use Custom Field Suite to add custom fields to your WordPress edit screens.
 1. A custom field group, with several fields added.
 
 == Changelog ==
+
+= 1.4.5 =
+* Proper cleanup on uninstall
+* Fixes for multi-site admin URLs
+* Fixed thickbox display for changelog
 
 = 1.4.4 =
 * Added new field type: User
