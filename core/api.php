@@ -302,6 +302,7 @@ class cfs_Api
                     if (false !== $parent_id)
                     {
                         $field->value = (array) $field->options['default_value'];
+                        $field->is_empty = true;
                     }
                     else
                     {

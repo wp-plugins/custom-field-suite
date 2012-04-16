@@ -3,7 +3,7 @@ Contributors: logikal16
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JMVGK3L35X6BU
 Tags: custom, fields, custom fields, cck, post types, gravity forms, field permissions
 Requires at least: 3.2
-Tested up to: 3.3.1
+Tested up to: 3.4
 Stable tag: trunk
 
 Custom Field Suite is the easiest way to visually manage custom fields.
@@ -37,12 +37,17 @@ Use Custom Field Suite to add custom fields to your WordPress edit screens.
 == Installation ==
 
 1. Download and activate the plugin.
-2. Browse to `Settings > Custom Field Suite` to configure.
+2. Browse to `Field Groups` menu to configure.
 
 == Screenshots ==
 1. A custom field group, with several fields added.
 
 == Changelog ==
+
+= 1.4.6 =
+* Tons of bugfixes
+* Loop fields begin with zero rows
+* Added top-level menu (Field Groups)
 
 = 1.4.5 =
 * Proper cleanup on uninstall

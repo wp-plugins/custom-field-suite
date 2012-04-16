@@ -58,7 +58,7 @@ class cfs_Loop extends cfs_Field
 
             foreach ($results as $result)
             {
-                $num_rows = count($result->value);
+                $num_rows = isset($result->is_empty) ? 0 : count($result->value);
                 break;
             }
 

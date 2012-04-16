@@ -33,10 +33,18 @@ foreach ($wp_roles->roles as $key => $role)
 }
 
 // Post IDs
-$results = $wpdb->get_results("SELECT ID, post_title FROM $wpdb->posts WHERE post_status IN ('publish', 'private') ORDER BY post_title");
+$sql = "
+SELECT ID, post_type, post_title
+FROM $wpdb->posts
+WHERE
+    post_status IN ('publish', 'private') AND
+    post_type NOT IN ('cfs', 'attachment', 'revision', 'nav_menu_item')
+ORDER BY post_type, post_title";
+$results = $wpdb->get_results($sql);
+
 foreach ($results as $result)
 {
-    $post_ids[] = "$result->ID : $result->post_title";
+    $post_ids[] = "$result->ID : ($result->post_type) $result->post_title";
 }
 
 // Term IDs
@@ -48,7 +56,7 @@ ORDER BY tt.parent, tt.taxonomy, t.name";
 $results = $wpdb->get_results($sql);
 foreach ($results as $result)
 {
-    $term_ids[] = "$result->term_id :  $result->name ($result->taxonomy)";
+    $term_ids[] = "$result->term_id : ($result->taxonomy) $result->name";
 }
 ?>
 

@@ -160,6 +160,10 @@ class cfs_Field
     {
         if (isset($field->options[$option_name]))
         {
+            if (is_string($field->options[$option_name]))
+            {
+                return esc_attr($field->options[$option_name]);
+            }
             return $field->options[$option_name];
         }
         return $default_value;

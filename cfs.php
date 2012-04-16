@@ -3,7 +3,7 @@
 Plugin Name: Custom Field Suite
 Plugin URI: http://uproot.us/custom-field-suite/
 Description: Visually create custom fields for your edit pages.
-Version: 1.4.5
+Version: 1.4.6
 Author: Matt Gibbs
 Author URI: http://uproot.us/
 License: GPL
@@ -11,7 +11,7 @@ Copyright: Matt Gibbs
 */
 
 $cfs = new Cfs();
-$cfs->version = '1.4.5';
+$cfs->version = '1.4.6';
 
 class Cfs
 {
@@ -111,7 +111,7 @@ class Cfs
 
         foreach ($field_types as $type => $path)
         {
-            include($path);
+            include_once($path);
             $class_name = 'cfs_' . ucwords($type);
             $field_types[$type] = new $class_name($this);
         }
@@ -135,6 +135,7 @@ class Cfs
 
         // Get variables
         $matches = array();
+        $post_id = (int) $post_id;
         $post_type = get_post_type($post_id);
         $user_roles = $current_user->roles;
         $term_ids = array();
@@ -143,8 +144,8 @@ class Cfs
         $sql = "
         SELECT tt.term_id
         FROM $wpdb->term_taxonomy tt
-        INNER JOIN $wpdb->term_relationships tr ON tr.term_taxonomy_id = tt.term_taxonomy_id AND tr.object_id = '$post_id'";
-        $results = $wpdb->get_results($sql);
+        INNER JOIN $wpdb->term_relationships tr ON tr.term_taxonomy_id = tt.term_taxonomy_id AND tr.object_id = %d";
+        $results = $wpdb->get_results($wpdb->prepare($sql, $post_id));
         foreach ($results as $result)
         {
             $term_ids[] = $result->term_id;
@@ -325,8 +326,8 @@ class Cfs
 
     function admin_menu()
     {
-        add_options_page(__('Custom Field Suite', 'cfs'), __('Custom Field Suite', 'cfs'), 'manage_options', 'edit.php?post_type=cfs');
-        add_options_page(__('Custom Field Import', 'cfs'), __('CFS Import', 'cfs'), 'manage_options', 'cfs-import', array($this, 'page_import'));
+        add_object_page('Field Groups', 'Field Groups', 'manage_options', 'edit.php?post_type=cfs');
+        add_submenu_page('edit.php?post_type=cfs', 'Import', 'Import', 'manage_options', 'cfs-import', array($this, 'page_import'));
     }
 
 
@@ -408,14 +409,9 @@ class Cfs
     {
         global $wpdb;
 
-        if ('cfs' == get_post_type($post_id))
-        {
-            $wpdb->query("DELETE FROM {$wpdb->prefix}cfs_fields WHERE post_id = '$post_id'");
-        }
-        else
-        {
-            $wpdb->query("DELETE FROM {$wpdb->prefix}cfs_values WHERE post_id = '$post_id'");
-        }
+        $post_id = (int) $post_id;
+        $table = ('cfs' == get_post_type($post_id)) ? 'cfs_fields' : 'cfs_values';
+        $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}{$table} WHERE post_id = %d", $post_id));
 
         return true;
     }

@@ -32,7 +32,7 @@
                         </label>
                     </td>
                     <td>
-                        <input type="text" name="cfs[fields][<?php echo $field->weight; ?>][label]" value="<?php echo empty($field->id) ? '' : $field->label; ?>" />
+                        <input type="text" name="cfs[fields][<?php echo $field->weight; ?>][label]" value="<?php echo esc_attr($field->label); ?>" />
                     </td>
                 </tr>
                 <tr class="field_name">
@@ -43,7 +43,7 @@
                         </label>
                     </td>
                     <td>
-                        <input type="text" name="cfs[fields][<?php echo $field->weight; ?>][name]" value="<?php echo empty($field->id) ? '' : $field->name; ?>" />
+                        <input type="text" name="cfs[fields][<?php echo $field->weight; ?>][name]" value="<?php echo esc_attr($field->name); ?>" />
                     </td>
                 </tr>
                 <tr class="field_type">
@@ -70,7 +70,7 @@
                         </label>
                     </td>
                     <td>
-                        <input type="text" name="cfs[fields][<?php echo $field->weight; ?>][instructions]" value="<?php echo $field->instructions; ?>" />
+                        <input type="text" name="cfs[fields][<?php echo $field->weight; ?>][instructions]" value="<?php echo esc_attr($field->instructions); ?>" />
                     </td>
                 </tr>
                 <tr class="field_save">
