@@ -33,10 +33,12 @@ table.cfs td.field_delete {
     padding: 0;
 }
 
+/*
 #cfs_fields .field.even .field_meta td,
 #cfs_fields .cfs_input tr.even td {
     background: #fcfcfc;
 }
+*/
 
 #cfs_fields .field.form_open > .field_meta td {
     color: #fff;
@@ -128,7 +130,7 @@ table.cfs_input input[type="text"] {
 div.table_footer {
     padding: 5px;
     text-align: right;
-    background: #eaf2fa;
+    /*background: #eaf2fa;*/
 }
 
 /*---------------------------------------------------------------------------------------------

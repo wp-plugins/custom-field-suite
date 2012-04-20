@@ -1,14 +1,7 @@
 (function($) {
     $(function() {
         function update_order() {
-            jQuery('.fields').each(function() {
-                $(this).find('.field').removeClass('even');
-                $(this).find('.field:even').addClass('even');
-            });
-            $('.cfs_input').each(function() {
-                $(this).find('tr').removeClass('even');
-                $(this).find('tr:even').addClass('even');
-            });
+            // toggle active classes
         }
 
         update_order();
