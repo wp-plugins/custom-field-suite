@@ -10,7 +10,9 @@ Custom Field Suite is the easiest way to visually manage custom fields.
 
 == Description ==
 
-Use Custom Field Suite to add custom fields to your WordPress edit screens.
+Custom Field Suite is a fork of Elliot Condon's [Advanced Custom Fields](http://wordpress.org/extend/plugins/advanced-custom-fields/) plugin.
+
+The focus here is on plugin stability through rigorous testing and small, frequent updates.
 
 = Field Types =
 * Text (api returns text)
