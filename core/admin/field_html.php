@@ -32,7 +32,7 @@
                         </label>
                     </td>
                     <td>
-                        <input type="text" name="cfs[fields][<?php echo $field->weight; ?>][label]" value="<?php echo esc_attr($field->label); ?>" />
+                        <input type="text" name="cfs[fields][<?php echo $field->weight; ?>][label]" value="<?php echo empty($field->id) ? '' : esc_attr($field->label); ?>" />
                     </td>
                 </tr>
                 <tr class="field_name">
@@ -43,7 +43,7 @@
                         </label>
                     </td>
                     <td>
-                        <input type="text" name="cfs[fields][<?php echo $field->weight; ?>][name]" value="<?php echo esc_attr($field->name); ?>" />
+                        <input type="text" name="cfs[fields][<?php echo $field->weight; ?>][name]" value="<?php echo empty($field->id) ? '' : esc_attr($field->name); ?>" />
                     </td>
                 </tr>
                 <tr class="field_type">
@@ -54,7 +54,9 @@
                         <select name="cfs[fields][<?php echo $field->weight; ?>][type]">
                         <?php foreach ($this->fields as $type) : ?>
                             <?php $selected = ($type->name == $field->type) ? ' selected' : ''; ?>
+                            <?php if ('loop' != $type->name || 'loop' == $field->type) : ?>
                             <option value="<?php echo $type->name; ?>"<?php echo $selected; ?>><?php echo $type->label; ?></option>
+                            <?php endif; ?>
                         <?php endforeach; ?>
                         </select>
                     </td>

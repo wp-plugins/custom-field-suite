@@ -2,8 +2,8 @@
 /*
 Plugin Name: Custom Field Suite
 Plugin URI: http://uproot.us/custom-field-suite/
-Description: Visually create custom fields for your edit pages.
-Version: 1.4.6
+Description: This is a fork of Elliot Condon's Advanced Custom Fields plugin. Visually create custom fields for your edit pages.
+Version: 1.4.7
 Author: Matt Gibbs
 Author URI: http://uproot.us/
 License: GPL
@@ -11,7 +11,7 @@ Copyright: Matt Gibbs
 */
 
 $cfs = new Cfs();
-$cfs->version = '1.4.6';
+$cfs->version = '1.4.7';
 
 class Cfs
 {
@@ -502,6 +502,10 @@ class Cfs
                     }
                 }
                 $value = implode("\n", $values);
+            }
+            elseif ('multiselect' == $field['type'])
+            {
+                $value = explode(',', $entry[$field_id]);
             }
             else
             {
