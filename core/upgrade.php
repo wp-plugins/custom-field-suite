@@ -31,6 +31,8 @@ if (version_compare($last_version, $this->version, '<'))
             field_id INT unsigned,
             meta_id INT unsigned,
             post_id INT unsigned,
+            base_field_id INT unsigned,
+            hierarchy TEXT,
             weight INT unsigned,
             sub_weight INT unsigned,
             PRIMARY KEY (id),
@@ -106,6 +108,32 @@ if (version_compare($last_version, $this->version, '<'))
                     'sub_weight' => $sub_weight,
                 ));
             }
+        }
+    }
+
+    // Add fields to handle nested loops
+    if (version_compare($last_version, '1.5.0', '<'))
+    {
+        if (version_compare($last_version, '1.0.0', '>='))
+        {
+            $wpdb->query("ALTER TABLE {$wpdb->prefix}cfs_values ADD COLUMN hierarchy TEXT AFTER post_id");
+            $wpdb->query("ALTER TABLE {$wpdb->prefix}cfs_values ADD COLUMN base_field_id INT unsigned default 0 AFTER post_id");
+            $wpdb->query("UPDATE {$wpdb->prefix}cfs_values SET hierarchy = '' WHERE hierarchy IS NULL");
+        }
+
+        $sql = "
+        SELECT v.id, f.parent_id, v.weight, v.field_id
+        FROM {$wpdb->prefix}cfs_values v
+        INNER JOIN {$wpdb->prefix}cfs_fields f ON f.id = v.field_id AND f.parent_id > 0";
+        $results = $wpdb->get_results($sql);
+        foreach ($results as $result)
+        {
+            $hierarchy = "{$result->parent_id}:{$result->weight}:{$result->field_id}";
+            $sql = "
+            UPDATE {$wpdb->prefix}cfs_values
+            SET hierarchy = '$hierarchy', base_field_id = '$result->parent_id'
+            WHERE id = '$result->id' LIMIT 1";
+            $wpdb->query($sql);
         }
     }
 

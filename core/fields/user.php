@@ -161,8 +161,16 @@ class cfs_User extends cfs_Field
         {
             // Inside a loop, the value is $value[0]
             $value = (array) $value;
-            return explode(',', $value[0]);
+
+            // The raw input saves a comma-separated string
+            if (false !== strpos($value[0], ','))
+            {
+                return explode(',', $value[0]);
+            }
+
+            return $value;
         }
+
         return array();
     }
 }

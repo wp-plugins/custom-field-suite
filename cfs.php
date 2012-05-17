@@ -2,8 +2,8 @@
 /*
 Plugin Name: Custom Field Suite
 Plugin URI: http://uproot.us/custom-field-suite/
-Description: This is a fork of Elliot Condon's Advanced Custom Fields plugin. Visually create custom fields for your edit pages.
-Version: 1.4.7
+Description: Visually create custom fields for your edit pages. This is a fork of Elliot Condon's Advanced Custom Fields plugin.
+Version: 1.5.0
 Author: Matt Gibbs
 Author URI: http://uproot.us/
 License: GPL
@@ -11,7 +11,7 @@ Copyright: Matt Gibbs
 */
 
 $cfs = new Cfs();
-$cfs->version = '1.4.7';
+$cfs->version = '1.5.0';
 
 class Cfs
 {
@@ -444,8 +444,6 @@ class Cfs
 
     function field_html($field)
     {
-        $field->sub_field = isset($field->sub_field) ? 1 : '{sub_field}';
-
         include($this->dir . '/core/admin/field_html.php');
     }
 

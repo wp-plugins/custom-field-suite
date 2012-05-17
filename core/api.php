@@ -35,7 +35,7 @@ class cfs_Api
 
         $post_id = empty($post_id) ? $post->ID : (int) $post_id;
 
-        // Trigger get_fields
+        // Trigger get_fields if not in cache
         if (!isset($this->data[$post_id][$field_name]))
         {
             $fields = $this->get_fields($post_id);
@@ -85,81 +85,73 @@ class cfs_Api
             {
                 $fields[$result->id] = $result;
             }
-        }
 
-        // Now, get the values for each field
-        if (!empty($fields))
-        {
-            foreach ($fields as $field)
+            // Get all the field data
+            $sql = "
+            SELECT m.meta_value, v.field_id, f.parent_id, v.hierarchy, v.weight, v.sub_weight
+            FROM {$wpdb->prefix}cfs_values v
+            INNER JOIN {$wpdb->postmeta} m ON m.meta_id = v.meta_id
+            INNER JOIN {$wpdb->prefix}cfs_fields f ON f.id = v.field_id
+            WHERE v.post_id IN ($post_id)
+            ORDER BY f.weight, v.weight, v.sub_weight";
+
+            $results = $wpdb->get_results($sql);
+
+            $prev_structure = '';
+            $prev_field_id = '';
+            $prev_item = '';
+
+            foreach ($results as $key => $result)
             {
-                // Unserialize the options
-                $field->options = (@unserialize($field->options)) ? unserialize($field->options) : array();
+                $current_item = "{$result->hierarchy}.{$result->weight}.{$result->field_id}";
 
-                // Load the value if necessary
-                $value = $this->parent->fields[$field->type]->load_value($field);
-
-                if (null === $value)
+                if (!empty($result->hierarchy))
                 {
-                    $sql = "
-                    SELECT m.meta_value AS value, v.weight
-                    FROM {$wpdb->prefix}cfs_values v
-                    INNER JOIN {$wpdb->postmeta} m ON m.meta_id = v.meta_id
-                    WHERE m.post_id = '$post_id' AND v.field_id = '$field->id'
-                    ORDER BY v.weight, v.sub_weight";
-
-                    $results = $wpdb->get_results($sql);
-
-                    // Clean the SQL results
-                    $value = array();
-                    foreach ($results as $result)
+                    // Format for API (field names)
+                    if (false === $options->for_input)
                     {
-                        if (0 < (int) $field->parent_id)
+                        $tmp = explode(':', $result->hierarchy);
+                        foreach ($tmp as $key => $val)
                         {
-                            $value[$result->weight][] = $result->value;
+                            if (0 == ($key % 2))
+                            {
+                                $tmp[$key] = $fields[$val]->name;
+                            }
                         }
-                        else
-                        {
-                            $value[] = $result->value;
-                        }
+                        $hierarchy = implode(':', $tmp);
                     }
-                }
-
-                // Format input data differently from API data
-                if (false !== $options->for_input)
-                {
-                    // Loop field
-                    if (0 < (int) $field->parent_id)
-                    {
-                        foreach ($value as $weight => $loop_values)
-                        {
-                            $field_data[$field->id][$weight] = $this->apply_value_filters($field, $loop_values, $options);
-                        }
-                    }
-                    // Basic field
+                    // Format for input (field IDs)
                     else
                     {
-                        $field_data[$field->id] = $this->apply_value_filters($field, $value, $options);
+                        $hierarchy = $result->hierarchy;
                     }
+
+                    $structure = str_replace(':', '][', $hierarchy);
+                    eval("\$field_data[$structure][] = \$result->meta_value;");
                 }
                 else
                 {
-                    // Loop field
-                    if (0 < (int) $field->parent_id)
-                    {
-                        // Get the field name from the ID
-                        $parent_field_name = $fields[$field->parent_id]->name;
-
-                        foreach ($value as $weight => $loop_values)
-                        {
-                            $field_data[$parent_field_name][$weight][$field->name] = $this->apply_value_filters($field, $loop_values, $options);
-                        }
-                    }
-                    // Basic field
-                    else
-                    {
-                        $field_data[$field->name] = $this->apply_value_filters($field, $value, $options);
-                    }
+                    // If "for_input" is false, get the field name
+                    $structure = (false === $options->for_input) ? $fields[$result->field_id]->name : $result->field_id;
+                    $field_data[$structure][] = $result->meta_value;
                 }
+
+                // Assemble the values
+                if ($current_item != $prev_item && '' != $prev_item) // call apply_value_filters on previous field
+                {
+                    $field = $fields[$prev_field_id];
+                    eval("\$field_data[$prev_structure] = \$this->apply_value_filters(\$field, \$field_data[$prev_structure], \$options);");
+                }
+
+                if ($wpdb->num_rows == ($key + 1)) // last row
+                {
+                    $field = $fields[$result->field_id];
+                    eval("\$field_data[$structure] = \$this->apply_value_filters(\$field, \$field_data[$structure], \$options);");
+                }
+
+                $prev_structure = $structure;
+                $prev_field_id = $result->field_id;
+                $prev_item = $current_item;
             }
         }
 
@@ -269,49 +261,34 @@ class cfs_Api
     *
     *-------------------------------------------------------------------------------------*/
 
-    function get_input_fields($group_id, $parent_id = false)
+    function get_input_fields($group_id = false, $parent_id = false)
     {
         global $post, $wpdb;
 
-        $fields = array();
-
         $values = $this->get_fields($post->ID, array('for_input' => true));
 
-        if ($group_id)
+        $where = 'WHERE 1';
+        $where .= (false !== $parent_id) ? " AND parent_id = $parent_id" : '';
+        $where .= (false !== $group_id) ? " AND post_id = $group_id" : '';
+
+        $fields = array();
+
+        $results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}cfs_fields $where ORDER BY weight");
+
+        foreach ($results as $field)
         {
-            $where = (false !== $group_id) ? "WHERE post_id = $group_id" : '';
+            // Unserialize the options
+            $field->options = (@unserialize($field->options)) ? unserialize($field->options) : array();
 
-            if (false !== $parent_id)
+            // If no field value exists, set it to NULL
+            $field->value = isset($values[$field->id]) ? $values[$field->id] : null;
+
+            if (isset($field->options['default_value']) && empty($field->value))
             {
-                $where .= " AND parent_id = $parent_id";
+                $field->value = $field->options['default_value'];
             }
 
-            $results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}cfs_fields $where ORDER BY weight");
-
-            foreach ($results as $field)
-            {
-                // Unserialize the options
-                $field->options = (@unserialize($field->options)) ? unserialize($field->options) : array();
-
-                // If no field value exists, set it to NULL
-                $field->value = isset($values[$field->id]) ? $values[$field->id] : null;
-
-                if (isset($field->options['default_value']) && empty($field->value))
-                {
-                    // Sub-fields expect an array
-                    if (false !== $parent_id)
-                    {
-                        $field->value = (array) $field->options['default_value'];
-                        $field->is_empty = true;
-                    }
-                    else
-                    {
-                        $field->value = $field->options['default_value'];
-                    }
-                }
-
-                $fields[$field->id] = $field;
-            }
+            $fields[$field->id] = $field;
         }
 
         return $fields;
@@ -360,63 +337,51 @@ class cfs_Api
             }
         }
 
-        // If NOT "raw_input", then flatten the data!
-        if (false === $options->raw_input)
+        // Get all field groups for this post
+        $group_ids = $this->parent->get_matching_groups($post_id, true);
+
+        if (!empty($group_ids))
         {
-            // Get available fields for this post (we need to find the field IDs)
-            $field_groups = $this->parent->get_matching_groups($post_id);
-            $group_ids = array_keys($field_groups);
-
-            // Get the fields
-            $fields = array();
-            $cfs_input = array();
-            $field_name_lookup = array();
-
-            $results = $wpdb->get_results("SELECT id, name, type, parent_id FROM {$wpdb->prefix}cfs_fields WHERE post_id IN (" . implode(',', $group_ids) . ") ORDER BY parent_id, weight");
+            $parent_fields = array();
+            $group_ids = implode(',', array_keys($group_ids));
+            $results = $wpdb->get_results("SELECT id, type, parent_id, name FROM {$wpdb->prefix}cfs_fields WHERE post_id IN ($group_ids) ORDER BY weight");
             foreach ($results as $result)
             {
-                $field_name_lookup[$result->id] = $result->name;
+                $fields[$result->id] = $result;
 
-                if (0 < (int) $result->parent_id)
-                {
-                    $parent_name = $field_name_lookup[$result->parent_id];
-                    $fields["$parent_name $result->name"] = array('id' => $result->id, 'type' => $result->type);
-                }
-                else
-                {
-                    $fields[$result->name] = array('id' => $result->id, 'type' => $result->type);
-                }
-            }
+                // Store lookup values for the recursion
+                $field_id_lookup[$result->parent_id . ':' . $result->name] = $result->id;
 
-            // Loop through the fields
-            foreach ($field_data as $field_name => $field_value)
-            {
-                $the_field = $fields[$field_name];
-
-                // Get the field type
-                $field_type = $the_field['type'];
-
-                if ('loop' == $field_type)
+                // Store parent fields separately
+                if (0 == (int) $result->parent_id)
                 {
-                    foreach ($field_value as $loop_row)
-                    {
-                        foreach ($loop_row as $sub_field_name => $sub_field_value)
-                        {
-                            $sub_field_id = $fields["$field_name $sub_field_name"]['id'];
-                            $cfs_input[$sub_field_id][]['value'][] = $sub_field_value;
-                        }
-                    }
-                }
-                else
-                {
-                    $cfs_input[$the_field['id']]['value'] = $field_value;
+                    $parent_fields[$result->name] = $result->id;
                 }
             }
         }
+
+        // If this is an API call, flatten the data!
+        if (false === $options->raw_input)
+        {
+            // Remove the parent field data if using $cfs->save()
+            $field_ids = array();
+
+            foreach ($field_data as $field_name => $junk)
+            {
+                $field_ids[] = (int) $parent_fields[$field_name];
+            }
+
+            $field_ids = implode(',', $field_ids);
+
+            $sql = "
+            DELETE v, m
+            FROM {$wpdb->prefix}cfs_values v
+            LEFT JOIN {$wpdb->postmeta} m ON m.meta_id = v.meta_id
+            WHERE v.post_id = '$post_id' AND (v.field_id IN ($field_ids) OR v.base_field_id IN ($field_ids))";
+            $wpdb->query($sql);
+        }
         else
         {
-            $cfs_input = $field_data;
-
             // If saving raw input, delete existing postdata
             $sql = "
             DELETE v, m
@@ -426,100 +391,130 @@ class cfs_Api
             $wpdb->query($sql);
         }
 
-        $field_names = array();
-        $field_types = array();
-        $field_ids = implode(',', array_keys($cfs_input));
+        // Save recursively
+        $field_data = stripslashes_deep($field_data);
 
-        // Delete from cfs_values and postmeta
-        $sql = "
-        DELETE v, m
-        FROM {$wpdb->prefix}cfs_values v
-        LEFT JOIN {$wpdb->postmeta} m ON m.meta_id = v.meta_id
-        WHERE v.post_id = '$post_id' and v.field_id IN ($field_ids)";
-        $wpdb->query($sql);
-
-        $results = $wpdb->get_results("SELECT id, type, name FROM {$wpdb->prefix}cfs_fields WHERE id IN ($field_ids)");
-        foreach ($results as $result)
+        foreach ($field_data as $field_id => $field_array)
         {
-            $field_names[$result->id] = $result->name;
-            $field_types[$result->id] = $result->type;
+            $this->save_fields_recursive(
+                array(
+                    'field_id' => $field_id,
+                    'field_array' => $field_array,
+                    'post_id' => $post_id,
+                    'parent_id' => 0,
+                    'all_fields' => $fields,
+                    'hierarchy' => array(),
+                    'raw_input' => $options->raw_input,
+                    'field_id_lookup' => $field_id_lookup,
+                    'weight' => 0,
+                    'depth' => 0,
+                )
+            );
         }
+    }
 
-        // Save each field
-        foreach ($cfs_input as $field_id => $values)
+
+    /*--------------------------------------------------------------------------------------
+    *
+    *    save_fields_recursive
+    *
+    *    @author Matt Gibbs
+    *    @since 1.5.0
+    *
+    *-------------------------------------------------------------------------------------*/
+
+    function save_fields_recursive($params)
+    {
+        global $wpdb;
+
+        $field_type = 'loop';
+        $field_id = $params['field_id'];
+        $field_array = (array) $params['field_array'];
+
+        if (0 == $params['depth'] % 2)
         {
-            $weight = 0;
-            $sub_weight = 0;
-
-            // clean the values
-            $values = stripslashes_deep($values);
-
-            // Basic field
-            if (isset($values['value']))
+            // If not raw_input, then field_id is actually the field name, and
+            // we need to lookup the ID from the "field_id_lookup" array
+            if (false === $params['raw_input'])
             {
-                // Trigger the pre_save field hook
-                $values['value'] = $this->parent->fields[$field_types[$field_id]]->pre_save($values['value']);
-
-                foreach ((array) $values['value'] as $v)
-                {
-                    // Insert into postmeta
-                    $data = array(
-                        'post_id' => $post_id,
-                        'meta_key' => $field_names[$field_id],
-                        'meta_value' => $v,
-                    );
-                    $wpdb->insert($wpdb->postmeta, $data);
-                    $meta_id = $wpdb->insert_id;
-
-                    // Insert into cfs_values
-                    $data = array(
-                        'field_id' => $field_id,
-                        'meta_id' => $meta_id,
-                        'post_id' => $post_id,
-                        'weight' => $weight,
-                        'sub_weight' => $sub_weight,
-                    );
-
-                    $wpdb->insert($wpdb->prefix . 'cfs_values', $data);
-                    $weight++;
-                }
+                $field_name = $field_id;
+                $field_id = (int) $params['field_id_lookup'][$params['parent_id'] . ':' . $field_name];
             }
 
-            // Loop field
-            elseif (is_array($values))
+            $field_type = $params['all_fields'][$field_id]->type;
+        }
+
+        // We've found the values
+        if (isset($field_array['value']) || 'loop' != $field_type)
+        {
+            $values = isset($field_array['value']) ? $field_array['value'] : $field_array;
+
+            // Trigger the pre_save hook
+            $values = $this->parent->fields[$field_type]->pre_save($values);
+
+            $sub_weight = 0;
+
+            foreach ((array) $values as $value)
             {
-                foreach ($values as $key => $value)
+                // Insert into postmeta
+                $data = array(
+                    'post_id' => $params['post_id'],
+                    'meta_key' => $params['all_fields'][$field_id]->name,
+                    'meta_value' => $value,
+                );
+
+                $wpdb->insert($wpdb->postmeta, $data);
+                $meta_id = $wpdb->insert_id;
+
+                // Get the top-level field ID from the hierarchy array
+                $base_field_id = empty($params['hierarchy']) ? 0 : $params['hierarchy'][0];
+
+                // Insert into cfs_values
+                $data = array(
+                    'field_id' => $field_id,
+                    'meta_id' => $meta_id,
+                    'post_id' => $params['post_id'],
+                    'base_field_id' => $base_field_id,
+                    'hierarchy' => implode(':', $params['hierarchy']),
+                    'weight' => $params['weight'],
+                    'sub_weight' => $sub_weight,
+                );
+
+                $wpdb->insert($wpdb->prefix . 'cfs_values', $data);
+                $sub_weight++;
+            }
+        }
+        // Keep recursing
+        else
+        {
+            foreach ($field_array as $sub_field_id => $sub_field_array)
+            {
+                $new_params = $params;
+                $new_params['field_array'] = $sub_field_array;
+                $new_params['field_id'] = $sub_field_id;
+                $new_params['weight'] = $field_id;
+                $new_params['depth']++;
+
+                // If not raw_input, then sub_field_id is actually the field name
+                if (false === $params['raw_input'])
                 {
-                    $sub_weight = 0;
-
-                    // Trigger the pre_save field hook
-                    $value['value'] = $this->parent->fields[$field_types[$field_id]]->pre_save($value['value']);
-
-                    foreach ((array) $value['value'] as $v)
+                    if (0 == $new_params['depth'] % 2)
                     {
-                        // Insert into postmeta
-                        $data = array(
-                            'post_id' => $post_id,
-                            'meta_key' => $field_names[$field_id],
-                            'meta_value' => $v,
-                        );
-                        $wpdb->insert($wpdb->postmeta, $data);
-                        $meta_id = $wpdb->insert_id;
-
-                        // Insert into cfs_values
-                        $data = array(
-                            'field_id' => $field_id,
-                            'meta_id' => $meta_id,
-                            'post_id' => $post_id,
-                            'weight' => $weight,
-                            'sub_weight' => $sub_weight,
-                        );
-
-                        $wpdb->insert($wpdb->prefix . 'cfs_values', $data);
-                        $sub_weight++;
+                        $sub_field_id = $params['field_id_lookup'][$new_params['parent_id'] . ':' . $sub_field_id];
                     }
-                    $weight++;
+                    else
+                    {
+                        $new_params['parent_id'] = $field_id;
+                    }
                 }
+
+                if (empty($new_params['hierarchy']))
+                {
+                    $new_params['hierarchy'][] = $field_id;
+                }
+
+                $new_params['hierarchy'][] = $sub_field_id;
+                $this->save_fields_recursive($new_params);
             }
         }
     }

@@ -18,13 +18,13 @@ jQuery(function() {
                 <div class="field">
                     <h4><?php _e('Getting started?', 'cfs'); ?></h4>
                     <p>
-                        <a href="http://uproot.us/" target="_blank"><?php _e('View the plugin website', 'cfs'); ?></a>
+                        <a href="http://uproot.us/custom-field-suite/docs/" target="_blank"><?php _e('Read the user guide', 'cfs'); ?></a>
                     </p>
-                </div>
-                <div class="field">
-                    <h4><?php _e('Please support us!', 'cfs'); ?></h4>
                     <p>
                         <a href="http://wordpress.org/extend/plugins/custom-field-suite/" target="_blank"><?php _e('Rate the plugin', 'cfs'); ?></a>
+                    </p>
+                    <p>
+                        <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JMVGK3L35X6BU" target="_blank"><?php _e('Donate', 'cfs'); ?></a>
                     </p>
                 </div>
             </div>

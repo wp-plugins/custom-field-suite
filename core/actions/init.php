@@ -46,7 +46,7 @@ function cfs_columns_filter()
 {
     return array(
         'cb' => '<input type="checkbox" />',
-        'title' => __('Label', 'cfs'),
+        'title' => __('Title', 'cfs'),
     );
 }
 

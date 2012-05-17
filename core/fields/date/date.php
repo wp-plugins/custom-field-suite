@@ -14,8 +14,7 @@ class cfs_Date extends cfs_Field
     {
     ?>
         <link rel="stylesheet" type="text/css" href="<?php echo $this->parent->url; ?>/core/fields/date/date.css" />
-        <script type="text/javascript" src="<?php echo $this->parent->url; ?>/core/fields/date/jquery.ui.js"></script>
-        <script type="text/javascript" src="<?php echo $this->parent->url; ?>/core/fields/date/jquery.ui.datepicker.js"></script>
+        <script type="text/javascript" src="<?php echo $this->parent->url; ?>/core/fields/date/jquery.ui.custom.js"></script>
         <script type="text/javascript" src="<?php echo $this->parent->url; ?>/core/fields/date/jquery.ui.timepicker.js"></script>
         <script type="text/javascript">
         (function($) {

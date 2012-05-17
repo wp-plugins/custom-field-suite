@@ -139,6 +139,18 @@
     Loop
 ---------------------------------------------------------------------------------------------*/
 
+.cfs_delete_field {
+    float: right;
+    width: 16px;
+    height: 16px;
+    background: url(../images/button_remove.png) no-repeat;
+    cursor: pointer;
+}
+
+.cfs_delete_field:hover {
+    background-position: 0 100%;
+}
+
 .cfs_input .cfs_loop label {
     padding: 6px 0 0 0;
 }
@@ -171,4 +183,11 @@
 
 .cfs_loop td.remove span:hover {
     background-position: 0 100%;
+}
+
+.cfs_loop .loop_wrapper {
+    border: 1px solid #dfdfdf;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    padding: 5px;
 }

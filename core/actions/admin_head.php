@@ -16,12 +16,27 @@ if ('cfs' == $GLOBALS['post_type'])
     }
 
     $field_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}cfs_fields WHERE post_id = '$post->ID'");
-    $results = $this->api->get_input_fields($post->ID, 0);
+
+    // Build clone HTML
+    $field = (object) array(
+        'id' => 0,
+        'parent_id' => 0,
+        'name' => 'new_field',
+        'label' => 'New Field',
+        'type' => 'text',
+        'instructions' => '',
+        'weight' => 'clone',
+    );
+
+    ob_start();
+    $this->field_html($field);
+    $field_clone = ob_get_clean();
 ?>
 
 <script type="text/javascript">
 
 field_index = <?php echo $field_count; ?>;
+field_clone = <?php echo json_encode($field_clone); ?>;
 options_html = <?php echo json_encode($options_html); ?>;
 
 </script>

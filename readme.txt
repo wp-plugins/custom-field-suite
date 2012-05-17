@@ -6,13 +6,13 @@ Requires at least: 3.2
 Tested up to: 3.4
 Stable tag: trunk
 
-Custom Field Suite is the easiest way to visually manage custom fields.
+Custom Field Suite allows you to visually manage groups of custom fields.
 
 == Description ==
 
-Custom Field Suite is a fork of Elliot Condon's [Advanced Custom Fields](http://wordpress.org/extend/plugins/advanced-custom-fields/) plugin.
+Custom Field Suite is a fork of the [Advanced Custom Fields](http://wordpress.org/extend/plugins/advanced-custom-fields/) plugin.
 
-The focus here is on plugin stability through rigorous testing and small, frequent updates.
+The focus here is on plugin stability through small, frequent updates.
 
 = Field Types =
 * Text (api returns text)
@@ -24,12 +24,14 @@ The focus here is on plugin stability through rigorous testing and small, freque
 * Relationship (api returns array of post IDs)
 * User (api returns array of user IDs)
 * File Upload (api returns file url)
+* Loop (a container for other fields, api returns array of arrays)
 
 = More Features =
 * Customize where each field group will appear
 * [Create your own field types](http://uproot.us/custom-field-suite/docs/custom-field-type/)
 * [Gravity Forms integration](http://uproot.us/custom-field-suite/docs/gravity-forms-integration/)
 * Custom Field Import (migrate existing custom fields into CFS)
+* Loop fields can have unlimited nesting!
 
 = Documentation and Support =
 * http://uproot.us/
@@ -41,9 +43,20 @@ The focus here is on plugin stability through rigorous testing and small, freque
 2. Browse to `Field Groups` menu to configure.
 
 == Screenshots ==
-1. A custom field group, with several fields added.
+1. A custom field group, with loop nesting.
 
 == Changelog ==
+
+= 1.5.0 =
+* BACK UP YOUR DATABASE before upgrading!
+* Re-added loop field, complete rewrite
+* Loop fields can now be nested within other loop fields (unlimited depth)
+* New drag-n-drop field management interface
+* Upgraded / optimized the date picker
+* Fixed: saving multiple relationship values with $cfs->save()
+* Fixed: saving multiple user values with $cfs->save()
+* Updated screenshot
+* Cleaned up CSS
 
 = 1.4.7 =
 * Added fork credits
