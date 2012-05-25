@@ -47,6 +47,10 @@ The focus here is on plugin stability through small, frequent updates.
 
 == Changelog ==
 
+= 1.5.1 =
+* Bugfix: API returns array for last field's value (props @mickola, @brandon)
+* Bugfix: issue with multiple loops and adding rows (props @stephen_d)
+
 = 1.5.0 =
 * BACK UP YOUR DATABASE before upgrading!
 * Re-added loop field, complete rewrite

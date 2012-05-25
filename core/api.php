@@ -96,12 +96,13 @@ class cfs_Api
             ORDER BY f.weight, v.weight, v.sub_weight";
 
             $results = $wpdb->get_results($sql);
+            $num_rows = $wpdb->num_rows;
 
             $prev_structure = '';
             $prev_field_id = '';
             $prev_item = '';
 
-            foreach ($results as $key => $result)
+            foreach ($results as $order_num => $result)
             {
                 $current_item = "{$result->hierarchy}.{$result->weight}.{$result->field_id}";
 
@@ -143,7 +144,7 @@ class cfs_Api
                     eval("\$field_data[$prev_structure] = \$this->apply_value_filters(\$field, \$field_data[$prev_structure], \$options);");
                 }
 
-                if ($wpdb->num_rows == ($key + 1)) // last row
+                if ($num_rows == ($order_num + 1)) // last row
                 {
                     $field = $fields[$result->field_id];
                     eval("\$field_data[$structure] = \$this->apply_value_filters(\$field, \$field_data[$structure], \$options);");

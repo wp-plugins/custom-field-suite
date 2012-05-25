@@ -64,7 +64,7 @@ class cfs_Loop extends cfs_Field
     ?>
 
         <script type="text/javascript">
-        cfs_loop_buffer[<?php echo $field_id; ?>] = <?php echo json_encode($buffer); ?>;
+        CFS.loop_buffer[<?php echo $field_id; ?>] = <?php echo json_encode($buffer); ?>;
         </script>
 
     <?php
@@ -133,15 +133,16 @@ class cfs_Loop extends cfs_Field
     {
     ?>
         <script type="text/javascript">
-        var cfs_loop_buffer = [];
+        var CFS = CFS || { loop_buffer: [] };
 
         (function($) {
             $(function() {
+                $('.cfs_add_field').unbind('click');
                 $('.cfs_add_field').live('click', function() {
                     var num_rows = $(this).attr('data-num-rows');
                     var loop_tag = $(this).attr('data-loop-tag');
                     var loop_id = loop_tag.match(/.*\[(.*?)\]/)[1];
-                    var html = cfs_loop_buffer[loop_id].replace(/\[clone\]/g, loop_tag + '[' + num_rows + ']');
+                    var html = CFS.loop_buffer[loop_id].replace(/\[clone\]/g, loop_tag + '[' + num_rows + ']');
                     $(this).attr('data-num-rows', parseInt(num_rows)+1);
                     $(this).closest('.table_footer').before(html);
                     $(this).trigger('go');
