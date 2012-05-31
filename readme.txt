@@ -49,7 +49,7 @@ The focus here is on plugin stability through small, frequent updates.
 
 = 1.5.2 =
 * Added new $field parameter to format_value functions
-* Added textarea "Formatting" option (disable automatic <br />)
+* Added textarea "Formatting" option (disable automatic BR tags)
 * Fixed warnings when saving via Gravity Forms (props @flyingpylon)
 
 = 1.5.1 =
