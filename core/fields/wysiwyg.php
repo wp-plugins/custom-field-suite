@@ -57,12 +57,12 @@ class cfs_Wysiwyg extends cfs_Field
         return 'tinymce'; // html or tinymce
     }
 
-    function format_value_for_input($value)
+    function format_value_for_input($value, $field)
     {
         return wp_richedit_pre($value[0]);
     }
 
-    function format_value_for_api($value)
+    function format_value_for_api($value, $field)
     {
         return apply_filters('the_content', $value[0]);
     }

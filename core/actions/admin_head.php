@@ -41,10 +41,8 @@ options_html = <?php echo json_encode($options_html); ?>;
 
 </script>
 
-<script type="text/javascript" src="<?php echo $this->url; ?>/js/chosen.jquery.min.js"></script>
 <script type="text/javascript" src="<?php echo $this->url; ?>/js/fields.js"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/css/fields.css" />
-<link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/css/chosen.jquery.css" />
 
 <?php
 

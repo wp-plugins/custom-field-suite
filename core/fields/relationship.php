@@ -209,12 +209,12 @@ class cfs_Relationship extends cfs_Field
     <?php
     }
 
-    function format_value_for_input($value)
+    function format_value_for_input($value, $field)
     {
         return empty($value) ? '' : implode(',', $value);
     }
 
-    function format_value_for_api($value)
+    function format_value_for_api($value, $field)
     {
         return $value;
     }

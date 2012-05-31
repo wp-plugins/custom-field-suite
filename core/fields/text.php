@@ -31,7 +31,7 @@ class cfs_Text extends cfs_Field
     <?php
     }
 
-    function format_value_for_input($value)
+    function format_value_for_input($value, $field)
     {
         return htmlspecialchars($value[0], ENT_QUOTES);
     }

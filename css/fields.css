@@ -224,7 +224,7 @@ span.cfs_delete_field:hover {
 
 #wpcontent #cfs_rules table select.multiple,
 #wpcontent #cfs_extras table select.multiple {
-    height: 100px;
+    height: 60px;
 }
 
 /*---------------------------------------------------------------------------------------------

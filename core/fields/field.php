@@ -96,7 +96,7 @@ class cfs_Field
     *
     *-------------------------------------------------------------------------------------*/
 
-    function format_value_for_api($value)
+    function format_value_for_api($value, $field)
     {
         return $value[0];
     }
@@ -111,7 +111,7 @@ class cfs_Field
     *
     *-------------------------------------------------------------------------------------*/
 
-    function format_value_for_input($value)
+    function format_value_for_input($value, $field)
     {
         return $value[0];
     }

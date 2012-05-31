@@ -47,6 +47,11 @@ The focus here is on plugin stability through small, frequent updates.
 
 == Changelog ==
 
+= 1.5.2 =
+* Added new $field parameter to format_value functions
+* Added textarea "Formatting" option (disable automatic <br />)
+* Fixed warnings when saving via Gravity Forms (props @flyingpylon)
+
 = 1.5.1 =
 * Bugfix: API returns array for last field's value (props @mickola, @brandon)
 * Bugfix: issue with multiple loops and adding rows (props @stephen_d)

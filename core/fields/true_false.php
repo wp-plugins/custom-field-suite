@@ -41,7 +41,7 @@ class cfs_True_false extends cfs_Field
     <?php
     }
 
-    function format_value_for_api($value)
+    function format_value_for_api($value, $field)
     {
         return ('1' == (string) $value[0]) ? 1 : 0;
     }

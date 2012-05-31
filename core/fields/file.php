@@ -126,7 +126,7 @@ class cfs_File extends cfs_Field
     <?php
     }
 
-    function format_value_for_api($value)
+    function format_value_for_api($value, $field)
     {
         if (is_numeric($value[0]))
         {

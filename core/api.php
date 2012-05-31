@@ -83,6 +83,7 @@ class cfs_Api
             $results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}cfs_fields WHERE post_id IN ($group_ids) ORDER BY weight");
             foreach ($results as $result)
             {
+                $result->options = unserialize($result->options);
                 $fields[$result->id] = $result;
             }
 
@@ -240,13 +241,13 @@ class cfs_Api
         // Format value for input
         if (false !== $options->for_input)
         {
-            $value = $this->parent->fields[$field->type]->format_value_for_input($value);
+            $value = $this->parent->fields[$field->type]->format_value_for_input($value, $field);
         }
 
         // Format value for api
         else
         {
-            $value = $this->parent->fields[$field->type]->format_value_for_api($value);
+            $value = $this->parent->fields[$field->type]->format_value_for_api($value, $field);
         }
 
         return $value;

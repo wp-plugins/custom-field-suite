@@ -3,7 +3,7 @@
 Plugin Name: Custom Field Suite
 Plugin URI: http://uproot.us/custom-field-suite/
 Description: Visually create custom fields for your edit pages. This is a fork of Elliot Condon's Advanced Custom Fields plugin.
-Version: 1.5.1
+Version: 1.5.2
 Author: Matt Gibbs
 Author URI: http://uproot.us/
 License: GPL
@@ -11,7 +11,7 @@ Copyright: Matt Gibbs
 */
 
 $cfs = new Cfs();
-$cfs->version = '1.5.1';
+$cfs->version = '1.5.2';
 
 class Cfs
 {
@@ -478,40 +478,6 @@ class Cfs
 
         // get the form id
         $form_id = $entry['form_id'];
-        $form_data = array();
-
-        // get submitted fields
-        foreach ($form['fields'] as $field)
-        {
-            $field_id = $field['id'];
-
-            // handle fields with children
-            if (null !== $field['inputs'])
-            {
-                $values = array();
-
-                foreach ($field['inputs'] as $sub_field)
-                {
-                    $sub_field_value = $entry[$sub_field['id']];
-
-                    if (!empty($sub_field_value))
-                    {
-                        $values[] = $sub_field_value;
-                    }
-                }
-                $value = implode("\n", $values);
-            }
-            elseif ('multiselect' == $field['type'])
-            {
-                $value = explode(',', $entry[$field_id]);
-            }
-            else
-            {
-                $value = $entry[$field_id];
-            }
-
-            $form_data[$field['label']] = $value;
-        }
 
         // see if any field groups use this form id
         $field_groups = array();
@@ -534,6 +500,45 @@ class Cfs
                     'post_type' => $meta_value['post_type'],
                     'fields' => $fields,
                 );
+            }
+        }
+
+        // If there's some matching groups, parse the GF field data
+        if (!empty($field_groups))
+        {
+            $form_data = array();
+
+            // get submitted fields
+            foreach ($form['fields'] as $field)
+            {
+                $field_id = $field['id'];
+
+                // handle fields with children
+                if (null !== $field['inputs'])
+                {
+                    $values = array();
+
+                    foreach ($field['inputs'] as $sub_field)
+                    {
+                        $sub_field_value = $entry[$sub_field['id']];
+
+                        if (!empty($sub_field_value))
+                        {
+                            $values[] = $sub_field_value;
+                        }
+                    }
+                    $value = implode("\n", $values);
+                }
+                elseif ('multiselect' == $field['type'])
+                {
+                    $value = explode(',', $entry[$field_id]);
+                }
+                else
+                {
+                    $value = $entry[$field_id];
+                }
+
+                $form_data[$field['label']] = $value;
             }
         }
 

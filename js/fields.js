@@ -25,9 +25,6 @@
             }
         });
 
-        // Select box enhancement
-        $('.chosen-select').chosen();
-
         // Add a new field
         $('.cfs_add_field').live('click', function() {
             var html = field_clone.replace(/\[clone\]/g, '['+field_index+']');

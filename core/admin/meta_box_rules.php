@@ -65,7 +65,7 @@ foreach ($results as $result)
         <td class="label">
             <label><?php _e('Post Types', 'cfs'); ?></label>
         </td>
-        <td style="width:80px">
+        <td style="width:80px; vertical-align:top">
             <?php
                 $this->create_field((object) array(
                     'type' => 'select',
@@ -80,7 +80,6 @@ foreach ($results as $result)
                 $this->create_field((object) array(
                     'type' => 'select',
                     'input_name' => "cfs[rules][post_types]",
-                    'input_class' => 'chosen-select',
                     'options' => array('multiple' => '1', 'choices' => implode("\n", $post_types)),
                     'value' => $rules['post_types']['values'],
                 ));
@@ -91,7 +90,7 @@ foreach ($results as $result)
         <td class="label">
             <label><?php _e('User Roles', 'cfs'); ?></label>
         </td>
-        <td style="width:80px">
+        <td style="width:80px; vertical-align:top">
             <?php
                 $this->create_field((object) array(
                     'type' => 'select',
@@ -106,7 +105,6 @@ foreach ($results as $result)
                 $this->create_field((object) array(
                     'type' => 'select',
                     'input_name' => "cfs[rules][user_roles]",
-                    'input_class' => 'chosen-select',
                     'options' => array('multiple' => '1', 'choices' => implode("\n", $user_roles)),
                     'value' => $rules['user_roles']['values'],
                 ));
@@ -117,7 +115,7 @@ foreach ($results as $result)
         <td class="label">
             <label><?php _e('Posts', 'cfs'); ?></label>
         </td>
-        <td style="width:80px">
+        <td style="width:80px; vertical-align:top">
             <?php
                 $this->create_field((object) array(
                     'type' => 'select',
@@ -132,7 +130,6 @@ foreach ($results as $result)
                 $this->create_field((object) array(
                     'type' => 'select',
                     'input_name' => "cfs[rules][post_ids]",
-                    'input_class' => 'chosen-select',
                     'options' => array('multiple' => '1', 'choices' => implode("\n", $post_ids)),
                     'value' => $rules['post_ids']['values'],
                 ));
@@ -143,7 +140,7 @@ foreach ($results as $result)
         <td class="label">
             <label><?php _e('Taxonomy Terms', 'cfs'); ?></label>
         </td>
-        <td style="width:80px">
+        <td style="width:80px; vertical-align:top">
             <?php
                 $this->create_field((object) array(
                     'type' => 'select',
@@ -158,7 +155,6 @@ foreach ($results as $result)
                 $this->create_field((object) array(
                     'type' => 'select',
                     'input_name' => "cfs[rules][term_ids]",
-                    'input_class' => 'chosen-select',
                     'options' => array('multiple' => '1', 'choices' => implode("\n", $term_ids)),
                     'value' => $rules['term_ids']['values'],
                 ));

@@ -58,8 +58,8 @@
                 <tr class="field_instructions">
                     <td class="label">
                         <label>
-                            <?php _e('Notes', 'cfs'); ?>
-                            <span class="cfs_tooltip" title="<?php _e('Instructions for authors when entering field data', 'cfs'); ?>"></span>
+                            <?php _e('Instructions', 'cfs'); ?>
+                            <span class="cfs_tooltip" title="<?php _e('Tips for editors when entering field data', 'cfs'); ?>"></span>
                         </label>
                     </td>
                     <td>
