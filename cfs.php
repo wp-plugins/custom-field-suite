@@ -2,8 +2,8 @@
 /*
 Plugin Name: Custom Field Suite
 Plugin URI: http://uproot.us/custom-field-suite/
-Description: Visually create custom fields for your edit pages. This is a fork of Elliot Condon's Advanced Custom Fields plugin.
-Version: 1.5.2
+Description: Visually create and manage custom fields. CFS is a fork of the Advanced Custom Fields plugin.
+Version: 1.5.3
 Author: Matt Gibbs
 Author URI: http://uproot.us/
 License: GPL
@@ -11,7 +11,7 @@ Copyright: Matt Gibbs
 */
 
 $cfs = new Cfs();
-$cfs->version = '1.5.2';
+$cfs->version = '1.5.3';
 
 class Cfs
 {

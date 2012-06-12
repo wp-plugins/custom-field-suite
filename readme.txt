@@ -1,18 +1,16 @@
 ﻿=== Custom Field Suite ===
 Contributors: logikal16
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JMVGK3L35X6BU
-Tags: custom, fields, custom fields, cck, post types, gravity forms, field permissions
+Tags: custom, fields, custom fields, cck, post types, gravity forms, views, field permissions
 Requires at least: 3.2
 Tested up to: 3.4
 Stable tag: trunk
 
-Custom Field Suite allows you to visually manage groups of custom fields.
+Visually create and manage custom fields.
 
 == Description ==
 
-Custom Field Suite is a fork of the [Advanced Custom Fields](http://wordpress.org/extend/plugins/advanced-custom-fields/) plugin.
-
-The focus here is on plugin stability through small, frequent updates.
+Visually create and manage custom fields. Custom Field Suite is a fork of the [Advanced Custom Fields](http://wordpress.org/extend/plugins/advanced-custom-fields/) plugin.
 
 = Field Types =
 * Text (api returns text)
@@ -27,10 +25,11 @@ The focus here is on plugin stability through small, frequent updates.
 * Loop (a container for other fields, api returns array of arrays)
 
 = More Features =
+* Drag-n-drop field management UI that supports field hierarchy
 * Customize where each field group will appear
 * [Create your own field types](http://uproot.us/custom-field-suite/docs/custom-field-type/)
 * [Gravity Forms integration](http://uproot.us/custom-field-suite/docs/gravity-forms-integration/)
-* Custom Field Import (migrate existing custom fields into CFS)
+* Quickly and easily migrate existing custom fields into CFS
 * Loop fields can have unlimited nesting!
 
 = Documentation and Support =
@@ -46,6 +45,11 @@ The focus here is on plugin stability through small, frequent updates.
 1. A custom field group, with loop nesting.
 
 == Changelog ==
+
+= 1.5.3 =
+* Fixed UI issue with hierarchical Loop fields
+* Updated chosen/select2 script
+* Tested against WP 3.4
 
 = 1.5.2 =
 * Added new $field parameter to format_value functions

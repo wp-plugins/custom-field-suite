@@ -222,7 +222,6 @@ span.cfs_delete_field:hover {
     outline: none;
 }
 
-#wpcontent #cfs_rules table select.multiple,
 #wpcontent #cfs_extras table select.multiple {
     height: 60px;
 }

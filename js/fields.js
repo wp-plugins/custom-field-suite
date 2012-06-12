@@ -21,7 +21,7 @@
             update: function(event, ui) {
                 update_order();
                 var parent_id = ui.item.parent('li').find('.field_id').val() || 0;
-                ui.item.find('.parent_id').val(parent_id);
+                ui.item.find('.parent_id').first().val(parent_id);
             }
         });
 

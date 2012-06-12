@@ -60,6 +60,16 @@ foreach ($results as $result)
 }
 ?>
 
+<script type="text/javascript">
+(function($) {
+    $(function() {
+        $('.select2').select2({
+            placeholder: 'Select some options'
+        });
+    });
+})(jQuery);
+</script>
+
 <table style="width:100%">
     <tr>
         <td class="label">
@@ -79,6 +89,7 @@ foreach ($results as $result)
             <?php
                 $this->create_field((object) array(
                     'type' => 'select',
+                    'input_class' => 'select2',
                     'input_name' => "cfs[rules][post_types]",
                     'options' => array('multiple' => '1', 'choices' => implode("\n", $post_types)),
                     'value' => $rules['post_types']['values'],
@@ -104,6 +115,7 @@ foreach ($results as $result)
             <?php
                 $this->create_field((object) array(
                     'type' => 'select',
+                    'input_class' => 'select2',
                     'input_name' => "cfs[rules][user_roles]",
                     'options' => array('multiple' => '1', 'choices' => implode("\n", $user_roles)),
                     'value' => $rules['user_roles']['values'],
@@ -129,6 +141,7 @@ foreach ($results as $result)
             <?php
                 $this->create_field((object) array(
                     'type' => 'select',
+                    'input_class' => 'select2',
                     'input_name' => "cfs[rules][post_ids]",
                     'options' => array('multiple' => '1', 'choices' => implode("\n", $post_ids)),
                     'value' => $rules['post_ids']['values'],
@@ -154,6 +167,7 @@ foreach ($results as $result)
             <?php
                 $this->create_field((object) array(
                     'type' => 'select',
+                    'input_class' => 'select2',
                     'input_name' => "cfs[rules][term_ids]",
                     'options' => array('multiple' => '1', 'choices' => implode("\n", $term_ids)),
                     'value' => $rules['term_ids']['values'],
