@@ -3,7 +3,7 @@
 Plugin Name: Custom Field Suite
 Plugin URI: http://uproot.us/custom-field-suite/
 Description: Visually create and manage custom fields. CFS is a fork of the Advanced Custom Fields plugin.
-Version: 1.5.3
+Version: 1.5.4
 Author: Matt Gibbs
 Author URI: http://uproot.us/
 License: GPL
@@ -11,7 +11,7 @@ Copyright: Matt Gibbs
 */
 
 $cfs = new Cfs();
-$cfs->version = '1.5.3';
+$cfs->version = '1.5.4';
 
 class Cfs
 {
@@ -258,9 +258,9 @@ class Cfs
     *
     *-------------------------------------------------------------------------------------*/
 
-    function get_reverse_related($field_name, $post_id)
+    function get_reverse_related($field_name, $post_id, $options = array())
     {
-        return $this->api->get_reverse_related($field_name, $post_id);
+        return $this->api->get_reverse_related($field_name, $post_id, $options);
     }
 
 
