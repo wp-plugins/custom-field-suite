@@ -94,7 +94,7 @@ class cfs_Api
             INNER JOIN {$wpdb->postmeta} m ON m.meta_id = v.meta_id
             INNER JOIN {$wpdb->prefix}cfs_fields f ON f.id = v.field_id
             WHERE v.post_id IN ($post_id)
-            ORDER BY f.weight, v.weight, v.sub_weight";
+            ORDER BY f.weight, v.field_id, v.weight, v.sub_weight";
 
             $results = $wpdb->get_results($sql);
             $num_rows = $wpdb->num_rows;
@@ -284,15 +284,16 @@ class cfs_Api
     *
     *-------------------------------------------------------------------------------------*/
 
-    function get_input_fields($group_id = false, $parent_id = false)
+    function get_input_fields($group_id = false, $parent_id = false, $field_id = false)
     {
         global $post, $wpdb;
 
         $values = $this->get_fields($post->ID, array('for_input' => true));
 
         $where = 'WHERE 1';
-        $where .= (false !== $parent_id) ? " AND parent_id = $parent_id" : '';
         $where .= (false !== $group_id) ? " AND post_id = $group_id" : '';
+        $where .= (false !== $parent_id) ? " AND parent_id = $parent_id" : '';
+        $where .= (false !== $field_id) ? " AND id = $field_id" : '';
 
         $fields = array();
 
