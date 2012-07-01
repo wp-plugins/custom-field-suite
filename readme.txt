@@ -3,14 +3,16 @@ Contributors: logikal16
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JMVGK3L35X6BU
 Tags: custom, fields, custom fields, cck, post types, gravity forms, views, field permissions
 Requires at least: 3.2
-Tested up to: 3.4
+Tested up to: 3.4.1
 Stable tag: trunk
 
 Visually create and manage custom fields.
 
 == Description ==
 
-Visually create and manage custom fields. Custom Field Suite is a fork of the [Advanced Custom Fields](http://wordpress.org/extend/plugins/advanced-custom-fields/) plugin.
+Visually create and manage custom fields. Custom Field Suite is a fork of [Advanced Custom Fields](http://wordpress.org/extend/plugins/advanced-custom-fields/).
+
+[Custom Field Suite is now on Github!](https://github.com/logikal16/custom-field-suite)
 
 = Field Types =
 * Text (api returns text)
@@ -45,6 +47,12 @@ Visually create and manage custom fields. Custom Field Suite is a fork of the [A
 1. A custom field group, with loop nesting.
 
 == Changelog ==
+
+= 1.5.7 =
+* Enhancement: removed eval() in the API
+* Enhancement: updated function signature for $cfs->get_reverse_related
+* Bugfix: dashes in field name caused API error
+* Bugfix: "Add Row" in loop field added 1 row per field group
 
 = 1.5.6 =
 * Bugfix: API ordering error when using multiple field groups on a single post

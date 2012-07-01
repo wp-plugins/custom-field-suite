@@ -99,12 +99,13 @@ class cfs_Api
             $results = $wpdb->get_results($sql);
             $num_rows = $wpdb->num_rows;
 
-            $prev_structure = '';
+            $prev_hierarchy = '';
             $prev_field_id = '';
             $prev_item = '';
 
             foreach ($results as $order_num => $result)
             {
+                $field = $fields[$result->field_id];
                 $current_item = "{$result->hierarchy}.{$result->weight}.{$result->field_id}";
 
                 if (!empty($result->hierarchy))
@@ -128,37 +129,69 @@ class cfs_Api
                         $hierarchy = $result->hierarchy;
                     }
 
-                    $structure = str_replace(':', '][', $hierarchy);
-                    eval("\$field_data[$structure][] = \$result->meta_value;");
+                    $this->assemble_value_array($field_data, $hierarchy, $field, $result->meta_value);
                 }
                 else
                 {
                     // If "for_input" is false, get the field name
-                    $structure = (false === $options->for_input) ? $fields[$result->field_id]->name : $result->field_id;
-                    $field_data[$structure][] = $result->meta_value;
+                    $hierarchy = (false === $options->for_input) ? $field->name : $field->id;
+                    $field_data[$hierarchy][] = $result->meta_value;
                 }
 
                 // Assemble the values
                 if ($current_item != $prev_item && '' != $prev_item) // call apply_value_filters on previous field
                 {
-                    $field = $fields[$prev_field_id];
-                    eval("\$field_data[$prev_structure] = \$this->apply_value_filters(\$field, \$field_data[$prev_structure], \$options);");
+                    $this->assemble_value_array($field_data, $prev_hierarchy, $fields[$prev_field_id], false, $options);
                 }
 
                 if ($num_rows == ($order_num + 1)) // last row
                 {
-                    $field = $fields[$result->field_id];
-                    eval("\$field_data[$structure] = \$this->apply_value_filters(\$field, \$field_data[$structure], \$options);");
+                    $this->assemble_value_array($field_data, $hierarchy, $field, false, $options);
                 }
 
-                $prev_structure = $structure;
-                $prev_field_id = $result->field_id;
+                $prev_hierarchy = $hierarchy;
+                $prev_field_id = $field->id;
                 $prev_item = $current_item;
             }
         }
 
         $this->data[$post_id] = $field_data;
         return $field_data;
+    }
+
+
+    /*--------------------------------------------------------------------------------------
+    *
+    *    assemble_value_array
+    *
+    *    Replace a value within a multidimensional array without using eval()
+    *
+    *    @param array $field_data The value array
+    *    @param string $hierarchy The array element to target
+    *    @param object $field The field object passed into apply_value_filters
+    *    @param mixed $value The replacement value; bypass apply_value_filters
+    *    @param mixed $options The options passed into apply_value_filters
+    *    @author Matt Gibbs
+    *    @since 1.5.7
+    *
+    *-------------------------------------------------------------------------------------*/
+
+    function assemble_value_array(&$field_data, $hierarchy, $field, $value = false, $options = false)
+    {
+        $data = &$field_data;
+        foreach (explode(':', $hierarchy) as $i)
+        {
+            $data = &$data[$i];
+        }
+
+        if (false !== $value)
+        {
+            $data[] = $value;
+        }
+        else
+        {
+            $data = $this->apply_value_filters($field, $data, $options);
+        }
     }
 
 
@@ -171,38 +204,52 @@ class cfs_Api
     *
     *-------------------------------------------------------------------------------------*/
 
-    function get_reverse_related($field_name, $post_id, $options = array())
+    function get_reverse_related($post_id, $options = array(), $deprecated = array())
     {
         global $wpdb;
 
-        $options = (object) $options;
-
-        if (isset($options->post_type) && !empty($options->post_type))
+        // Handle function signature change
+        if (!ctype_digit($post_id))
         {
-            $post_type = implode("','", (array) $options->post_type);
+            // old signature: $field_name, $post_id, $options
+            $old_post_id = $options;
+            $options = $deprecated;
+            $options['field_name'] = $post_id;
+            $post_id = $old_post_id;
+        }
 
-            $sql = $wpdb->prepare("
-                SELECT m.post_id
-                FROM $wpdb->postmeta m
-                INNER JOIN $wpdb->posts p ON p.ID = m.post_id
-                WHERE p.post_type IN ('$post_type') AND m.meta_key = %s AND m.meta_value = %s",
-                $field_name, $post_id);
-        }
-        else
+        $where = "m.meta_value = '$post_id'";
+
+        if (isset($options['field_name']))
         {
-            $sql = $wpdb->prepare("
-                SELECT post_id
-                FROM $wpdb->postmeta
-                WHERE meta_key = %s AND meta_value = %s",
-                $field_name, $post_id);
+            $field_name = implode("','", (array) $options['field_name']);
+            $where .= " AND m.meta_key IN ('$field_name')";
         }
+        if (isset($options['post_type']))
+        {
+            $post_type = implode("','", (array) $options['post_type']);
+            $where .= " AND p.post_type IN ('$post_type')";
+        }
+        if (isset($options['post_status']))
+        {
+            $post_status = implode("','", (array) $options['post_status']);
+            $where .= " AND p.post_status IN ('$post_status')";
+        }
+
+        $sql = "
+        SELECT DISTINCT p.ID
+        FROM {$wpdb->prefix}cfs_fields f
+        INNER JOIN {$wpdb->prefix}cfs_values v ON v.field_id = f.id
+        INNER JOIN $wpdb->posts p ON p.ID = v.post_id
+        INNER JOIN $wpdb->postmeta m ON m.meta_id = v.meta_id
+        WHERE f.type IN ('relationship') AND $where";
 
         $results = $wpdb->get_results($sql);
         $output = array();
 
         foreach ($results as $result)
         {
-            $output[] = $result->post_id;
+            $output[] = $result->ID;
         }
         return $output;
     }
@@ -259,13 +306,10 @@ class cfs_Api
 
     function apply_value_filters($field, $value, $options)
     {
-        // Format value for input
         if (false !== $options->for_input)
         {
             $value = $this->parent->fields[$field->type]->format_value_for_input($value, $field);
         }
-
-        // Format value for api
         else
         {
             $value = $this->parent->fields[$field->type]->format_value_for_api($value, $field);
