@@ -18,7 +18,7 @@ CFS is a [fork](http://bit.ly/14vScj) of [Advanced Custom Fields](http://wordpre
 * CFS is stable. Our top priority is keeping your data safe. We thoroughly test all changes before releasing a new version.
 * CFS is fast.
 * CFS uses minimal resources.
-* CFS integrates with [Gravity Forms integration](http://uproot.us/custom-field-suite/docs/gravity-forms-integration/).
+* CFS integrates with [Gravity Forms](http://uproot.us/custom-field-suite/docs/gravity-forms-integration/).
 * CFS supports custom field types (we had it before ACF).
 * CFS is 100% free.
 
