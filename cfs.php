@@ -3,7 +3,7 @@
 Plugin Name: Custom Field Suite
 Plugin URI: http://uproot.us/custom-field-suite/
 Description: Visually create and manage custom fields. CFS is a fork of Advanced Custom Fields.
-Version: 1.6.4
+Version: 1.6.5
 Author: Matt Gibbs
 Author URI: http://uproot.us/
 License: GPL
@@ -11,7 +11,7 @@ Copyright: Matt Gibbs
 */
 
 $cfs = new Cfs();
-$cfs->version = '1.6.4';
+$cfs->version = '1.6.5';
 
 class Cfs
 {
@@ -56,6 +56,7 @@ class Cfs
 
         // 3rd party hooks
         add_action('gform_post_submission', array($this, 'gform_handler'), 10, 2);
+        //add_action('icl_make_duplicate', array($this, 'wpml_handler'), 10, 2);
 
         // add translations
         load_plugin_textdomain('cfs', false, 'custom-field-suite/lang');
@@ -200,7 +201,8 @@ class Cfs
             }
         }
 
-        return $matches;
+        // Allow for overrides
+        return apply_filters('cfs_matching_groups', $matches, $post_id, $post_type);
     }
 
 
@@ -762,5 +764,24 @@ class Cfs
             // save data
             $this->save($field_data, $post_data);
         }
+    }
+
+
+    /*--------------------------------------------------------------------------------------
+    *
+    *    wpml_handler
+    *
+    *    Properly copy CFS fields on WPML post duplication
+    *    Requires WPML 2.6.0+
+    *
+    *    @author Matt Gibbs
+    *    @since 1.6.5
+    *
+    *-------------------------------------------------------------------------------------*/
+
+    function wpml_handler($master_id, $lang, $post_data, $duplicate_id)
+    {
+        $field_data = $this->get(false, $master_id);
+        $this->save($field_data, array('ID' => $duplicate_id));
     }
 }
