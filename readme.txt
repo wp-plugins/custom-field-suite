@@ -59,6 +59,9 @@ CFS is a [fork](http://bit.ly/14vScj) of [Advanced Custom Fields](http://wordpre
 
 == Changelog ==
 
+= 1.6.7 =
+* Fixed file upload button bug (props baysaa)
+
 = 1.6.6 =
 * Added Polish translation (props Bartosz Arendt)
 * Added loop option to expand rows by default
