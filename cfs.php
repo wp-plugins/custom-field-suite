@@ -3,7 +3,7 @@
 Plugin Name: Custom Field Suite
 Plugin URI: http://uproot.us/custom-field-suite/
 Description: Visually create and manage custom fields. CFS is a fork of Advanced Custom Fields.
-Version: 1.6.5
+Version: 1.6.6
 Author: Matt Gibbs
 Author URI: http://uproot.us/
 License: GPL
@@ -11,7 +11,7 @@ Copyright: Matt Gibbs
 */
 
 $cfs = new Cfs();
-$cfs->version = '1.6.5';
+$cfs->version = '1.6.6';
 
 class Cfs
 {
@@ -50,6 +50,7 @@ class Cfs
         add_action('admin_menu', array($this, 'admin_menu'));
         add_action('save_post', array($this, 'save_post'));
         add_action('delete_post', array($this, 'delete_post'));
+        add_action('add_meta_boxes', array($this, 'add_meta_boxes'));
 
         // ajax handlers
         add_action('wp_ajax_cfs_ajax_handler', array($this, 'ajax_handler'));
@@ -134,7 +135,7 @@ class Cfs
     *
     *-------------------------------------------------------------------------------------*/
 
-    function get_matching_groups($post_id, $is_public = false)
+    function get_matching_groups($post_id, $skip_roles = false)
     {
         global $wpdb, $current_user;
 
@@ -172,7 +173,7 @@ class Cfs
         );
 
         // Ignore user_roles if used within get_fields
-        if (false !== $is_public)
+        if (false !== $skip_roles)
         {
             unset($rule_types['user_roles']);
         }
@@ -323,6 +324,23 @@ class Cfs
 
     /*--------------------------------------------------------------------------------------
     *
+    *    add_meta_boxes
+    *
+    *    @author Matt Gibbs
+    *    @since 1.6.6
+    *
+    *-------------------------------------------------------------------------------------*/
+
+    function add_meta_boxes()
+    {
+        add_meta_box('cfs_fields', __('Fields', 'cfs'), array($this, 'meta_box'), 'cfs', 'normal', 'high', array('box' => 'fields'));
+        add_meta_box('cfs_rules', __('Placement Rules', 'cfs'), array($this, 'meta_box'), 'cfs', 'normal', 'high', array('box' => 'rules'));
+        add_meta_box('cfs_extras', __('Extras', 'cfs'), array($this, 'meta_box'), 'cfs', 'normal', 'high', array('box' => 'extras'));
+    }
+
+
+    /*--------------------------------------------------------------------------------------
+    *
     *    admin_menu
     *
     *    @author Matt Gibbs
@@ -332,8 +350,8 @@ class Cfs
 
     function admin_menu()
     {
-        add_object_page('Field Groups', 'Field Groups', 'manage_options', 'edit.php?post_type=cfs');
-        add_submenu_page('edit.php?post_type=cfs', 'Tools', 'Tools', 'manage_options', 'cfs-tools', array($this, 'page_tools'));
+        add_object_page(__('Field Groups', 'cfs'), __('Field Groups', 'cfs'), 'manage_options', 'edit.php?post_type=cfs');
+        add_submenu_page('edit.php?post_type=cfs', __('Tools', 'cfs'), __('Tools', 'cfs'), 'manage_options', 'cfs-tools', array($this, 'page_tools'));
     }
 
 
@@ -571,16 +589,16 @@ class Cfs
 
                     if (!empty($stats['imported']))
                     {
-                        echo '<div><strong>Imported:</strong> ' . implode(', ', $stats['imported']) . '</div>';
+                        echo '<div>' . __('Imported', 'cfs') . ': ' . implode(', ', $stats['imported']) . '</div>';
                     }
                     if (!empty($stats['skipped']))
                     {
-                        echo '<div><strong>Skipped:</strong> ' . implode(', ', $stats['skipped']) . '</div>';
+                        echo '<div>' . __('Skipped', 'cfs') . ': ' . implode(', ', $stats['skipped']) . '</div>';
                     }
                 }
                 else
                 {
-                    echo '<div><strong>Error:</strong> Nothing to import</div>';
+                    echo '<div>' . __('Nothing to import', 'cfs') . '</div>';
                 }
             }
             // Sync custom fields
@@ -655,7 +673,7 @@ class Cfs
                 }
                 else
                 {
-                    echo '<div><strong>Error:</strong> No field groups selected</div>';
+                    echo '<div>' . __('No field groups selected', 'cfs') . '</div>';
                 }
             }
         }
@@ -715,7 +733,7 @@ class Cfs
                 $field_id = $field['id'];
 
                 // handle fields with children
-                if (null !== $field['inputs'])
+                if (!empty($field['inputs']))
                 {
                     $values = array();
 
