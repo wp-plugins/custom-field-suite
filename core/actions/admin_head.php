@@ -33,7 +33,7 @@ if ('cfs' == $GLOBALS['post_type'])
     $field_clone = ob_get_clean();
 ?>
 
-<script type="text/javascript">
+<script>
 
 field_index = <?php echo $field_count; ?>;
 field_clone = <?php echo json_encode($field_clone); ?>;
@@ -83,15 +83,6 @@ else
             if (isset($extras['hide_editor']) && 0 < (int) $extras['hide_editor'])
             {
                 $hide_editor = true;
-            }
-
-            // Call the init() field method
-            $results = $wpdb->get_results("SELECT DISTINCT type FROM {$wpdb->prefix}cfs_fields WHERE post_id = '$group_id' ORDER BY parent_id, weight");
-            foreach ($results as $result)
-            {
-                $this->fields[$result->type]->init(
-                    $this->fields[$result->type]
-                );
             }
 
             add_meta_box("cfs_input_$group_id", $title, array($this, 'meta_box'), $post->post_type, 'normal', 'high', array('box' => 'input', 'group_id' => $group_id));
