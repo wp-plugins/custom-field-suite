@@ -1,7 +1,7 @@
 ﻿=== Custom Field Suite ===
 Contributors: logikal16
 Donate link: https://uproot.us/contributors/
-Tags: custom fields, custom, fields, cck, gravity forms, views, wysiwyg, relationship, date, loop, upload
+Tags: fields, custom fields, cck, wysiwyg, relationship, date, loop, upload
 Requires at least: 3.2
 Tested up to: 3.4.2
 Stable tag: trunk
@@ -12,7 +12,7 @@ Visually create and manage custom fields.
 
 Custom Field Suite is a custom fields plugin for WordPress. It allows you to visually create groups of custom fields. Each field group can be placed on the edit pages of your choosing. It also includes a lightweight API for displaying custom fields throughout your site.
 
-CFS is a [fork](http://bit.ly/14vScj) of [Advanced Custom Fields](http://wordpress.org/extend/plugins/advanced-custom-fields/). The main goals of this plugin are stability, performance, and avoiding feature bloat.
+CFS is a [fork](http://bit.ly/14vScj) of Advanced Custom Fields. The main goals of this plugin are stability, performance, and avoiding feature bloat.
 
 = Why use CFS? =
 * CFS is stable. Our top priority is keeping your data safe. We test all changes before releasing new versions.
@@ -40,8 +40,8 @@ CFS is a [fork](http://bit.ly/14vScj) of [Advanced Custom Fields](http://wordpre
 * Drag-n-drop field management UI
 * Loop fields support unlimited nesting!
 * Placement Rules allow you to customize where each field group appears
+* Use the Sync feature to import existing custom field values
 * [Create your own field types](http://uproot.us/custom-field-suite/docs/custom-field-type/)
-* Quickly migrate existing custom fields into CFS
 
 = Documentation and Support =
 * http://uproot.us/
