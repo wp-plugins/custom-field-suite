@@ -3,7 +3,7 @@
 class cfs_Api
 {
     public $parent;
-    public $data;
+    public $cache;
 
     /*--------------------------------------------------------------------------------------
     *
@@ -14,7 +14,7 @@ class cfs_Api
     *
     *-------------------------------------------------------------------------------------*/
 
-    function __construct($parent)
+    public function __construct($parent)
     {
         $this->parent = $parent;
     }
@@ -29,20 +29,25 @@ class cfs_Api
     *
     *-------------------------------------------------------------------------------------*/
 
-    function get_field($field_name, $post_id = false)
+    public function get_field($field_name, $post_id = false, $options = array())
     {
         global $post;
+
+        $defaults = array(
+            'format' => 'api', // "api", "input", or "raw"
+        );
+        $options = (object) array_merge($defaults, $options);
 
         $post_id = empty($post_id) ? $post->ID : (int) $post_id;
 
         // Trigger get_fields if not in cache
-        if (!isset($this->data[$post_id][$field_name]))
+        if (!isset($this->cache[$options->format][$post_id][$field_name]))
         {
             $fields = $this->get_fields($post_id);
             return $fields[$field_name];
         }
 
-        return $this->data[$post_id][$field_name];
+        return $this->cache[$options->format][$post_id][$field_name];
     }
 
 
@@ -55,23 +60,24 @@ class cfs_Api
     *
     *-------------------------------------------------------------------------------------*/
 
-    function get_fields($post_id = false, $options = array())
+    public function get_fields($post_id = false, $options = array())
     {
         global $post, $wpdb;
 
         $defaults = array(
-            'for_input' => false,
+            'format' => 'api', // "api", "input", or "raw"
         );
         $options = (object) array_merge($defaults, $options);
 
         $post_id = empty($post_id) ? $post->ID : (int) $post_id;
 
         // Return cached results
-        if (isset($this->data[$post_id]))
+        if (isset($this->cache[$options->format][$post_id]))
         {
-            return $this->data[$post_id];
+            return $this->cache[$options->format][$post_id];
         }
 
+        $fields = array();
         $field_data = array();
 
         // Get all field groups for this post
@@ -87,78 +93,89 @@ class cfs_Api
                 $fields[$result->id] = $result;
             }
 
-            // Make sure we're using active field groups
-            $field_ids = implode(',', array_keys($fields));
-
-            // Get all the field data
-            $sql = "
-            SELECT m.meta_value, v.field_id, f.parent_id, v.hierarchy, v.weight, v.sub_weight
-            FROM {$wpdb->prefix}cfs_values v
-            INNER JOIN {$wpdb->postmeta} m ON m.meta_id = v.meta_id
-            INNER JOIN {$wpdb->prefix}cfs_fields f ON f.id = v.field_id
-            WHERE f.id IN ($field_ids) AND v.post_id IN ($post_id)
-            ORDER BY f.weight, v.field_id, v.weight, v.sub_weight";
-
-            $results = $wpdb->get_results($sql);
-            $num_rows = $wpdb->num_rows;
-
-            $prev_hierarchy = '';
-            $prev_field_id = '';
-            $prev_item = '';
-
-            foreach ($results as $order_num => $result)
+            if (!empty($fields))
             {
-                $field = $fields[$result->field_id];
-                $current_item = "{$result->hierarchy}.{$result->weight}.{$result->field_id}";
+                // Make sure we're using active field groups
+                $field_ids = implode(',', array_keys($fields));
 
-                if (!empty($result->hierarchy))
+                // Get all the field data
+                $sql = "
+                SELECT m.meta_value, v.field_id, f.parent_id, v.hierarchy, v.weight, v.sub_weight
+                FROM {$wpdb->prefix}cfs_values v
+                INNER JOIN {$wpdb->postmeta} m ON m.meta_id = v.meta_id
+                INNER JOIN {$wpdb->prefix}cfs_fields f ON f.id = v.field_id
+                WHERE f.id IN ($field_ids) AND v.post_id IN ($post_id)
+                ORDER BY f.weight, v.field_id, v.weight, v.sub_weight";
+
+                $results = $wpdb->get_results($sql);
+                $num_rows = $wpdb->num_rows;
+
+                $prev_hierarchy = '';
+                $prev_field_id = '';
+                $prev_item = '';
+
+                foreach ($results as $order_num => $result)
                 {
-                    // Format for API (field names)
-                    if (false === $options->for_input)
+                    $field = $fields[$result->field_id];
+                    $current_item = "{$result->hierarchy}.{$result->weight}.{$result->field_id}";
+
+                    if (!empty($result->hierarchy))
                     {
-                        $tmp = explode(':', $result->hierarchy);
-                        foreach ($tmp as $key => $val)
+                        // Format for API (field names)
+                        if ('api' == $options->format || 'raw' == $options->format)
                         {
-                            if (0 == ($key % 2))
+                            $tmp = explode(':', $result->hierarchy);
+                            foreach ($tmp as $key => $val)
                             {
-                                $tmp[$key] = $fields[$val]->name;
+                                if (0 == ($key % 2))
+                                {
+                                    $tmp[$key] = $fields[$val]->name;
+                                }
                             }
+                            $hierarchy = implode(':', $tmp);
                         }
-                        $hierarchy = implode(':', $tmp);
+                        // Format for input (field IDs)
+                        else
+                        {
+                            $hierarchy = $result->hierarchy;
+                        }
+
+                        $this->assemble_value_array($field_data, $hierarchy, $field, $result->meta_value);
                     }
-                    // Format for input (field IDs)
                     else
                     {
-                        $hierarchy = $result->hierarchy;
+                        // Get the field name for "api" or "raw" formats
+                        if ('api' == $options->format || 'raw' == $options->format)
+                        {
+                            $hierarchy = $field->name;
+                        }
+                        else
+                        {
+                            $hierarchy = $field->id;
+                        }
+
+                        $field_data[$hierarchy][] = $result->meta_value;
                     }
 
-                    $this->assemble_value_array($field_data, $hierarchy, $field, $result->meta_value);
-                }
-                else
-                {
-                    // If "for_input" is false, get the field name
-                    $hierarchy = (false === $options->for_input) ? $field->name : $field->id;
-                    $field_data[$hierarchy][] = $result->meta_value;
-                }
+                    // Assemble the values
+                    if ($current_item != $prev_item && '' != $prev_item) // call apply_value_filters on previous field
+                    {
+                        $this->assemble_value_array($field_data, $prev_hierarchy, $fields[$prev_field_id], false, $options);
+                    }
 
-                // Assemble the values
-                if ($current_item != $prev_item && '' != $prev_item) // call apply_value_filters on previous field
-                {
-                    $this->assemble_value_array($field_data, $prev_hierarchy, $fields[$prev_field_id], false, $options);
-                }
+                    if ($num_rows == ($order_num + 1)) // last row
+                    {
+                        $this->assemble_value_array($field_data, $hierarchy, $field, false, $options);
+                    }
 
-                if ($num_rows == ($order_num + 1)) // last row
-                {
-                    $this->assemble_value_array($field_data, $hierarchy, $field, false, $options);
+                    $prev_hierarchy = $hierarchy;
+                    $prev_field_id = $field->id;
+                    $prev_item = $current_item;
                 }
-
-                $prev_hierarchy = $hierarchy;
-                $prev_field_id = $field->id;
-                $prev_item = $current_item;
             }
         }
 
-        $this->data[$post_id] = $field_data;
+        $this->cache[$options->format][$post_id] = $field_data;
         return $field_data;
     }
 
@@ -179,7 +196,7 @@ class cfs_Api
     *
     *-------------------------------------------------------------------------------------*/
 
-    function assemble_value_array(&$field_data, $hierarchy, $field, $value = false, $options = false)
+    private function assemble_value_array(&$field_data, $hierarchy, $field, $value = false, $options = false)
     {
         $data = &$field_data;
         foreach (explode(':', $hierarchy) as $i)
@@ -207,7 +224,7 @@ class cfs_Api
     *
     *-------------------------------------------------------------------------------------*/
 
-    function get_reverse_related($post_id, $options = array(), $deprecated = array())
+    public function get_reverse_related($post_id, $options = array(), $deprecated = array())
     {
         global $wpdb;
 
@@ -271,7 +288,7 @@ class cfs_Api
     *
     *-------------------------------------------------------------------------------------*/
 
-    function get_labels($field_name = false, $post_id = false)
+    public function get_labels($field_name = false, $post_id = false)
     {
         global $post, $wpdb;
 
@@ -311,15 +328,17 @@ class cfs_Api
     *
     *-------------------------------------------------------------------------------------*/
 
-    function apply_value_filters($field, $value, $options)
+    private function apply_value_filters($field, $value, $options)
     {
-        if (false !== $options->for_input)
-        {
-            $value = $this->parent->fields[$field->type]->format_value_for_input($value, $field);
-        }
-        else
+        $value = $this->parent->fields[$field->type]->prepare_value($value, $field);
+
+        if ('api' == $options->format)
         {
             $value = $this->parent->fields[$field->type]->format_value_for_api($value, $field);
+        }
+        elseif ('input' == $options->format)
+        {
+            $value = $this->parent->fields[$field->type]->format_value_for_input($value, $field);
         }
 
         return $value;
@@ -335,11 +354,11 @@ class cfs_Api
     *
     *-------------------------------------------------------------------------------------*/
 
-    function get_input_fields($group_id = false, $parent_id = false, $field_id = false)
+    public function get_input_fields($group_id = false, $parent_id = false, $field_id = false)
     {
         global $post, $wpdb;
 
-        $values = $this->get_fields($post->ID, array('for_input' => true));
+        $values = $this->get_fields($post->ID, array('format' => 'input'));
 
         $where = 'WHERE 1';
         $where .= (false !== $group_id) ? " AND post_id = $group_id" : '';
@@ -379,12 +398,12 @@ class cfs_Api
     *
     *-------------------------------------------------------------------------------------*/
 
-    function save_fields($field_data = array(), $post_data = array(), $options = array())
+    public function save_fields($field_data = array(), $post_data = array(), $options = array())
     {
         global $wpdb;
 
         $defaults = array(
-            'raw_input' => false,
+            'format' => 'api', // "api" or "input"
         );
         $options = (object) array_merge($defaults, $options);
 
@@ -436,7 +455,7 @@ class cfs_Api
         }
 
         // If this is an API call, flatten the data!
-        if (false === $options->raw_input)
+        if ('api' == $options->format)
         {
             // Remove the parent field data if using $cfs->save()
             $field_ids = array();
@@ -479,13 +498,15 @@ class cfs_Api
                     'parent_id' => 0,
                     'all_fields' => $fields,
                     'hierarchy' => array(),
-                    'raw_input' => $options->raw_input,
+                    'format' => $options->format,
                     'field_id_lookup' => $field_id_lookup,
                     'weight' => 0,
                     'depth' => 0,
                 )
             );
         }
+
+        return $post_id;
     }
 
 
@@ -498,7 +519,7 @@ class cfs_Api
     *
     *-------------------------------------------------------------------------------------*/
 
-    function save_fields_recursive($params)
+    private function save_fields_recursive($params)
     {
         global $wpdb;
 
@@ -508,9 +529,9 @@ class cfs_Api
 
         if (0 == $params['depth'] % 2)
         {
-            // If not raw_input, then field_id is actually the field name, and
+            // If not raw input, then field_id is actually the field name, and
             // we need to lookup the ID from the "field_id_lookup" array
-            if (false === $params['raw_input'])
+            if ('input' != $params['format'])
             {
                 $field_name = $field_id;
                 $field_id = (int) $params['field_id_lookup'][$params['parent_id'] . ':' . $field_name];

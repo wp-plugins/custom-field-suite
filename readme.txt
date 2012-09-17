@@ -3,25 +3,25 @@ Contributors: logikal16
 Donate link: https://uproot.us/contributors/
 Tags: fields, custom fields, cck, wysiwyg, relationship, date, loop, upload
 Requires at least: 3.2
-Tested up to: 3.4.2
+Tested up to: 3.5-alpha
 Stable tag: trunk
 
 Visually create and manage custom fields.
 
 == Description ==
 
-Custom Field Suite is a custom fields plugin for WordPress. It allows you to visually create groups of custom fields. Each field group can be placed on the edit pages of your choosing. It also includes a lightweight API for displaying custom fields throughout your site.
+Custom Field Suite is a custom fields management plugin. It allows you to visually create groups of custom fields. Each field group can be placed on the edit pages of your choosing. It also includes a lightweight API for displaying custom fields throughout your site.
 
 CFS is a [fork](http://bit.ly/14vScj) of Advanced Custom Fields. The main goals of this plugin are stability, performance, and avoiding feature bloat.
 
 = Why use CFS? =
-* CFS is stable. Our top priority is keeping your data safe. We test all changes before releasing new versions.
+* CFS is stable. We test all changes before releasing a new version.
 * CFS is fast.
 * CFS uses minimal resources.
 * CFS supports [Gravity Forms](https://uproot.us/how-to-save-gravity-forms-data-into-custom-field-suite/).
-* CFS supports custom field types (we had it before ACF).
+* CFS allows you to [add your own field types](http://uproot.us/custom-field-suite/docs/custom-field-type/).
 * CFS is 100% free.
-* [CFS is on GitHub!](https://github.com/logikal16/custom-field-suite/) You're encouraged to participate in the development process!
+* [CFS is on GitHub!](https://github.com/logikal16/custom-field-suite/)
 
 = Field Types =
 * Text (api returns text)
@@ -39,9 +39,8 @@ CFS is a [fork](http://bit.ly/14vScj) of Advanced Custom Fields. The main goals 
 = More Features =
 * Drag-n-drop field management UI
 * Loop fields support unlimited nesting!
-* Placement Rules allow you to customize where each field group appears
+* Placement Rules let you choose where each field group appears
 * Use the Sync feature to import existing custom field values
-* [Create your own field types](http://uproot.us/custom-field-suite/docs/custom-field-type/)
 
 = Documentation and Support =
 * http://uproot.us/
@@ -59,6 +58,17 @@ CFS is a [fork](http://bit.ly/14vScj) of Advanced Custom Fields. The main goals 
 4. The Tools area for migrating field groups
 
 == Changelog ==
+
+= 1.6.9 =
+* $cfs->save() returns the post ID (props Miguel Peixe)
+* Added new "prepare_value" field method (format raw DB values)
+* WPML 2.6+ support (properly copies custom field data on post duplication)
+* Added new $options parameter to $cfs->get (documentation shortly)
+* Fixed PHP notices (props @baxang)
+* Bugfix: Page Template placement rule (props Hylkep)
+* Bugfix: Error handling for field groups without fields
+* Bugfix: Inability to remove all fields in a field group
+* Enhancement: prevent consecutive underscores with field name generator
 
 = 1.6.8 =
 * Added "Page Template" placement rule

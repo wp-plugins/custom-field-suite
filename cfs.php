@@ -2,8 +2,8 @@
 /*
 Plugin Name: Custom Field Suite
 Plugin URI: http://uproot.us/custom-field-suite/
-Description: Visually create and manage custom fields. CFS is a fork of Advanced Custom Fields.
-Version: 1.6.8
+Description: Visually create and manage custom fields.
+Version: 1.6.9
 Author: Matt Gibbs
 Author URI: http://uproot.us/
 License: GPL
@@ -11,7 +11,7 @@ Copyright: Matt Gibbs
 */
 
 $cfs = new Cfs();
-$cfs->version = '1.6.8';
+$cfs->version = '1.6.9';
 
 class Cfs
 {
@@ -55,7 +55,7 @@ class Cfs
 
         // 3rd party hooks
         add_action('gform_post_submission', array($this, 'gform_handler'), 10, 2);
-        //add_action('icl_make_duplicate', array($this, 'wpml_handler'), 10, 4);
+        add_action('icl_make_duplicate', array($this, 'wpml_handler'), 10, 4);
 
         // add translations
         load_plugin_textdomain('cfs', false, 'custom-field-suite/lang');
@@ -158,8 +158,14 @@ class Cfs
 
         foreach ($field_types as $type => $path)
         {
-            include_once($path);
             $class_name = 'cfs_' . ucwords($type);
+
+            // Allow for multiple classes per file
+            if (!class_exists($class_name))
+            {
+                include_once($path);
+            }
+
             $field_types[$type] = new $class_name($this);
         }
 
@@ -184,6 +190,7 @@ class Cfs
         $matches = array();
         $post_id = (int) $post_id;
         $post_type = get_post_type($post_id);
+        $page_template = get_post_meta($post_id, '_wp_page_template', true);
         $user_roles = $current_user->roles;
         $term_ids = array();
 
@@ -211,6 +218,7 @@ class Cfs
             'user_roles' => $user_roles,
             'term_ids' => $term_ids,
             'post_ids' => $post_id,
+            'page_templates' => $page_template,
         );
 
         // Ignore user_roles if used within get_fields
@@ -273,13 +281,13 @@ class Cfs
     *
     *-------------------------------------------------------------------------------------*/
 
-    function get($field_name = false, $post_id = false)
+    function get($field_name = false, $post_id = false, $options = array())
     {
         if (false !== $field_name)
         {
-            return $this->api->get_field($field_name, $post_id);
+            return $this->api->get_field($field_name, $post_id, $options);
         }
-        return $this->api->get_fields($post_id);
+        return $this->api->get_fields($post_id, $options);
     }
 
 
@@ -431,8 +439,8 @@ class Cfs
         {
             $field_data = isset($_POST['cfs']['input']) ? $_POST['cfs']['input'] : array();
             $post_data = array('ID' => $_POST['ID']);
-            $options = array('raw_input' => true);
-            $this->api->save_fields($field_data, $post_data, $options);
+            $options = array('format' => 'input');
+            $this->save($field_data, $post_data, $options);
         }
 
         return $post_id;
@@ -841,7 +849,7 @@ class Cfs
 
     function wpml_handler($master_id, $lang, $post_data, $duplicate_id)
     {
-        $field_data = $this->get(false, $master_id);
+        $field_data = $this->get(false, $master_id, array('format' => 'raw'));
         $this->save($field_data, array('ID' => $duplicate_id));
     }
 }

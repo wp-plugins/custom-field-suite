@@ -62,7 +62,7 @@ class cfs_User extends cfs_Field
     <?php
     }
 
-    function input_head($field = null)
+    function input_head()
     {
     ?>
         <link rel="stylesheet" type="text/css" href="<?php echo $this->parent->url; ?>/js/tipTip/tipTip.css" />
@@ -145,14 +145,14 @@ class cfs_User extends cfs_Field
     <?php
     }
 
+    function prepare_value($value, $field)
+    {
+        return $value;
+    }
+
     function format_value_for_input($value, $field)
     {
         return empty($value) ? '' : implode(',', $value);
-    }
-
-    function format_value_for_api($value, $field)
-    {
-        return $value;
     }
 
     function pre_save($value, $field)
