@@ -1,17 +1,17 @@
 <?php
 /*
 Plugin Name: Custom Field Suite
-Plugin URI: http://uproot.us/custom-field-suite/
+Plugin URI: https://uproot.us/
 Description: Visually create and manage custom fields.
-Version: 1.6.9
+Version: 1.7.0
 Author: Matt Gibbs
-Author URI: http://uproot.us/
+Author URI: https://uproot.us/
 License: GPL
 Copyright: Matt Gibbs
 */
 
 $cfs = new Cfs();
-$cfs->version = '1.6.9';
+$cfs->version = '1.7.0';
 
 class Cfs
 {
@@ -400,7 +400,7 @@ class Cfs
 
     function admin_menu()
     {
-        add_object_page(__('Field Groups', 'cfs'), __('Field Groups', 'cfs'), 'manage_options', 'edit.php?post_type=cfs');
+        add_object_page(__('Field Groups', 'cfs'), __('Field Groups', 'cfs'), 'manage_options', 'edit.php?post_type=cfs', null, $this->url . '/images/logo-small.png');
         add_submenu_page('edit.php?post_type=cfs', __('Tools', 'cfs'), __('Tools', 'cfs'), 'manage_options', 'cfs-tools', array($this, 'page_tools'));
     }
 
