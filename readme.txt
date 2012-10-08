@@ -1,4 +1,4 @@
-﻿=== Custom Field Suite ===
+=== Custom Field Suite ===
 Contributors: logikal16
 Donate link: https://uproot.us/contributors/
 Tags: fields, custom fields, cck, wysiwyg, relationship, date, loop, upload
@@ -15,13 +15,13 @@ Custom Field Suite is a custom fields management plugin. It allows you to visual
 **CFS is a fork of Advanced Custom Fields.** The main goals of this plugin are stability, performance, and avoiding feature bloat.
 
 = Why use CFS? =
-* CFS is easy-to-use. Both devs and clients will love it!
+* CFS is easy-to-use. You and your clients will LOVE it!
 * CFS is stable. We test all changes before releasing a new version.
 * CFS is fast and uses minimal server resources.
 * CFS is 100% free.
-* CFS has [full documentation](https://uproot.us/custom-field-suite/documentation/)
-* Our [support forums](https://uproot.us/forums/) will help get your questions answered quicky.
-* CFS integrates with [Gravity Forms](https://uproot.us/how-to-save-gravity-forms-data-into-custom-field-suite/). CFS can save Gravity Forms entries as custom post type items with custom fields.
+* CFS has [full documentation](https://uproot.us/custom-field-suite/documentation/).
+* Our [forums](https://uproot.us/forums/) will quickly provide support when you need it.
+* CFS integrates with [Gravity Forms](https://uproot.us/how-to-save-gravity-forms-data-into-custom-field-suite/). CFS can even save Gravity Forms entries as custom post type items with custom fields.
 * CFS supports [adding your own field types](http://uproot.us/custom-field-suite/docs/custom-field-type/).
 * [CFS is on GitHub](https://github.com/logikal16/custom-field-suite/)
 
@@ -39,6 +39,7 @@ Custom Field Suite is a custom fields management plugin. It allows you to visual
 * Loop (a container for other fields, api returns array of arrays)
 
 = More Features =
+* Field validation
 * Drag-n-drop field management UI
 * Loop fields support unlimited nesting!
 * Placement Rules let you choose where each field group appears
@@ -60,6 +61,11 @@ Custom Field Suite is a custom fields management plugin. It allows you to visual
 4. The Tools area for migrating field groups
 
 == Changelog ==
+
+= 1.7.3 =
+* Added field validation
+* Bugfix: get_post_type caching causing Gravity Form save error (props producerism)
+* Added Hungarian translation (props József Szijártó)
 
 = 1.7.2 =
 * Added Media button to WYSIWYG fields
