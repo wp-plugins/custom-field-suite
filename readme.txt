@@ -6,7 +6,7 @@ Requires at least: 3.2
 Tested up to: 3.5
 Stable tag: trunk
 
-Really simple custom field management.
+Really simple management of custom fields.
 
 == Description ==
 
@@ -19,10 +19,9 @@ Create groups of custom fields, then choose which edit screens to appear on. Eac
 * CFS is stable. We test all changes before releasing a new version.
 * CFS is fast and uses minimal server resources.
 * CFS has [full documentation](https://uproot.us/custom-field-suite/documentation/) and [support forums](https://uproot.us/forums/).
-* CFS works well with [Gravity Forms](https://uproot.us/how-to-save-gravity-forms-data-into-custom-field-suite/). It can save GF entries as post items with custom fields.
+* CFS works well with [Gravity Forms](https://uproot.us/how-to-save-gravity-forms-data-into-custom-field-suite/). It can save GF entries as post items.
 * CFS supports [adding your own field types](http://uproot.us/custom-field-suite/docs/custom-field-type/).
 * [We're on GitHub!](https://github.com/logikal16/custom-field-suite/)
-* CFS is 100% free.
 
 = Field Types =
 * [Text](https://uproot.us/docs/text/)
@@ -39,7 +38,7 @@ Create groups of custom fields, then choose which edit screens to appear on. Eac
 
 = More Features =
 * Field validation
-* Drag-n-drop field management
+* Drag-and-drop field management
 * Loop fields support unlimited nesting!
 * Placement Rules let you choose where each field group appears
 * Sync feature for importing meta values into existing field groups
