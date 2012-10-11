@@ -1,4 +1,4 @@
-=== Custom Field Suite ===
+=== Custom Fields Suite ===
 Contributors: logikal16
 Donate link: https://uproot.us/contributors/
 Tags: fields, custom fields, cck, wysiwyg, relationship, date, loop, upload
@@ -10,7 +10,7 @@ Dead simple custom field management.
 
 == Description ==
 
-Custom Field Suite is a custom fields management plugin. It allows you to visually create groups of custom fields. Each field group can be placed on the edit pages of your choosing. It also includes a lightweight API for displaying custom fields throughout your site.
+Custom Fields Suite is a custom fields management plugin. It allows you to visually create groups of custom fields. Each field group can be placed on the edit pages of your choosing. It also includes a lightweight API for displaying custom fields throughout your site.
 
 **CFS is a fork of Advanced Custom Fields.** The main goals of this plugin are stability, performance, and avoiding feature bloat.
 
