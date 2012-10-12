@@ -48,12 +48,6 @@ Create groups of custom fields, then choose which edit screens to appear on. Eac
 * http://uproot.us/custom-field-suite/documentation/
 * https://uproot.us/forums/
 
-= The WP.org plugin search is awful =
-custom fields custom fields custom fields custom fields custom fields custom fields
-custom fields custom fields custom fields custom fields custom fields custom fields
-custom fields custom fields custom fields custom fields custom fields custom fields
-custom fields custom fields custom fields custom fields custom fields custom fields
-
 == Installation ==
 
 1. Download and activate the plugin.
