@@ -1,4 +1,4 @@
-=== Custom Fields Suite ===
+=== Custom Field Suite ===
 Contributors: logikal16
 Donate link: https://uproot.us/contributors/
 Tags: custom fields, custom field, fields, post meta, cck, wysiwyg, relationship, loop, file upload
@@ -6,7 +6,7 @@ Requires at least: 3.2
 Tested up to: 3.5
 Stable tag: trunk
 
-Really simple management of custom fields.
+Really simple custom field management.
 
 == Description ==
 
