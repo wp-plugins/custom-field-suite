@@ -40,22 +40,14 @@ CFS.field_index = <?php echo $field_count; ?>;
 CFS.field_clone = <?php echo json_encode($field_clone); ?>;
 CFS.options_html = <?php echo json_encode($options_html); ?>;
 
-(function($) {
-    $(function() {
-        $('span.checkbox').live('click', function() {
-            var val = $(this).hasClass('active') ? 0 : 1;
-            $(this).siblings('input').val(val);
-            $(this).toggleClass('active');
-        });
-    });
-})(jQuery);
-
 </script>
 
 <script src="<?php echo $this->url; ?>/js/fields.js"></script>
 <script src="<?php echo $this->url; ?>/js/select2/select2.min.js"></script>
+<script src="<?php echo $this->url; ?>/js/tipTip/jquery.tipTip.js"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/css/fields.css" />
 <link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/js/select2/select2.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/js/tipTip/tipTip.css" />
 
 <?php
 }

@@ -61,6 +61,12 @@ Create groups of custom fields, then choose which edit screens to appear on. Eac
 
 == Changelog ==
 
+= 1.7.4 =
+* Improved upgrade script
+* Added German translation (props Sascha Brosi)
+* Bugfix: javascript issues for fields within sub-loop fields (props @sc0ttkclark)
+* Added tooltips to field management page
+
 = 1.7.3 =
 * Added field validation
 * Bugfix: get_post_type caching causing Gravity Form save error (props producerism)
