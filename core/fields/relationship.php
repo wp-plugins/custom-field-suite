@@ -29,7 +29,6 @@ class cfs_Relationship extends cfs_Field
             $where = " AND post_type IN ('" . implode("','", $where) . "')";
         }
 
-
         $results = $wpdb->get_results("SELECT ID, post_type, post_status, post_title FROM $wpdb->posts WHERE post_status IN ('publish','private') $where ORDER BY post_title");
         foreach ($results as $result)
         {
@@ -50,7 +49,7 @@ class cfs_Relationship extends cfs_Field
         <div class="filter_posts">
             <input type="text" class="cfs_filter_input" autocomplete="off" />
             <div class="cfs_filter_help">
-                <div class="cfs_help_text hidden">
+                <div class="cfs_tooltip hidden">
                     <ul>
                         <li style="font-size:15px; font-weight:bold">Sample queries</li>
                         <li>"foobar" (find posts containing "foobar")</li>
@@ -84,7 +83,6 @@ class cfs_Relationship extends cfs_Field
     {
         $post_types = isset($field->options['post_types']) ? $field->options['post_types'] : null;
         $choices = get_post_types(array('exclude_from_search' => false));
-        $choices = implode("\n", $choices);
     ?>
         <tr class="field_option field_option_<?php echo $this->name; ?>">
             <td class="label">
@@ -93,12 +91,28 @@ class cfs_Relationship extends cfs_Field
             </td>
             <td>
                 <?php
-                    $this->parent->create_field((object) array(
+                    $this->parent->create_field(array(
                         'type' => 'select',
                         'input_name' => "cfs[fields][$key][options][post_types]",
                         'input_class' => '',
-                        'options' => array('choices' => $choices, 'multiple' => '1'),
-                        'value' => $post_types,
+                        'options' => array('multiple' => '1', 'choices' => $choices),
+                        'value' => $this->get_option($field, 'post_types'),
+                    ));
+                ?>
+            </td>
+        </tr>
+        <tr class="field_option field_option_<?php echo $this->name; ?>">
+            <td class="label">
+                <label><?php _e('Validation', 'cfs'); ?></label>
+            </td>
+            <td>
+                <?php
+                    $this->parent->create_field(array(
+                        'type' => 'true_false',
+                        'input_name' => "cfs[fields][$key][options][required]",
+                        'input_class' => 'true_false',
+                        'value' => $this->get_option($field, 'required'),
+                        'options' => array('message' => __('This is a required field', 'cfs')),
                     ));
                 ?>
             </td>
@@ -106,12 +120,12 @@ class cfs_Relationship extends cfs_Field
     <?php
     }
 
-    function input_head($field = null)
+    function input_head()
     {
     ?>
         <link rel="stylesheet" type="text/css" href="<?php echo $this->parent->url; ?>/js/tipTip/tipTip.css" />
-        <script type="text/javascript" src="<?php echo $this->parent->url; ?>/js/tipTip/jquery.tipTip.js"></script>
-        <script type="text/javascript">
+        <script src="<?php echo $this->parent->url; ?>/js/tipTip/jquery.tipTip.js"></script>
+        <script>
         (function($) {
             update_relationship_values = function(field) {
                 var post_ids = [];
@@ -122,7 +136,7 @@ class cfs_Relationship extends cfs_Field
             }
 
             $(function() {
-                $('.cfs_add_field').bind('go', function() {
+                $('.cfs_add_field').live('go', function() {
                     $('.cfs_relationship:not(.ready)').init_relationship();
                 });
                 $('.cfs_relationship').init_relationship();
@@ -136,7 +150,7 @@ class cfs_Relationship extends cfs_Field
                     // tooltip
                     $this.find('.cfs_filter_help').tipTip({
                         maxWidth: '400px',
-                        content: $this.find('.cfs_help_text').html()
+                        content: $this.find('.cfs_tooltip').html()
                     });
 
                     // sortable
@@ -210,27 +224,32 @@ class cfs_Relationship extends cfs_Field
     <?php
     }
 
-    function format_value_for_api($value)
+    function prepare_value($value, $field)
     {
-        $return = false;
+        return $value;
+    }
 
-        if (!empty($value[0]))
+    function format_value_for_input($value, $field)
+    {
+        return empty($value) ? '' : implode(',', $value);
+    }
+
+    function pre_save($value, $field)
+    {
+        if (!empty($value))
         {
+            // Inside a loop, the value is $value[0]
+            $value = (array) $value;
+
+            // The raw input saves a comma-separated string
             if (false !== strpos($value[0], ','))
             {
-                $return = array();
-                $value = explode(',', $value[0]);
-                foreach ($value as $v)
-                {
-                    $return[] = $v;
-                }
+                return explode(',', $value[0]);
             }
-            else
-            {
-                $return = array($value[0]);
-            }
+
+            return $value;
         }
 
-        return $return;
+        return array();
     }
 }

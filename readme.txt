@@ -1,114 +1,114 @@
 === Custom Field Suite ===
 Contributors: logikal16
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JMVGK3L35X6BU
-Tags: custom, fields, custom fields, cck, post types, gravity forms, field permissions
+Donate link: https://uproot.us/contributors/
+Tags: custom fields, custom field, fields, post meta, cck, wysiwyg, relationship, loop, file upload
 Requires at least: 3.2
-Tested up to: 3.3.1
+Tested up to: 3.5
 Stable tag: trunk
 
-Custom Field Suite is the easiest way to visually manage custom fields.
+Really simple custom field management.
 
 == Description ==
 
-Use Custom Field Suite to add custom fields to your WordPress edit screens.
+Create groups of custom fields, then choose which edit screens to appear on. Each field group has its own meta box, allowing for plenty of customization. CFS includes a lightweight API for displaying custom fields throughout your site.
+
+**CFS is a fork of Advanced Custom Fields.** The main goals of this plugin are stability, performance, and avoiding feature bloat.
+
+= Why use CFS? =
+* CFS is easy to use. You and your clients will LOVE it!
+* CFS is stable. We test all changes before releasing a new version.
+* CFS is fast and uses minimal server resources.
+* CFS has [full documentation](https://uproot.us/custom-field-suite/documentation/) and [support forums](https://uproot.us/forums/).
+* CFS works well with [Gravity Forms](https://uproot.us/how-to-save-gravity-forms-data-into-custom-field-suite/). It can save GF entries as post items.
+* CFS supports [adding your own field types](http://uproot.us/custom-field-suite/docs/custom-field-type/).
+* [We're on GitHub!](https://github.com/logikal16/custom-field-suite/)
 
 = Field Types =
-* Text (api returns text)
-* Textarea (api returns text with `<br />`)
-* Wysiwyg Editor (api returns html)
-* Date (api returns text)
-* True / False (api returns 0 or 1)
-* Select (api returns array of values)
-* Relationship (api returns array of post IDs)
-* File Upload (api returns file url)
-* Loop (repeatable fields!)
+* [Text](https://uproot.us/docs/text/)
+* [Textarea](https://uproot.us/docs/textarea/)
+* [Wysiwyg Editor](https://uproot.us/docs/wysiwyg/)
+* [Date](https://uproot.us/docs/date/)
+* [Color](https://uproot.us/docs/color/)
+* [True / False](https://uproot.us/docs/true-false/)
+* [Select](https://uproot.us/docs/select/)
+* [File Upload](https://uproot.us/docs/file-upload/)
+* [User](https://uproot.us/docs/user/)
+* [Relationship](https://uproot.us/docs/relationship/)
+* [Loop](https://uproot.us/docs/loop/)
 
 = More Features =
-* Customize where each field group will appear
-* [Create your own field types](http://uproot.us/custom-field-suite/docs/custom-field-type/)
-* [Gravity Forms integration](http://uproot.us/custom-field-suite/docs/gravity-forms-integration/)
-* Custom Field Import (migrate existing custom fields into CFS)
+* Field validation
+* Drag-and-drop field management
+* Loop fields support unlimited nesting!
+* Placement Rules let you choose where each field group appears
+* Sync feature for importing meta values into existing field groups
 
 = Documentation and Support =
 * http://uproot.us/
-* http://uproot.us/forums/
-
+* http://uproot.us/custom-field-suite/documentation/
+* https://uproot.us/forums/
 
 == Installation ==
 
 1. Download and activate the plugin.
-2. Browse to `Settings > Custom Field Suite` to configure.
-
+2. Browse to the `Field Groups` menu to configure.
 
 == Screenshots ==
-1. A custom field group, with several fields added.
-
+1. A custom field group with field nesting (loop field)
+2. Clicking on a field name expands the box to show options
+3. Placement Rules determine where field groups appear
+4. The Tools area for migrating field groups
 
 == Changelog ==
 
-= 1.3.8 =
-* Bugfix: custom translation file path incorrect
+= 1.7.4 =
+* Improved upgrade script
+* Added German translation (props Sascha Brosi)
+* Bugfix: javascript issues for fields within sub-loop fields (props @sc0ttkclark)
+* Added tooltips to field management page
 
-= 1.3.7 =
-* Bugfix: gravity form data not saving to correct post type
+= 1.7.3 =
+* Added field validation
+* Bugfix: get_post_type caching causing Gravity Form save error (props producerism)
+* Added Hungarian translation (props József Szijártó)
 
-= 1.3.6 =
-* Added thumbnail for uploaded images
-* Bugfix: loop not displaying properly when saving first 2+ rows
-* Bugfix: wysiwyg field not loading when adding dynamically within loop
+= 1.7.2 =
+* Added Media button to WYSIWYG fields
+* Bugfix: [fatal error when a post update causes a rules mismatch](https://github.com/logikal16/custom-field-suite/issues/55) (props Gator92)
+* Tools page UI improvements
 
-= 1.3.5 =
-* Bugfix: rare bug with relationship select boxes
-* Bugfix: private posts now appear within Placement Rules
-* Bugfix: prevent "navigate away from page" box on save
-* Upload button appears as "Attach File" instead of "Insert into Post"
+= 1.7.1 =
+* Placement rules clarification text
+* Allow editing of fields without labels
+* Added new "Row Label" Loop option
+* Bugfix: nested loop fields (props Hylkep)
+* Updated timepicker JS
 
-= 1.3.4 =
-* Added custom field import / mapping script
+= 1.7.0 =
+* Improved: field management UI
+* Improved: select field returns associative array (value, label)
+* Improved: rename postmeta keys when fields are renamed
+* Improved: delete values when a field is deleted
+* Bugfix: clear cache on $cfs->save (props dataworx)
+* File field compatibility fixes for WP 3.5
+* Added new logo (https://github.com/somerandomdude/Iconic)
 
-= 1.3.3 =
-* Upgraded chosen.js
-* Added get_labels() API method
-* Bugfix: Javascript issues for some fields within loop (wysiwyg, date, relationship)
+= 1.6.9 =
+* $cfs->save() returns the post ID (props Miguel Peixe)
+* Added new "prepare_value" field method (format raw DB values)
+* WPML 2.6+ support (properly copies custom field data on post duplication)
+* Added new $options parameter to $cfs->get (documentation shortly)
+* Fixed PHP notices (props @baxang)
+* Bugfix: Page Template placement rule (props Hylkep)
+* Bugfix: Error handling for field groups without fields
+* Bugfix: Inability to remove all fields in a field group
+* Improved: prevent consecutive underscores with field name generator
 
-= 1.3.2 =
-* Bugfix: in some cases, the "User Roles" placement rule prevented values from displaying
-* Bugfix: only published field groups should appear on edit pages
+= 1.6.8 =
+* Added "Page Template" placement rule
+* Improved Loop field UI (props @tdwesten)
+* Converted select options from string to array (internal)
+* Added new "pre_save_field" method
+* Code cleanup
 
-= 1.3.1 =
-* Added private posts to relationship field
-
-= 1.3.0 =
-* Gravity Forms integration!
-* Better error handling for the API save() method
-
-= 1.2.6 =
-* Bugfix: issue with taxonomy rules / post_format (props Hylkep)
-* Changed default date format to yyyy-mm-dd
-
-= 1.2.5 =
-* Bugfix: editor issues with WP 3.3
-* Updated translation file
-* CFS post type excluded from rules list (props @thecorkboard)
-* Minor code cleanup
-
-= 1.2.4 =
-* Bugfix: editor not appearing when adding new posts
-
-= 1.2.3 =
-* Bugfix: rule matching not working correctly
-
-= 1.2.2 =
-* Bugfix: unable to add new field group (props @brewern)
-* Bugfix: file fields not working without post type "editor" support
-* Updated timepicker script
-
-= 1.2.1 =
-* Excluded tags from taxonomy rules list
-
-= 1.2.0 =
-* New placement rule: User Role
-* New placement rule: Taxonomy Term
-* New placement rule: Post ID
-* Removed cfs_rules table in favor of postmeta
-* WP 3.3 compatibility
+[See the full changelog](https://uproot.us/custom-field-suite/changelog/)

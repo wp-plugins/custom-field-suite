@@ -17,15 +17,18 @@ class cfs_File extends cfs_Field
     {
         $file_url = $field->value;
 
-        if (is_numeric($field->value))
+        if (ctype_digit($field->value))
         {
             if (wp_attachment_is_image($field->value))
             {
-                $file_url = wp_get_attachment_image($field->value);
+                $file_url = wp_get_attachment_image_src($field->value);
+                $file_url = '<img src="' . $file_url[0] . '" />';
             }
             else
             {
                 $file_url = wp_get_attachment_url($field->value);
+                $filename = substr($file_url, strrpos($file_url, '/') + 1);
+                $file_url = '<a href="'. $file_url .'" target="_blank">'. $filename .'</a>';
             }
         }
 
@@ -45,6 +48,49 @@ class cfs_File extends cfs_Field
     <?php
     }
 
+    function options_html($key, $field)
+    {
+    ?>
+        <tr class="field_option field_option_<?php echo $this->name; ?>">
+            <td class="label">
+                <label><?php _e('Return Value', 'cfs'); ?></label>
+            </td>
+            <td>
+                <?php
+                    $this->parent->create_field(array(
+                        'type' => 'select',
+                        'input_name' => "cfs[fields][$key][options][return_value]",
+                        'options' => array(
+                            'choices' => array(
+                                'url' => __('File URL', 'cfs'),
+                                'id' => __('Attachment ID', 'cfs')
+                            )
+                        ),
+                        'input_class' => '',
+                        'value' => $this->get_option($field, 'return_value', 'url'),
+                    ));
+                ?>
+            </td>
+        </tr>
+        <tr class="field_option field_option_<?php echo $this->name; ?>">
+            <td class="label">
+                <label><?php _e('Validation', 'cfs'); ?></label>
+            </td>
+            <td>
+                <?php
+                    $this->parent->create_field(array(
+                        'type' => 'true_false',
+                        'input_name' => "cfs[fields][$key][options][required]",
+                        'input_class' => 'true_false',
+                        'value' => $this->get_option($field, 'required'),
+                        'options' => array('message' => __('This is a required field', 'cfs')),
+                    ));
+                ?>
+            </td>
+        </tr>
+    <?php
+    }
+
     function popup_head()
     {
         // Don't interfere with the default Media popup
@@ -54,7 +100,7 @@ class cfs_File extends cfs_Field
             $post_type = get_post_type($_GET['post_id']);
             add_post_type_support($post_type, 'editor');
     ?>
-        <script type="text/javascript">
+        <script>
         (function($) {
             $(function() {
                 $('form#filter').each(function() {
@@ -68,7 +114,7 @@ class cfs_File extends cfs_Field
                     $this.find('tr.url').hide();
                     $this.find('tr.align').hide();
                     $this.find('tr.image-size').hide();
-                    $this.find('tr.submit input.button').val('<?php _e('Attach File', 'cfs'); ?>');
+                    $this.find('tr.submit input.button').val('<?php _e('Use This File', 'cfs'); ?>');
                 }).trigger('DOMNodeInserted');
             });
         })(jQuery);
@@ -83,9 +129,19 @@ class cfs_File extends cfs_Field
 
         if (isset($postdata['cfs_file']))
         {
-            $file_url = wp_attachment_is_image($id) ? wp_get_attachment_image($id) : $attachment['url'];
+            if (wp_attachment_is_image($id))
+            {
+                $file_url = wp_get_attachment_image_src($id);
+                $file_url = '<img src="' . $file_url[0] . '" />';
+            }
+            else
+            {
+                $file_url = wp_get_attachment_url($id);
+                $filename = substr($file_url, strrpos($file_url, '/') + 1);
+                $file_url = '<a href="'. $file_url .'" target="_blank">'. $filename .'</a>';
+            }
     ?>
-        <script type="text/javascript">
+        <script>
         self.parent.cfs_div.hide();
         self.parent.cfs_div.siblings('.media.button.remove').show();
         self.parent.cfs_div.siblings('.file_url').html('<?php echo $file_url; ?>');
@@ -106,12 +162,12 @@ class cfs_File extends cfs_Field
     {
         global $post;
     ?>
-        <script type="text/javascript">
+        <script>
         (function($) {
             $(function() {
                 $('.cfs_input .media.button.add').live('click', function() {
                     window.cfs_div = $(this);
-                    tb_show('Attach file', 'media-upload.php?post_id=<?php echo $post->ID; ?>&cfs_file=1&TB_iframe=1&width=640&height=480');
+                    tb_show('<?php _e('Attach file', 'cfs'); ?>', 'media-upload.php?post_id=<?php echo $post->ID; ?>&cfs_file=1&TB_iframe=1&width=640&height=480');
                     return false;
                 });
                 $('.cfs_input .media.button.remove').live('click', function() {
@@ -126,12 +182,13 @@ class cfs_File extends cfs_Field
     <?php
     }
 
-    function format_value_for_api($value)
+    function format_value_for_api($value, $field)
     {
-        if (is_numeric($value[0]))
+        if (ctype_digit($value))
         {
-            return wp_get_attachment_url($value[0]);
+            $return_value = $this->get_option($field, 'return_value', 'url');
+            return ('id' == $return_value[0]) ? (int) $value : wp_get_attachment_url($value);
         }
-        return $value[0];
+        return $value;
     }
 }

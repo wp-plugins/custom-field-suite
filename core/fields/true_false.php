@@ -12,10 +12,11 @@ class cfs_True_false extends cfs_Field
 
     function html($field)
     {
-        $selected = ('1' == (string) $field->value) ? ' checked' : '';
+        $field->value = (0 < (int) $field->value) ? 1 : 0;
     ?>
-        <input type="checkbox" name="<?php echo $field->input_name; ?>" class="<?php echo $field->input_class; ?>" value="1"<?php echo $selected; ?> />
+        <span class="checkbox<?php echo $field->value ? ' active' : ''; ?>"></span>
         <span><?php echo $field->options['message']; ?></span>
+        <input type="hidden" name="<?php echo $field->input_name; ?>" class="<?php echo $field->input_class; ?>" value="<?php echo $field->value; ?>" />
     <?php
     }
 
@@ -29,11 +30,27 @@ class cfs_True_false extends cfs_Field
             </td>
             <td>
                 <?php
-                    $this->parent->create_field((object) array(
+                    $this->parent->create_field(array(
                         'type' => 'text',
                         'input_name' => "cfs[fields][$key][options][message]",
                         'input_class' => '',
-                        'value' => $field->options['message'],
+                        'value' => $this->get_option($field, 'message'),
+                    ));
+                ?>
+            </td>
+        </tr>
+        <tr class="field_option field_option_<?php echo $this->name; ?>">
+            <td class="label">
+                <label><?php _e('Validation', 'cfs'); ?></label>
+            </td>
+            <td>
+                <?php
+                    $this->parent->create_field(array(
+                        'type' => 'true_false',
+                        'input_name' => "cfs[fields][$key][options][required]",
+                        'input_class' => 'true_false',
+                        'value' => $this->get_option($field, 'required'),
+                        'options' => array('message' => __('This is a required field', 'cfs')),
                     ));
                 ?>
             </td>
@@ -41,8 +58,38 @@ class cfs_True_false extends cfs_Field
     <?php
     }
 
-    function format_value_for_api($value)
+    function input_head()
     {
-        return ('1' == (string) $value[0]) ? 1 : 0;
+    ?>
+        <script>
+        (function($) {
+            $(function() {
+                $('.cfs_add_field').live('go', function() {
+                    $('.cfs_true_false:not(.ready)').init_true_false();
+                });
+                $('.cfs_true_false').init_true_false();
+            });
+
+            $.fn.init_true_false = function() {
+                this.each(function() {
+                    var $this = $(this);
+                    $this.addClass('ready');
+
+                    // handle click
+                    $this.find('span.checkbox').click(function() {
+                        var val = $(this).hasClass('active') ? 0 : 1;
+                        $(this).siblings('.true_false').val(val);
+                        $(this).toggleClass('active');
+                    });
+                });
+            }
+        })(jQuery);
+        </script>
+    <?php
+    }
+
+    function format_value_for_api($value, $field)
+    {
+        return (0 < (int) $value) ? 1 : 0;
     }
 }

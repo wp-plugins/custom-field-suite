@@ -1,154 +1,118 @@
-# Copyright (C) 2010 
+# Copyright (C) 2012 
 # This file is distributed under the same license as the  package.
 msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/custom-field-suite\n"
-"POT-Creation-Date: 2011-12-29 15:09:24+00:00\n"
+"POT-Creation-Date: 2012-10-08 12:43:56+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2010-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2012-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: core/fields/loop.php:9
-msgid "Loop"
-msgstr ""
-
-#: core/fields/loop.php:109
-msgid "Loop Fields"
-msgstr ""
-
-#: core/fields/field.php:21 core/fields/text.php:9
-msgid "Text"
-msgstr ""
-
-#: core/fields/select.php:9
-msgid "Select"
-msgstr ""
-
-#: core/fields/select.php:72
-msgid "Choices"
-msgstr ""
-
-#: core/fields/select.php:73
-msgid "Enter one choice per line"
-msgstr ""
-
-#: core/fields/select.php:88
-msgid "Select multiple values?"
-msgstr ""
-
-#: core/fields/true_false.php:9
-msgid "True / False"
-msgstr ""
-
-#: core/fields/true_false.php:27
-msgid "Message"
-msgstr ""
-
-#: core/fields/true_false.php:28
-msgid "The text beside the checkbox"
-msgstr ""
-
-#: core/fields/relationship.php:9
-msgid "Relationship"
-msgstr ""
-
-#: core/fields/relationship.php:83 core/admin/meta_box_rules.php:54
-msgid "Post Types"
-msgstr ""
-
-#: core/fields/relationship.php:84
-msgid "Limit posts to the following types"
-msgstr ""
-
-#: core/fields/textarea.php:9
-msgid "Textarea"
-msgstr ""
-
-#: core/fields/textarea.php:25 core/fields/text.php:18
-msgid "Default Value"
-msgstr ""
-
-#: core/fields/date/date.php:9
-msgid "Date"
-msgstr ""
-
-#: core/fields/file.php:9
-msgid "File Upload"
-msgstr ""
-
-#: core/fields/file.php:29
-msgid "Add File"
-msgstr ""
-
-#: core/fields/file.php:30
-msgid "Remove"
-msgstr ""
-
-#: core/fields/wysiwyg.php:9
-msgid "Wysiwyg Editor"
-msgstr ""
-
-#: core/actions/admin_footer.php:12 cfs.php:285
-msgid "Custom Field Suite"
-msgstr ""
-
-#: core/actions/admin_footer.php:15
-msgid "Changelog"
-msgstr ""
-
-#: core/actions/admin_footer.php:16
-msgid "See updates for"
-msgstr ""
-
-#: core/actions/admin_footer.php:25
-msgid "Please show your support!"
-msgstr ""
-
-#: core/actions/init.php:15
+#: cfs.php:85 cfs.php:402
 msgid "Field Groups"
 msgstr ""
 
-#: core/actions/init.php:16
+#: cfs.php:86
 msgid "Field Group"
 msgstr ""
 
-#: core/actions/init.php:17
+#: cfs.php:87
 msgid "Add New"
 msgstr ""
 
-#: core/actions/init.php:18
+#: cfs.php:88
 msgid "Add New Field Group"
 msgstr ""
 
-#: core/actions/init.php:19
+#: cfs.php:89
 msgid "Edit Field Group"
 msgstr ""
 
-#: core/actions/init.php:20
+#: cfs.php:90
 msgid "New Field Group"
 msgstr ""
 
-#: core/actions/init.php:21
+#: cfs.php:91
 msgid "View Field Group"
 msgstr ""
 
-#: core/actions/init.php:22
+#: cfs.php:92
 msgid "Search Field Groups"
 msgstr ""
 
-#: core/actions/init.php:23
+#: cfs.php:93
 msgid "No Field Groups found"
 msgstr ""
 
-#: core/actions/init.php:24
+#: cfs.php:94
 msgid "No Field Groups found in Trash"
 msgstr ""
 
-#: core/actions/init.php:51 core/admin/field_html.php:30
+#: cfs.php:122
+msgid "Title"
+msgstr ""
+
+#: cfs.php:385
+msgid "Fields"
+msgstr ""
+
+#: cfs.php:386
+msgid "Placement Rules"
+msgstr ""
+
+#: cfs.php:387
+msgid "Extras"
+msgstr ""
+
+#: cfs.php:403
+msgid "Tools"
+msgstr ""
+
+#: cfs.php:642
+msgid "Imported"
+msgstr ""
+
+#: cfs.php:646
+msgid "Skipped"
+msgstr ""
+
+#: cfs.php:651
+msgid "Nothing to import"
+msgstr ""
+
+#: cfs.php:726
+msgid "No field groups selected"
+msgstr ""
+
+#: core/actions/admin_footer.php:67
+msgid "Custom Field Suite"
+msgstr ""
+
+#: core/actions/admin_footer.php:71
+msgid "Homepage"
+msgstr ""
+
+#: core/actions/admin_footer.php:72
+msgid "User Guide"
+msgstr ""
+
+#: core/actions/admin_footer.php:73
+msgid "Changelog"
+msgstr ""
+
+#: core/actions/admin_footer.php:78
+msgid "Donate"
+msgstr ""
+
+#: core/actions/admin_footer.php:79
+msgid "Rate the plugin"
+msgstr ""
+
+#: core/admin/field_html.php:30
 msgid "Label"
 msgstr ""
 
@@ -156,38 +120,244 @@ msgstr ""
 msgid "The field name that editors will see"
 msgstr ""
 
-#: core/admin/field_html.php:41
+#: core/admin/field_html.php:37
 msgid "Name"
 msgstr ""
 
-#: core/admin/field_html.php:42
+#: core/admin/field_html.php:38
 msgid "Only lowercase letters and underscores"
 msgstr ""
 
-#: core/admin/field_html.php:51
+#: core/admin/field_html.php:43
 msgid "Field Type"
 msgstr ""
 
-#: core/admin/field_html.php:68
-msgid "Field Instructions"
+#: core/admin/field_html.php:61
+msgid "Instructions"
 msgstr ""
 
-#: core/admin/field_html.php:69
-msgid "Instructions for authors when entering field data"
+#: core/admin/field_html.php:62
+msgid "Tips for editors when entering field data"
 msgstr ""
 
-#: core/admin/field_html.php:78
-msgid "Save Field"
+#: core/admin/field_html.php:74
+msgid "Close"
 msgstr ""
 
-#: core/admin/meta_box_rules.php:80
+#: core/admin/field_html.php:75
+msgid "or"
+msgstr ""
+
+#: core/admin/field_html.php:75
+msgid "delete"
+msgstr ""
+
+#: core/admin/meta_box_extras.php:39
+msgid "Content Editor"
+msgstr ""
+
+#: core/admin/meta_box_extras.php:48
+msgid "Hide the content editor"
+msgstr ""
+
+#: core/admin/meta_box_extras.php:55
+msgid "Gravity Forms Integration"
+msgstr ""
+
+#: core/admin/meta_box_fields.php:60
+msgid "Add New Field"
+msgstr ""
+
+#: core/admin/meta_box_rules.php:5
+msgid "equals"
+msgstr ""
+
+#: core/admin/meta_box_rules.php:6
+msgid "is not"
+msgstr ""
+
+#: core/admin/meta_box_rules.php:78
+msgid "Leave blank to skip this rule"
+msgstr ""
+
+#: core/admin/meta_box_rules.php:87 core/fields/relationship.php:89
+msgid "Post Types"
+msgstr ""
+
+#: core/admin/meta_box_rules.php:118
 msgid "User Roles"
 msgstr ""
 
-#: core/admin/meta_box_rules.php:106
+#: core/admin/meta_box_rules.php:149
 msgid "Posts"
 msgstr ""
 
-#: core/admin/meta_box_rules.php:132
+#: core/admin/meta_box_rules.php:180
 msgid "Taxonomy Terms"
+msgstr ""
+
+#: core/admin/meta_box_rules.php:211
+msgid "Page Template"
+msgstr ""
+
+#: core/fields/color/color.php:9
+msgid "Color"
+msgstr ""
+
+#: core/fields/date/date.php:9
+msgid "Date"
+msgstr ""
+
+#: core/fields/field.php:21 core/fields/text.php:9
+msgid "Text"
+msgstr ""
+
+#: core/fields/field.php:57 core/fields/file.php:77
+#: core/fields/relationship.php:106 core/fields/select.php:125
+#: core/fields/text.php:33 core/fields/textarea.php:61
+#: core/fields/true_false.php:44
+msgid "Validation"
+msgstr ""
+
+#: core/fields/field.php:66 core/fields/file.php:86
+#: core/fields/relationship.php:115 core/fields/select.php:134
+#: core/fields/text.php:42 core/fields/textarea.php:70
+#: core/fields/true_false.php:53
+msgid "This is a required field"
+msgstr ""
+
+#: core/fields/file.php:9
+msgid "File Upload"
+msgstr ""
+
+#: core/fields/file.php:45
+msgid "Add File"
+msgstr ""
+
+#: core/fields/file.php:46
+msgid "Remove"
+msgstr ""
+
+#: core/fields/file.php:56
+msgid "Return Value"
+msgstr ""
+
+#: core/fields/file.php:65
+msgid "File URL"
+msgstr ""
+
+#: core/fields/file.php:66
+msgid "Attachment ID"
+msgstr ""
+
+#: core/fields/file.php:117
+msgid "Use This File"
+msgstr ""
+
+#: core/fields/file.php:170
+msgid "Attach file"
+msgstr ""
+
+#: core/fields/loop.php:9
+msgid "Loop"
+msgstr ""
+
+#: core/fields/loop.php:36
+msgid "Row Display"
+msgstr ""
+
+#: core/fields/loop.php:45
+msgid "Show the values by default"
+msgstr ""
+
+#: core/fields/loop.php:52
+msgid "Row Label"
+msgstr ""
+
+#: core/fields/loop.php:60 core/fields/loop.php:91 core/fields/loop.php:162
+msgid "Loop Row"
+msgstr ""
+
+#: core/fields/loop.php:67
+msgid "Button Label"
+msgstr ""
+
+#: core/fields/loop.php:75 core/fields/loop.php:117 core/fields/loop.php:163
+msgid "Add Row"
+msgstr ""
+
+#: core/fields/relationship.php:9
+msgid "Relationship"
+msgstr ""
+
+#: core/fields/relationship.php:90
+msgid "Limit posts to the following types"
+msgstr ""
+
+#: core/fields/select.php:9
+msgid "Select"
+msgstr ""
+
+#: core/fields/select.php:93
+msgid "Choices"
+msgstr ""
+
+#: core/fields/select.php:94
+msgid "Enter one choice per line"
+msgstr ""
+
+#: core/fields/select.php:109
+msgid "Multi-select?"
+msgstr ""
+
+#: core/fields/select.php:118
+msgid "This is a multi-select field"
+msgstr ""
+
+#: core/fields/text.php:18 core/fields/textarea.php:25
+msgid "Default Value"
+msgstr ""
+
+#: core/fields/textarea.php:9
+msgid "Textarea"
+msgstr ""
+
+#: core/fields/textarea.php:40 core/fields/wysiwyg.php:34
+msgid "Formatting"
+msgstr ""
+
+#: core/fields/textarea.php:49
+msgid "None"
+msgstr ""
+
+#: core/fields/textarea.php:50
+msgid "Convert newlines to <br />"
+msgstr ""
+
+#: core/fields/true_false.php:9
+msgid "True / False"
+msgstr ""
+
+#: core/fields/true_false.php:28
+msgid "Message"
+msgstr ""
+
+#: core/fields/true_false.php:29
+msgid "The text beside the checkbox"
+msgstr ""
+
+#: core/fields/user.php:9
+msgid "User"
+msgstr ""
+
+#: core/fields/wysiwyg.php:9
+msgid "Wysiwyg Editor"
+msgstr ""
+
+#: core/fields/wysiwyg.php:43
+msgid "Default"
+msgstr ""
+
+#: core/fields/wysiwyg.php:44
+msgid "None (bypass filters)"
 msgstr ""

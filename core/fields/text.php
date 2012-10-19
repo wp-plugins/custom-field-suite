@@ -19,11 +19,27 @@ class cfs_Text extends cfs_Field
             </td>
             <td>
                 <?php
-                    $this->parent->create_field((object) array(
+                    $this->parent->create_field(array(
                         'type' => 'text',
                         'input_name' => "cfs[fields][$key][options][default_value]",
                         'input_class' => '',
-                        'value' => $field->options['default_value'],
+                        'value' => $this->get_option($field, 'default_value'),
+                    ));
+                ?>
+            </td>
+        </tr>
+        <tr class="field_option field_option_<?php echo $this->name; ?>">
+            <td class="label">
+                <label><?php _e('Validation', 'cfs'); ?></label>
+            </td>
+            <td>
+                <?php
+                    $this->parent->create_field(array(
+                        'type' => 'true_false',
+                        'input_name' => "cfs[fields][$key][options][required]",
+                        'input_class' => 'true_false',
+                        'value' => $this->get_option($field, 'required'),
+                        'options' => array('message' => __('This is a required field', 'cfs')),
                     ));
                 ?>
             </td>
@@ -31,8 +47,8 @@ class cfs_Text extends cfs_Field
     <?php
     }
 
-    function format_value_for_input($value)
+    function format_value_for_input($value, $field)
     {
-        return htmlspecialchars($value[0], ENT_QUOTES);
+        return htmlspecialchars($value, ENT_QUOTES);
     }
 }

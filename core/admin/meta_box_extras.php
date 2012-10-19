@@ -14,13 +14,14 @@ foreach ($types as $post_type)
 }
 
 $extras = get_post_meta($post->ID, 'cfs_extras', true);
-if (!is_array($extras))
+if (empty($extras))
 {
     $extras = array(
         'gforms' => array(
             'form_id' => '',
             'post_type' => '',
         ),
+        'hide_editor' => '',
     );
 }
 
@@ -32,10 +33,26 @@ if ($is_gf_active)
 }
 ?>
 
-<table style="width:100%">
+<table>
     <tr>
         <td class="label">
-            <img src="http://gravityforms.s3.amazonaws.com/banners/125x125_2.gif" alt="Gravity Forms" />
+            <label><?php _e('Content Editor', 'cfs'); ?></label>
+        </td>
+        <td style="vertical-align:top">
+            <?php
+                $this->create_field(array(
+                    'type' => 'true_false',
+                    'input_name' => "cfs[extras][hide_editor]",
+                    'input_class' => 'true_false',
+                    'value' => $extras['hide_editor'],
+                    'options' => array('message' => __('Hide the content editor', 'cfs')),
+                ));
+            ?>
+        </td>
+    </tr>
+    <tr>
+        <td class="label">
+            <label><?php _e('Gravity Forms Integration', 'cfs'); ?></label>
         </td>
         <td style="vertical-align:top">
             <?php if($is_gf_active) : ?>
@@ -55,13 +72,11 @@ if ($is_gf_active)
                 <option value="<?php echo $post_type; ?>"<?php echo $selected; ?>><?php echo $post_type; ?></option>
                 <?php endforeach; ?>
             </select>
-            <p>Make sure that your Gravity Forms and CFS <strong>field labels</strong> match exactly!</p>
+            <p>Make sure that your Gravity Form and CFS <strong>field labels</strong> match exactly!</p>
 
             <?php else : ?>
 
-            <div><a href="https://www.e-junkie.com/ecom/gb.php?cl=54585&c=ib&aff=198410" target="_blank">Gravity Forms</a> must be installed to use this feature.</div>
-            <p>Gravity Forms is a plugin that allows you to add all kinds of public forms to your site: everything from contact pages, multi-page forms, payment forms, and forms with conditional fields.</p>
-            <p>Once activated, you'll be able to save Gravity Forms entries as post items. This includes mapping of fields into Custom Field Suite.</p>
+            <div>Please install <a href="https://www.e-junkie.com/ecom/gb.php?cl=54585&c=ib&aff=198410" target="_blank">Gravity Forms</a> to use this feature.</div>
         <?php endif; ?>
         </td>
     </tr>
