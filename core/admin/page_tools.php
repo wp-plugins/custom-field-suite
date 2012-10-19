@@ -78,7 +78,7 @@ $results = $wpdb->get_results($sql);
         <a class="nav-tab nav-tab-active" rel="export"><?php _e('Export', 'cfs'); ?></a>
         <a class="nav-tab" rel="import"><?php _e('Import', 'cfs'); ?></a>
         <a class="nav-tab" rel="sync"><?php _e('Synchronize', 'cfs'); ?></a>
-        <a class="nav-tab" rel="debug"><?php _e('Debug Information', 'cfs'); ?></a>
+        <a class="nav-tab" rel="debug"><?php _e('Debug', 'cfs'); ?></a>
     </h2>
 
     <div class="content-container">
@@ -98,7 +98,7 @@ $results = $wpdb->get_results($sql);
                             </select>
                         </div>
                         <div>
-                            <input type="button" id="button-export" class="button" value="Export" />
+                            <input type="button" id="button-export" class="button" value="<?php _e('Export', 'cfs'); ?>" />
                         </div>
                     </td>
                     <td style="width:300px; vertical-align:top">
@@ -123,7 +123,7 @@ $results = $wpdb->get_results($sql);
                             <textarea id="import-code" style="width:98%; height:200px"></textarea>
                         </div>
                         <div>
-                            <input type="button" id="button-import" class="button" value="Import" />
+                            <input type="button" id="button-import" class="button" value="<?php _e('Import', 'cfs'); ?>" />
                         </div>
                     </td>
                     <td style="width:300px; vertical-align:top">
@@ -148,7 +148,7 @@ $results = $wpdb->get_results($sql);
                             </select>
                         </div>
                         <div>
-                            <input type="button" id="button-sync" class="button" value="Synchronize" />
+                            <input type="button" id="button-sync" class="button" value="<?php _e('Synchronize', 'cfs'); ?>" />
                         </div>
                     </td>
                     <td style="width:300px; vertical-align:top">
@@ -161,7 +161,7 @@ $results = $wpdb->get_results($sql);
         <!-- Debug Information -->
 
         <div class="tab-content debug">
-            <h2><?php _e('Detailed information about your site:'); ?></h2>
+            <h2><?php _e('Your site uses the following software:', 'cfs'); ?></h2>
 <textarea style="width:600px; height:200px">
 WordPress <?php global $wp_version; echo $wp_version; ?>
 
