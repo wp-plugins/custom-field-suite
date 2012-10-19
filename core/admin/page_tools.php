@@ -75,10 +75,10 @@ $results = $wpdb->get_results($sql);
 <div class="wrap">
     <div id="icon-edit" class="icon32"><br></div>
     <h2 class="nav-tab-wrapper">
-        <a class="nav-tab nav-tab-active" rel="export">Export</a>
-        <a class="nav-tab" rel="import">Import</a>
-        <a class="nav-tab" rel="sync">Synchronize</a>
-        <a class="nav-tab" rel="debug">Debug Information</a>
+        <a class="nav-tab nav-tab-active" rel="export"><?php _e('Export', 'cfs'); ?></a>
+        <a class="nav-tab" rel="import"><?php _e('Import', 'cfs'); ?></a>
+        <a class="nav-tab" rel="sync"><?php _e('Synchronize', 'cfs'); ?></a>
+        <a class="nav-tab" rel="debug"><?php _e('Debug Information', 'cfs'); ?></a>
     </h2>
 
     <div class="content-container">
@@ -86,7 +86,7 @@ $results = $wpdb->get_results($sql);
         <!-- Export -->
 
         <div class="tab-content export active">
-            <h2>Which field groups would you like to export?</h2>
+            <h2><?php _e('Which field groups would you like to export?', 'cfs'); ?></h2>
             <table>
                 <tr>
                     <td style="width:300px; vertical-align:top">
@@ -115,7 +115,7 @@ $results = $wpdb->get_results($sql);
         <!-- Import -->
 
         <div class="tab-content import">
-            <h2>Paste the import code below. Existing field groups will be skipped.</h2>
+            <h2><?php _e('Paste the import code below. Existing field groups will be skipped.', 'cfs'); ?></h2>
             <table>
                 <tr>
                     <td style="width:300px; vertical-align:top">
@@ -136,7 +136,7 @@ $results = $wpdb->get_results($sql);
         <!-- Synchronize -->
 
         <div class="tab-content sync">
-            <h2>CFS will attempt to automatically import custom field values.</h2>
+            <h2><?php _e('CFS will attempt to import custom field values.', 'cfs'); ?></h2>
             <table>
                 <tr>
                     <td style="width:300px; vertical-align:top">
@@ -161,7 +161,7 @@ $results = $wpdb->get_results($sql);
         <!-- Debug Information -->
 
         <div class="tab-content debug">
-            <h2>Your site uses the following software:</h2>
+            <h2><?php _e('Detailed information about your site:'); ?></h2>
 <textarea style="width:600px; height:200px">
 WordPress <?php global $wp_version; echo $wp_version; ?>
 
