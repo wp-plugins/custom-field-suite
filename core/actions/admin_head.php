@@ -5,6 +5,12 @@ global $post, $wpdb;
 /*---------------------------------------------------------------------------------------------
     Field management screen
 ---------------------------------------------------------------------------------------------*/
+?>
+
+<script src="<?php echo $this->url; ?>/js/tipTip/jquery.tipTip.js"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/js/tipTip/tipTip.css" />
+
+<?php
 
 if ('cfs' == $GLOBALS['post_type'])
 {
@@ -34,20 +40,16 @@ if ('cfs' == $GLOBALS['post_type'])
 ?>
 
 <script>
-
-var CFS = CFS || {};
-CFS.field_index = <?php echo $field_count; ?>;
-CFS.field_clone = <?php echo json_encode($field_clone); ?>;
-CFS.options_html = <?php echo json_encode($options_html); ?>;
-
+var CFS = {
+    'field_index': <?php echo $field_count; ?>,
+    'field_clone': <?php echo json_encode($field_clone); ?>,
+    'options_html': <?php echo json_encode($options_html); ?>
+};
 </script>
-
 <script src="<?php echo $this->url; ?>/js/fields.js"></script>
 <script src="<?php echo $this->url; ?>/js/select2/select2.min.js"></script>
-<script src="<?php echo $this->url; ?>/js/tipTip/jquery.tipTip.js"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/css/fields.css" />
 <link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/js/select2/select2.css" />
-<link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/js/tipTip/tipTip.css" />
 
 <?php
 }
@@ -66,9 +68,18 @@ else
 ?>
 
 <link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/css/input.css" />
+<script>
+var CFS = {
+    'validators': {},
+    'get_field_value': {},
+    'loop_buffer': []
+};
+</script>
 <script src="<?php echo $this->url; ?>/js/validation.js"></script>
-
 <?php
+        // Add custom validators
+        do_action('cfs_custom_validation');
+
         // Support for multiple metaboxes
         foreach ($field_group_ids as $group_id => $title)
         {
