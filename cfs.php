@@ -2,15 +2,15 @@
 /*
 Plugin Name: Custom Field Suite
 Plugin URI: https://uproot.us/
-Description: Really simple custom field management.
-Version: 1.7.5
+Description: Visually add custom fields to your WordPress edit pages.
+Version: 1.7.6
 Author: Matt Gibbs
 Author URI: https://uproot.us/
 License: GPL2
 */
 
 $cfs = new Cfs();
-$cfs->version = '1.7.5';
+$cfs->version = '1.7.6';
 
 class Cfs
 {
@@ -36,8 +36,11 @@ class Cfs
         $this->url = plugins_url('custom-field-suite');
         $this->used_types = array();
 
-        // load the api
         include($this->dir . '/core/classes/api.php');
+        include($this->dir . '/core/classes/upgrade.php');
+        include($this->dir . '/core/classes/field.php');
+
+        // load the api
         $this->api = new cfs_Api($this);
 
         // add actions
@@ -69,7 +72,6 @@ class Cfs
     function init()
     {
         // perform upgrades
-        include($this->dir . '/core/classes/upgrade.php');
         $upgrade = new cfs_Upgrade($this->version);
 
         // get all available field types
@@ -132,9 +134,6 @@ class Cfs
 
     function get_field_types()
     {
-        // include the parent field type
-        include($this->dir . '/core/classes/field.php');
-
         $field_types = array(
             'text' => $this->dir . '/core/fields/text.php',
             'textarea' => $this->dir . '/core/fields/textarea.php',
@@ -311,9 +310,9 @@ class Cfs
     *
     *-------------------------------------------------------------------------------------*/
 
-    function get_reverse_related($post_id, $options = array(), $deprecated = array())
+    function get_reverse_related($post_id, $options = array())
     {
-        return $this->api->get_reverse_related($post_id, $options, $deprecated);
+        return $this->api->get_reverse_related($post_id, $options);
     }
 
 
@@ -531,9 +530,20 @@ class Cfs
             include($this->dir . '/core/classes/ajax.php');
             $ajax = new cfs_Ajax();
 
-            if (method_exists($ajax, $ajax_method))
+            if ('import' == $ajax_method)
             {
-                $ajax->$ajax_method();
+                $options = array(
+                    'import_code' => json_decode(stripslashes($_POST['import_code'])),
+                );
+                echo $ajax->import($options);
+            }
+            elseif ('export' == $ajax_method)
+            {
+                echo json_encode($ajax->export($_POST));
+            }
+            elseif (method_exists($ajax, $ajax_method))
+            {
+                echo $ajax->$ajax_method($_POST);
             }
             exit;
         }

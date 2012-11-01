@@ -11,11 +11,32 @@ class cfs_Ajax
     *
     *-------------------------------------------------------------------------------------*/
 
-    public function search_posts()
+    public function search_posts($options)
     {
         global $wpdb;
 
+        $keywords = $wpdb->escape($options['q']);
 
+        $sql = "
+        SELECT ID, post_type, post_title
+        FROM $wpdb->posts
+        WHERE
+            post_status IN ('publish', 'private') AND
+            post_type NOT IN ('cfs', 'attachment', 'revision', 'nav_menu_item') AND
+            post_title LIKE '%$keywords%'
+        ORDER BY post_type, post_title
+        LIMIT 10";
+        $results = $wpdb->get_results($sql);
+
+        $output = array();
+        foreach ($results as $result)
+        {
+            $output[] = array(
+                'id' => $result->ID,
+                'text' => "($result->post_type) $result->post_title"
+            );
+        }
+        return json_encode($output);
     }
 
 
@@ -28,13 +49,13 @@ class cfs_Ajax
     *
     *-------------------------------------------------------------------------------------*/
 
-    public function export()
+    public function export($options)
     {
         global $wpdb;
 
         $post_ids = array();
         $field_groups = array();
-        foreach ($_POST['field_groups'] as $post_id)
+        foreach ($options['field_groups'] as $post_id)
         {
             $post_ids[] = (int) $post_id;
         }
@@ -66,7 +87,7 @@ class cfs_Ajax
             $field_groups[$row->post_id]['fields'][$row->id] = $data;
         }
 
-        echo json_encode($field_groups);
+        return $field_groups;
     }
 
 
@@ -79,13 +100,11 @@ class cfs_Ajax
     *
     *-------------------------------------------------------------------------------------*/
 
-    public function import()
+    public function import($options)
     {
         global $wpdb;
 
-        $code = json_decode(stripslashes($_POST['import_code']));
-
-        if (!empty($code))
+        if (!empty($options['import_code']))
         {
             // Collect stats
             $stats = array();
@@ -94,7 +113,7 @@ class cfs_Ajax
             $existing_groups = $wpdb->get_col("SELECT post_name FROM {$wpdb->posts} WHERE post_type = 'cfs'");
 
             // Loop through field groups
-            foreach ($code as $group_id => $group)
+            foreach ($options['import_code'] as $group_id => $group)
             {
                 // Make sure this field group doesn't exist
                 if (!in_array($group->post_name, $existing_groups))
@@ -149,18 +168,20 @@ class cfs_Ajax
                 }
             }
 
+            $return = '';
             if (!empty($stats['imported']))
             {
-                echo '<div>' . __('Imported', 'cfs') . ': ' . implode(', ', $stats['imported']) . '</div>';
+                $return .= '<div>' . __('Imported', 'cfs') . ': ' . implode(', ', $stats['imported']) . '</div>';
             }
             if (!empty($stats['skipped']))
             {
-                echo '<div>' . __('Skipped', 'cfs') . ': ' . implode(', ', $stats['skipped']) . '</div>';
+                $return .= '<div>' . __('Skipped', 'cfs') . ': ' . implode(', ', $stats['skipped']) . '</div>';
             }
+            return $return;
         }
         else
         {
-            echo '<div>' . __('Nothing to import', 'cfs') . '</div>';
+            return '<div>' . __('Nothing to import', 'cfs') . '</div>';
         }
     }
 
@@ -174,13 +195,13 @@ class cfs_Ajax
     *
     *-------------------------------------------------------------------------------------*/
 
-    public function map_values()
+    public function map_values($options)
     {
         global $wpdb;
 
-        if (isset($_POST['field_groups']))
+        if (isset($options['field_groups']))
         {
-            $group_ids = (array) $_POST['field_groups'];
+            $group_ids = (array) $options['field_groups'];
             foreach ($group_ids as $group_id)
             {
                 $rules = get_post_meta($group_id, 'cfs_rules', true);
@@ -243,11 +264,11 @@ class cfs_Ajax
                 }
             }
 
-            echo 'Sync successful';
+            return 'Sync successful';
         }
         else
         {
-            echo '<div>' . __('No field groups selected', 'cfs') . '</div>';
+            return '<div>' . __('No field groups selected', 'cfs') . '</div>';
         }
     }
 }
