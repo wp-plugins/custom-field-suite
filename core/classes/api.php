@@ -44,7 +44,8 @@ class cfs_Api
         if (!isset($this->cache[$post_id][$options->format][$field_name]))
         {
             $fields = $this->get_fields($post_id);
-            return $fields[$field_name];
+
+            return isset($fields[$field_name]) ? $fields[$field_name] : null;
         }
 
         return $this->cache[$post_id][$options->format][$field_name];
