@@ -11,7 +11,7 @@ Visually add custom fields to your WordPress edit pages.
 
 == Description ==
 
-Custom Field Suite (CFS) lets you create groups of custom fields. Then, simply add `$cfs->get('your_field')` into your templates to display custom field values throughout your site.
+Custom Field Suite (CFS) lets you visually create and manage custom fields.
 
 = Features =
 * Many field types: [text](https://uproot.us/docs/text/), [textarea](https://uproot.us/docs/textarea/), [wysiwyg](https://uproot.us/docs/wysiwyg/), [date](https://uproot.us/docs/date/), [color](https://uproot.us/docs/color/), [select](https://uproot.us/docs/select/), [file upload](https://uproot.us/docs/file-upload/), [user](https://uproot.us/docs/user/), [relationship](https://uproot.us/docs/relationship/), and [loop](https://uproot.us/docs/loop/)
