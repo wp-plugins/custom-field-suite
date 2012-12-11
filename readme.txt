@@ -1,5 +1,5 @@
 === Custom Field Suite ===
-Contributors: logikal16
+Contributors: logikal16, mgibbs189
 Donate link: https://uproot.us/donate/
 Tags: custom fields, fields, postmeta, cck, wysiwyg, relationship, upload
 Requires at least: 3.2
@@ -28,7 +28,7 @@ Custom Field Suite (CFS) lets you visually create and manage custom fields.
 * CFS is fast and uses minimal server resources.
 * CFS works well with [Gravity Forms](https://uproot.us/how-to-save-gravity-forms-data-into-custom-field-suite/) by saving Gravity Forms entries as post items.
 * CFS supports [adding your own field types](https://uproot.us/docs/creating-custom-field-types/).
-* [CFS is on GitHub!](https://github.com/logikal16/custom-field-suite/)
+* [CFS is on GitHub!](https://github.com/mgibbs189/custom-field-suite/)
 
 = Documentation and Support =
 * http://uproot.us/
