@@ -5,7 +5,7 @@ Tags: custom fields, fields, postmeta, cck, wysiwyg, relationship, upload
 Requires at least: 3.3
 Tested up to: 3.5
 Stable tag: trunk
-License: GPL2
+License: GPLv2
 
 Visually add custom fields to your WordPress edit pages.
 
