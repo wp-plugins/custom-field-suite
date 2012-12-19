@@ -54,6 +54,18 @@ $results = $wpdb->get_results($sql);
                 $('#import-message').html(response);
             });
         });
+
+        $('#button-reset').click(function() {
+            if (confirm('This will delete all CFS data. Are you sure?')) {
+                $.post(ajaxurl, {
+                    action: 'cfs_ajax_handler',
+                    action_type: 'reset'
+                },
+                function(response) {
+                    window.location.replace(response);
+                });
+            }
+        });
     });
 })(jQuery);
 </script>
@@ -64,6 +76,7 @@ $results = $wpdb->get_results($sql);
         <a class="nav-tab nav-tab-active" rel="export"><?php _e('Export', 'cfs'); ?></a>
         <a class="nav-tab" rel="import"><?php _e('Import', 'cfs'); ?></a>
         <a class="nav-tab" rel="debug"><?php _e('Debug', 'cfs'); ?></a>
+        <a class="nav-tab" rel="reset"><?php _e('Reset', 'cfs'); ?></a>
     </h2>
 
     <div class="content-container">
@@ -122,26 +135,33 @@ $results = $wpdb->get_results($sql);
 
         <div class="tab-content debug">
             <h2><?php _e('Your site uses the following software:', 'cfs'); ?></h2>
-<textarea style="width:600px; height:200px">
-WordPress <?php global $wp_version; echo $wp_version; ?>
-
-PHP <?php echo phpversion(); ?>
-
-<?php echo $_SERVER['SERVER_SOFTWARE']; ?>
-
-<?php echo $_SERVER['HTTP_USER_AGENT']; ?>
-
-
--- Active Plugins --
 <?php
+global $wp_version;
+
+echo '<textarea style="width:600px; height:200px">';
+echo 'WordPress ' . $wp_version . "\n";
+echo 'PHP ' . phpversion() . "\n";
+echo $_SERVER['SERVER_SOFTWARE'] . "\n";
+echo $_SERVER['HTTP_USER_AGENT'] . "\n";
+echo "\n--- Active Plugins ---\n";
+
 $all_plugins = get_plugins();
 foreach ($all_plugins as $plugin_file => $plugin_data) {
     if (is_plugin_active($plugin_file)) {
         echo $plugin_data['Name'] . ' ' . $plugin_data['Version'] . "\n";
     }
 }
+
+echo '</textarea>';
 ?>
-</textarea>
+        </div>
+
+        <!-- Reset -->
+
+        <div class="tab-content reset">
+            <h2><?php _e('Reset and deactivate.', 'cfs'); ?></h2>
+            <p><?php _e('This will delete all CFS data and deactivate the plugin.'); ?></p>
+            <input type="button" id="button-reset" class="button" value="<?php _e('Delete everything', 'cfs'); ?>" />
         </div>
     </div>
 </div>

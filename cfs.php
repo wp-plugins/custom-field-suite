@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Custom Field Suite
-Plugin URI: https://uproot.us/
+Plugin URI: http://uproot.us/
 Description: Visually add custom fields to your WordPress edit pages.
-Version: 1.7.9
+Version: 1.8.0
 Author: Matt Gibbs
-Author URI: https://uproot.us/
+Author URI: http://uproot.us/
 License: GPL2
 */
 
@@ -32,7 +32,7 @@ class cfs
 
     function __construct()
     {
-        $this->version = '1.7.9';
+        $this->version = '1.8.0';
         $this->dir = (string) dirname(__FILE__);
         $this->url = plugins_url('custom-field-suite');
         $this->used_types = array();
@@ -105,6 +105,8 @@ class cfs
             'hierarchical' => false,
             'supports' => array('title'),
         ));
+
+        do_action('cfs_init');
     }
 
 
@@ -202,6 +204,7 @@ class cfs
         {
             return $this->api->get_field($field_name, $post_id, $options);
         }
+
         return $this->api->get_fields($post_id, $options);
     }
 
@@ -217,7 +220,23 @@ class cfs
 
     function get_labels($field_name = false, $post_id = false)
     {
-        return $this->api->get_labels($field_name, $post_id);
+        $field_info = $this->api->get_field_info($field_name, $post_id);
+
+        if (false !== $field_name)
+        {
+            return $field_info[$field_name]['label'];
+        }
+        else
+        {
+            $output = array();
+
+            foreach ($field_info as $name => $field_data)
+            {
+                $output[$name] = $field_data['label'];
+            }
+
+            return $output;
+        }
     }
 
 
@@ -332,7 +351,7 @@ class cfs
     {
         add_object_page(__('Field Groups', 'cfs'), __('Field Groups', 'cfs'), 'manage_options', 'edit.php?post_type=cfs', null, $this->url . '/images/logo-small.png');
         add_submenu_page('edit.php?post_type=cfs', __('Tools', 'cfs'), __('Tools', 'cfs'), 'manage_options', 'cfs-tools', array($this, 'page_tools'));
-        //add_submenu_page('edit.php?post_type=cfs', __('Add-ons', 'cfs'), __('Add-ons', 'cfs'), 'manage_options', 'cfs-addons', array($this, 'page_addons'));
+        add_submenu_page('edit.php?post_type=cfs', __('Add-ons', 'cfs'), __('Add-ons', 'cfs'), 'manage_options', 'cfs-addons', array($this, 'page_addons'));
     }
 
 
@@ -501,6 +520,17 @@ class cfs
             elseif ('export' == $ajax_method)
             {
                 echo json_encode($ajax->export($_POST));
+            }
+            elseif ('reset' == $ajax_method)
+            {
+                if (current_user_can('manage_options'))
+                {
+                    $ajax->reset();
+
+                    deactivate_plugins(plugin_basename(__FILE__));
+
+                    echo admin_url('plugins.php');
+                }
             }
             elseif (method_exists($ajax, $ajax_method))
             {
