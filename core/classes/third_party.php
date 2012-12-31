@@ -8,8 +8,13 @@ class cfs_third_party
     {
         $this->parent = $parent;
 
-        // add actions
+        // Post Type Switcher - http://wordpress.org/extend/plugins/post-type-switcher/
+        add_filter('pts_post_type_filter', array($this, 'pts_post_type_filter'));
+
+        // Gravity Forms - http://www.gravityforms.com/
         add_action('gform_post_submission', array($this, 'gform_handler'), 10, 2);
+
+        // WPML - http://wpml.org/
         add_action('icl_make_duplicate', array($this, 'wpml_handler'), 10, 4);
     }
 
@@ -35,21 +40,23 @@ class cfs_third_party
         foreach ($results as $result)
         {
             $meta_value = unserialize($result->meta_value);
-            $meta_value = $meta_value['gforms'];
 
-            if ($form_id == $meta_value['form_id'])
+            if (isset($meta_value['gforms']))
             {
-                $fields = array();
-                $all_fields = $wpdb->get_results("SELECT name, label FROM {$wpdb->prefix}cfs_fields WHERE post_id = '{$result->post_id}'");
-                foreach ($all_fields as $field)
+                if ($form_id == $meta_value['gforms']['form_id'])
                 {
-                    $fields[$field->label] = $field->name;
-                }
+                    $fields = array();
+                    $all_fields = $wpdb->get_results("SELECT name, label FROM {$wpdb->prefix}cfs_fields WHERE post_id = '{$result->post_id}'");
+                    foreach ($all_fields as $field)
+                    {
+                        $fields[$field->label] = $field->name;
+                    }
 
-                $field_groups[$result->post_id] = array(
-                    'post_type' => $meta_value['post_type'],
-                    'fields' => $fields,
-                );
+                    $field_groups[$result->post_id] = array(
+                        'post_type' => $meta_value['gforms']['post_type'],
+                        'fields' => $fields,
+                    );
+                }
             }
         }
 
@@ -136,5 +143,27 @@ class cfs_third_party
         {
             $this->parent->save($field_data, array('ID' => $duplicate_id));
         }
+    }
+
+
+    /*--------------------------------------------------------------------------------------
+    *
+    *    pts_post_type_filter
+    *
+    *    @author Matt Gibbs
+    *    @since 1.8.1
+    *
+    *-------------------------------------------------------------------------------------*/
+
+    function pts_post_type_filter($args)
+    {
+        global $current_screen;
+
+        if ('cfs' == $current_screen->id)
+        {
+            $args = array('public' => false, 'show_ui' => true);
+        }
+
+        return $args;
     }
 }
