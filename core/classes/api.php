@@ -219,6 +219,32 @@ class cfs_api
 
     /*--------------------------------------------------------------------------------------
     *
+    *    apply_value_filters
+    *
+    *    @author Matt Gibbs
+    *    @since 1.0.0
+    *
+    *-------------------------------------------------------------------------------------*/
+
+    private function apply_value_filters($field, $value, $options)
+    {
+        $value = $this->parent->fields[$field->type]->prepare_value($value, $field);
+
+        if ('api' == $options->format)
+        {
+            $value = $this->parent->fields[$field->type]->format_value_for_api($value, $field);
+        }
+        elseif ('input' == $options->format)
+        {
+            $value = $this->parent->fields[$field->type]->format_value_for_input($value, $field);
+        }
+
+        return $value;
+    }
+
+
+    /*--------------------------------------------------------------------------------------
+    *
     *    get_reverse_related
     *
     *    @author Matt Gibbs
@@ -312,32 +338,6 @@ class cfs_api
 
     /*--------------------------------------------------------------------------------------
     *
-    *    apply_value_filters
-    *
-    *    @author Matt Gibbs
-    *    @since 1.0.0
-    *
-    *-------------------------------------------------------------------------------------*/
-
-    private function apply_value_filters($field, $value, $options)
-    {
-        $value = $this->parent->fields[$field->type]->prepare_value($value, $field);
-
-        if ('api' == $options->format)
-        {
-            $value = $this->parent->fields[$field->type]->format_value_for_api($value, $field);
-        }
-        elseif ('input' == $options->format)
-        {
-            $value = $this->parent->fields[$field->type]->format_value_for_input($value, $field);
-        }
-
-        return $value;
-    }
-
-
-    /*--------------------------------------------------------------------------------------
-    *
     *    get_input_fields
     *
     *    @author Matt Gibbs
@@ -345,16 +345,22 @@ class cfs_api
     *
     *-------------------------------------------------------------------------------------*/
 
-    public function get_input_fields($group_id = false, $parent_id = false, $field_id = false)
+    public function get_input_fields($params)
     {
         global $post, $wpdb;
 
+        $defaults = array(
+            'group_id' => false,
+            'field_id' => false,
+            'parent_id' => false,
+        );
+        $params = (object) array_merge($defaults, $params);
         $values = $this->get_fields($post->ID, array('format' => 'input'));
 
         $where = 'WHERE 1';
-        $where .= (false !== $group_id) ? " AND post_id = $group_id" : '';
-        $where .= (false !== $parent_id) ? " AND parent_id = $parent_id" : '';
-        $where .= (false !== $field_id) ? " AND id = $field_id" : '';
+        $where .= $params->group_id ? " AND post_id = $params->group_id" : '';
+        $where .= $params->field_id ? " AND id = $params->field_id" : '';
+        $where .= $params->parent_id ? " AND parent_id = $params->parent_id" : '';
 
         $fields = array();
 

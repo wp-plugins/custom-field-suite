@@ -56,7 +56,6 @@ class cfs_loop extends cfs_field
                     $this->parent->create_field(array(
                         'type' => 'text',
                         'input_name' => "cfs[fields][$key][options][row_label]",
-                        'input_class' => '',
                         'value' => $this->get_option($field, 'row_label', __('Loop Row', 'cfs')),
                     ));
                 ?>
@@ -71,7 +70,6 @@ class cfs_loop extends cfs_field
                     $this->parent->create_field(array(
                         'type' => 'text',
                         'input_name' => "cfs[fields][$key][options][button_label]",
-                        'input_class' => '',
                         'value' => $this->get_option($field, 'button_label', __('Add Row', 'cfs')),
                     ));
                 ?>
@@ -87,11 +85,11 @@ class cfs_loop extends cfs_field
     function recursive_clone($group_id, $field_id)
     {
         $loop_field_ids = array();
-        $loop_field = $this->parent->api->get_input_fields(false, false, $field_id);
+        $loop_field = $this->parent->api->get_input_fields(array('field_id' => $field_id));
         $row_label = $this->get_option($loop_field[$field_id], 'row_label', __('Loop Row', 'cfs'));
 
         // Get the sub-fields
-        $results = $this->parent->api->get_input_fields($group_id, $field_id);
+        $results = $this->parent->api->get_input_fields(array('group_id' => $group_id, 'parent_id' => $field_id));
 
         ob_start();
     ?>
@@ -148,22 +146,52 @@ class cfs_loop extends cfs_field
     }
 
     /*---------------------------------------------------------------------------------------------
+        dynamic_label
+    ---------------------------------------------------------------------------------------------*/
+
+    function dynamic_label($row_label, $fields, $values)
+    {
+        preg_match_all("/({(.*?)})/", $row_label, $matches);
+        if (!empty($matches))
+        {
+            // Get all field names and IDs
+            $all_fields = array();
+            foreach ($fields as $field)
+            {
+                $all_fields[$field->name] = (int) $field->id;
+            }
+
+            foreach ($matches[2] as $field_name)
+            {
+                $field_id = isset($all_fields[$field_name]) ? $all_fields[$field_name] : false;
+                if (isset($values[$field_id]))
+                {
+                    $row_label = str_replace('{' . $field_name . '}', $values[$field_id], $row_label);
+                }
+            }
+        }
+
+        return $row_label;
+    }
+
+    /*---------------------------------------------------------------------------------------------
         recursive_html
     ---------------------------------------------------------------------------------------------*/
 
     function recursive_html($group_id, $field_id, $parent_tag = '', $parent_weight = 0)
     {
-        $results = $this->parent->api->get_input_fields($group_id, $field_id);
+        $results = $this->parent->api->get_input_fields(array('group_id' => $group_id, 'parent_id' => $field_id));
         $parent_tag = empty($parent_tag) ? "[$field_id]" : $parent_tag;
         eval("\$values = isset(\$this->values{$parent_tag}) ? \$this->values{$parent_tag} : false;");
 
         // Get field options
-        $loop_field = $this->parent->api->get_input_fields(false, false, $field_id);
+        $loop_field = $this->parent->api->get_input_fields(array('field_id' => $field_id));
         $row_display = $this->get_option($loop_field[$field_id], 'row_display', 0);
         $row_label = $this->get_option($loop_field[$field_id], 'row_label', __('Loop Row', 'cfs'));
         $button_label = $this->get_option($loop_field[$field_id], 'button_label', __('Add Row', 'cfs'));
         $css_class = (0 < (int) $row_display) ? ' open' : '';
 
+        // Do the dirty work
         $offset = 0;
 
         if ($values) :
@@ -174,7 +202,7 @@ class cfs_loop extends cfs_field
             <div class="cfs_loop_head">
                 <a class="cfs_delete_field"></a>
                 <a class="cfs_toggle_field"></a>
-                <span class="label"><?php echo esc_attr($row_label); ?></span>
+                <span class="label"><?php echo esc_attr($this->dynamic_label($row_label, $results, $values[$i])); ?>&nbsp;</span>
             </div>
             <div class="cfs_loop_body<?php echo $css_class; ?>">
             <?php foreach ($results as $field) : ?>
@@ -237,8 +265,8 @@ class cfs_loop extends cfs_field
                     }
                 });
 
-                $('.cfs_toggle_field').live('click', function() {
-                    $(this).closest('.cfs_loop_head').siblings('.cfs_loop_body').toggleClass('open');
+                $('.cfs_loop_head').live('click', function() {
+                    $(this).siblings('.cfs_loop_body').toggleClass('open');
                 });
 
                 $('.cfs_loop').sortable({
