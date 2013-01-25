@@ -3,7 +3,7 @@
 Plugin Name: Custom Field Suite
 Plugin URI: http://uproot.us/
 Description: Visually add custom fields to your WordPress edit pages.
-Version: 1.8.3.1
+Version: 1.8.4
 Author: Matt Gibbs
 Author URI: http://uproot.us/
 License: GPL2
@@ -32,7 +32,7 @@ class cfs
 
     function __construct()
     {
-        $this->version = '1.8.3.1';
+        $this->version = '1.8.4';
         $this->dir = (string) dirname(__FILE__);
         $this->url = plugins_url('custom-field-suite');
         $this->used_types = array();
@@ -140,17 +140,17 @@ class cfs
     function get_field_types()
     {
         $field_types = array(
-            'text' => $this->dir . '/core/fields/text.php',
-            'textarea' => $this->dir . '/core/fields/textarea.php',
-            'wysiwyg' => $this->dir . '/core/fields/wysiwyg.php',
-            'date' => $this->dir . '/core/fields/date/date.php',
-            'color' => $this->dir . '/core/fields/color/color.php',
-            'true_false' => $this->dir . '/core/fields/true_false.php',
-            'select' => $this->dir . '/core/fields/select.php',
-            'relationship' => $this->dir . '/core/fields/relationship.php',
-            'user' => $this->dir . '/core/fields/user.php',
-            'file' => $this->dir . '/core/fields/file.php',
-            'loop' => $this->dir . '/core/fields/loop.php',
+            'text' =>               $this->dir . '/core/fields/text.php',
+            'textarea' =>           $this->dir . '/core/fields/textarea.php',
+            'wysiwyg' =>            $this->dir . '/core/fields/wysiwyg.php',
+            'date' =>               $this->dir . '/core/fields/date/date.php',
+            'color' =>              $this->dir . '/core/fields/color/color.php',
+            'true_false' =>         $this->dir . '/core/fields/true_false.php',
+            'select' =>             $this->dir . '/core/fields/select.php',
+            'relationship' =>       $this->dir . '/core/fields/relationship.php',
+            'user' =>               $this->dir . '/core/fields/user.php',
+            'file' =>               $this->dir . '/core/fields/file.php',
+            'loop' =>               $this->dir . '/core/fields/loop.php',
         );
 
         // support custom field types
@@ -160,7 +160,7 @@ class cfs
         {
             $class_name = 'cfs_' . $type;
 
-            // Allow for multiple classes per file
+            // allow for multiple classes per file
             if (!class_exists($class_name))
             {
                 include_once($path);
@@ -391,17 +391,17 @@ class cfs
     {
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
         {
-            return $post_id;
+            return;
         }
 
         if (!isset($_POST['cfs']['save']))
         {
-            return $post_id;
+            return;
         }
 
-        if (wp_is_post_revision($post_id))
+        if (false !== wp_is_post_revision($post_id))
         {
-            $post_id = wp_is_post_revision($post_id);
+            return;
         }
 
         if (wp_verify_nonce($_POST['cfs']['save'], 'cfs_save_fields'))
@@ -426,8 +426,6 @@ class cfs
 
             $this->save($field_data, $post_data, $options);
         }
-
-        return $post_id;
     }
 
 
@@ -444,9 +442,11 @@ class cfs
     {
         global $wpdb;
 
-        $post_id = (int) $post_id;
-        $table = ('cfs' == get_post_type($post_id)) ? 'cfs_fields' : 'cfs_values';
-        $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}{$table} WHERE post_id = %d", $post_id));
+        if ('cfs' != get_post_type($post_id))
+        {
+            $post_id = (int) $post_id;
+            $wpdb->query("DELETE FROM {$wpdb->prefix}cfs_values WHERE post_id = $post_id");
+        }
 
         return true;
     }
@@ -536,7 +536,7 @@ class cfs
             if ('import' == $ajax_method)
             {
                 $options = array(
-                    'import_code' => json_decode(stripslashes($_POST['import_code'])),
+                    'import_code' => json_decode(stripslashes($_POST['import_code']), true),
                 );
                 echo $ajax->import($options);
             }

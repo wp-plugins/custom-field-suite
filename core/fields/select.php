@@ -34,8 +34,8 @@ class cfs_select extends cfs_field
             $field->input_class = '';
         }
 
-        // Force the select box to return an array
-        if ('[]' != substr($field->input_name, -2))
+        // Select boxes should return arrays (unless "force_single" is true)
+        if ('[]' != substr($field->input_name, -2) && empty($field->options['force_single']))
         {
             $field->input_name .= '[]';
         }
@@ -56,7 +56,7 @@ class cfs_select extends cfs_field
         <script>
         (function($) {
             $(function() {
-                $('.cfs_add_field').live('go', function() {
+                $(document).on('cfs/ready', '.cfs_add_field', function() {
                     $('.cfs_select:not(.ready)').init_select();
                 });
                 $('.cfs_select').init_select();

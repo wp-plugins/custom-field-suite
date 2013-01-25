@@ -42,7 +42,8 @@ class cfs_wysiwyg extends cfs_field
                             'choices' => array(
                                 'default' => __('Default', 'cfs'),
                                 'none' => __('None (bypass filters)', 'cfs')
-                            )
+                            ),
+                            'force_single' => true,
                         ),
                         'value' => $this->get_option($field, 'formatting', 'default'),
                     ));
@@ -63,13 +64,13 @@ class cfs_wysiwyg extends cfs_field
             var wysiwyg_count = 0;
 
             $(function() {
-                $('.cfs_add_field').live('go', function() {
+                $(document).on('cfs/ready', '.cfs_add_field', function() {
                     $('.cfs_wysiwyg:not(.ready)').init_wysiwyg();
                 });
                 $('.cfs_wysiwyg').init_wysiwyg();
 
                 // Set the active editor
-                $('a.add_media').click(function() {
+                $(document).on('click', 'a.add_media', function() {
                     var editor_id = $(this).closest('.wp-editor-wrap').find('.wp-editor-area').attr('id');
                     wpActiveEditor = editor_id;
                 });
@@ -93,14 +94,14 @@ class cfs_wysiwyg extends cfs_field
                 });
             };
 
-            $(document).live('cfs/sortable_start', function(event, ui) {
+            $(document).on('cfs/sortable_start', function(event, ui) {
                 $(ui).find('.wysiwyg').each(function() {
                     var id = $(this).attr('id');
                     tinyMCE.execCommand('mceRemoveControl', false, id);
                 });
             });
 
-            $(document).live('cfs/sortable_stop', function(event, ui) {
+            $(document).on('cfs/sortable_stop', function(event, ui) {
                 $(ui).find('.wysiwyg').each(function() {
                     var id = $(this).attr('id');
                     tinyMCE.execCommand('mceAddControl', false, id);

@@ -46,10 +46,10 @@ class cfs_third_party
                 if ($form_id == $meta_value['gforms']['form_id'])
                 {
                     $fields = array();
-                    $all_fields = $wpdb->get_results("SELECT name, label FROM {$wpdb->prefix}cfs_fields WHERE post_id = '{$result->post_id}'");
+                    $all_fields = $this->parent->api->find_input_fields(array('post_id' => $result->post_id));
                     foreach ($all_fields as $field)
                     {
-                        $fields[$field->label] = $field->name;
+                        $fields[$field['label']] = $field['name'];
                     }
 
                     $field_groups[$result->post_id] = array(

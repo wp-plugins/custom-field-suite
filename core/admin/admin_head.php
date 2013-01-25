@@ -21,7 +21,8 @@ if ('cfs' == $GLOBALS['post_type'])
         $options_html[$field_name] = ob_get_clean();
     }
 
-    $field_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}cfs_fields WHERE post_id = '$post->ID'");
+    $field_count = get_post_meta($post->ID, 'cfs_fields', true);
+    $field_count = is_array($field_count) ? count($field_count) : 0;
 
     // Build clone HTML
     $field = (object) array(
@@ -30,7 +31,7 @@ if ('cfs' == $GLOBALS['post_type'])
         'name' => 'new_field',
         'label' => 'New Field',
         'type' => 'text',
-        'instructions' => '',
+        'notes' => '',
         'weight' => 'clone',
     );
 
