@@ -58,6 +58,10 @@ class cfs_wysiwyg extends cfs_field
         // Make sure the user has WYSIWYG enabled
         if ('true' == get_user_meta(get_current_user_id(), 'rich_editing', true))
         {
+            // Load TinyMCE for front-end forms
+            echo '<div class="hidden">';
+            wp_editor('', 'cfswysi');
+            echo '</div>';
     ?>
         <script>
         (function($) {
@@ -68,6 +72,15 @@ class cfs_wysiwyg extends cfs_field
                     $('.cfs_wysiwyg:not(.ready)').init_wysiwyg();
                 });
                 $('.cfs_wysiwyg').init_wysiwyg();
+
+                // TinyMCE hates hidden containers
+                $(document).on('click', '.cfs_loop_head', function() {
+                    $(this).siblings('.cfs_loop_body.open').find('.wysiwyg').each(function() {
+                        var id = $(this).attr('id');
+                        tinyMCE.execCommand('mceRemoveControl', false, id);
+                        tinyMCE.execCommand('mceAddControl', false, id);
+                    });
+                });
 
                 // Set the active editor
                 $(document).on('click', 'a.add_media', function() {

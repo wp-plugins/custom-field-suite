@@ -1,18 +1,12 @@
 <?php
 
-global $post, $wpdb;
+global $post;
 
 /*---------------------------------------------------------------------------------------------
     Field management screen
 ---------------------------------------------------------------------------------------------*/
-?>
 
-<script src="<?php echo $this->url; ?>/js/tipTip/jquery.tipTip.js"></script>
-<link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/js/tipTip/tipTip.css" />
-
-<?php
-
-if ('cfs' == $GLOBALS['post_type'])
+if ('cfs' == $screen->post_type)
 {
     foreach ($this->fields as $field_name => $field_data)
     {
@@ -49,8 +43,10 @@ var CFS = {
 </script>
 <script src="<?php echo $this->url; ?>/js/fields.js"></script>
 <script src="<?php echo $this->url; ?>/js/select2/select2.min.js"></script>
+<script src="<?php echo $this->url; ?>/js/tipTip/jquery.tipTip.js"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/css/fields.css" />
 <link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/js/select2/select2.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/js/tipTip/tipTip.css" />
 
 <?php
 }
@@ -66,21 +62,6 @@ else
 
     if (!empty($field_group_ids))
     {
-?>
-
-<link rel="stylesheet" type="text/css" href="<?php echo $this->url; ?>/css/input.css" />
-<script>
-var CFS = {
-    'validators': {},
-    'get_field_value': {},
-    'loop_buffer': []
-};
-</script>
-<script src="<?php echo $this->url; ?>/js/validation.js"></script>
-<?php
-        // Add custom validators
-        do_action('cfs_custom_validation');
-
         // Support for multiple metaboxes
         foreach ($field_group_ids as $group_id => $title)
         {
@@ -91,10 +72,8 @@ var CFS = {
                 $hide_editor = true;
             }
 
-            add_meta_box("cfs_input_$group_id", $title, array($this, 'meta_box'), $post->post_type, 'normal', 'high', array('box' => 'input', 'group_id' => $group_id));
-
-            // Add .cfs_input to the metabox CSS
-            add_filter("postbox_classes_{$post->post_type}_cfs_input_{$group_id}", 'cfs_postbox_classes');
+            $args = array('box' => 'input', 'group_id' => $group_id);
+            add_meta_box("cfs_input_$group_id", $title, array($this, 'meta_box'), $post->post_type, 'normal', 'high', $args);
         }
 
         // Force editor support
@@ -103,21 +82,16 @@ var CFS = {
 
         if (!$has_editor || $hide_editor)
         {
+            echo '<style type="text/css">#poststuff .postarea { display: none; }</style>';
+        }
 ?>
 
-<style type="text/css">#poststuff .postarea { display: none; }</style>
+<script>
+jQuery(function($) {
+    $('.postbox[id^="cfs"]').addClass('cfs_input');
+});
+</script>
 
 <?php
-        }
     }
-}
-
-/*---------------------------------------------------------------------------------------------
-    Helper functions
----------------------------------------------------------------------------------------------*/
-
-function cfs_postbox_classes($classes)
-{
-    $classes[] = 'cfs_input';
-    return $classes;
 }

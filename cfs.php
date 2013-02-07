@@ -3,7 +3,7 @@
 Plugin Name: Custom Field Suite
 Plugin URI: http://uproot.us/
 Description: Visually add custom fields to your WordPress edit pages.
-Version: 1.8.4.1
+Version: 1.8.5
 Author: Matt Gibbs
 Author URI: http://uproot.us/
 License: GPL2
@@ -16,7 +16,7 @@ class cfs
     public $dir;
     public $url;
     public $version;
-    public $used_types;
+    public $field_group;
     public $fields;
     public $form;
     public $api;
@@ -32,20 +32,21 @@ class cfs
 
     function __construct()
     {
-        $this->version = '1.8.4.1';
-        $this->dir = (string) dirname(__FILE__);
+        $this->version = '1.8.5';
+        $this->dir = dirname(__FILE__);
         $this->url = plugins_url('custom-field-suite');
-        $this->used_types = array();
 
         include($this->dir . '/core/classes/api.php');
         include($this->dir . '/core/classes/upgrade.php');
         include($this->dir . '/core/classes/field.php');
+        include($this->dir . '/core/classes/field_group.php');
         include($this->dir . '/core/classes/form.php');
         include($this->dir . '/core/classes/third_party.php');
 
         // load classes
         $this->api = new cfs_api($this);
         $this->form = new cfs_form($this);
+        $this->field_group = new cfs_field_group($this);
         $this->third_party = new cfs_third_party($this);
 
         // add actions
@@ -280,21 +281,6 @@ class cfs
 
     /*--------------------------------------------------------------------------------------
     *
-    *    form
-    *
-    *    @author Matt Gibbs
-    *    @since 1.8.0
-    *
-    *-------------------------------------------------------------------------------------*/
-
-    function form($options = array())
-    {
-        return $this->form->create_form($options);
-    }
-
-
-    /*--------------------------------------------------------------------------------------
-    *
     *    save field values (and post data)
     *
     *    @author Matt Gibbs
@@ -310,6 +296,25 @@ class cfs
 
     /*--------------------------------------------------------------------------------------
     *
+    *    display a front-end form
+    *
+    *    @author Matt Gibbs
+    *    @since 1.8.5
+    *
+    *-------------------------------------------------------------------------------------*/
+
+    function form($params = array())
+    {
+        ob_start();
+
+        $this->form->render($params);
+
+        return ob_get_clean();
+    }
+
+
+    /*--------------------------------------------------------------------------------------
+    *
     *    admin_head
     *
     *    @author Matt Gibbs
@@ -319,7 +324,9 @@ class cfs
 
     function admin_head()
     {
-        if (in_array($GLOBALS['pagenow'], array('post.php', 'post-new.php')))
+        $screen = get_current_screen();
+
+        if ('post' == $screen->base)
         {
             include($this->dir . '/core/admin/admin_head.php');
         }
@@ -337,7 +344,9 @@ class cfs
 
     function admin_footer()
     {
-        if (isset($GLOBALS['post_type']) && 'cfs' == $GLOBALS['post_type'] && 'edit.php' == $GLOBALS['pagenow'])
+        $screen = get_current_screen();
+
+        if ('edit' == $screen->base && 'cfs' == $screen->post_type)
         {
             include($this->dir . '/core/admin/admin_footer.php');
         }
@@ -416,15 +425,6 @@ class cfs
                 'rules' => $rules,
                 'extras' => $extras,
             ));
-        }
-        elseif (wp_verify_nonce($_POST['cfs']['save'], 'cfs_save_input'))
-        {
-            $field_groups = isset($_POST['cfs']['field_groups']) ? $_POST['cfs']['field_groups'] : array();
-            $field_data = isset($_POST['cfs']['input']) ? $_POST['cfs']['input'] : array();
-            $post_data = array('ID' => $_POST['ID']);
-            $options = array('format' => 'input', 'field_groups' => $field_groups);
-
-            $this->save($field_data, $post_data, $options);
         }
     }
 
@@ -538,11 +538,11 @@ class cfs
                 $options = array(
                     'import_code' => json_decode(stripslashes($_POST['import_code']), true),
                 );
-                echo $ajax->import($options);
+                echo $this->field_group->import($options);
             }
             elseif ('export' == $ajax_method)
             {
-                echo json_encode($ajax->export($_POST));
+                echo json_encode($this->field_group->export($_POST));
             }
             elseif ('reset' == $ajax_method)
             {
