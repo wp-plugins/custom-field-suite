@@ -1,20 +1,20 @@
 === Custom Field Suite ===
 Contributors: logikal16, mgibbs189
 Donate link: http://uproot.us/donate/
-Tags: custom fields, fields, postmeta, meta box, cck, wysiwyg, relationship, upload
+Tags: custom fields, fields, meta, postmeta, metabox, cck, wysiwyg, relationship, upload
 Requires at least: 3.3
 Tested up to: 3.6
 Stable tag: trunk
 License: GPL2
 
-Custom Field Suite (CFS) is a plugin for adding and managing custom fields.
+Custom Field Suite (CFS) is a lightweight custom fields plugin for WordPress.
 
 == Description ==
 
 Custom Field Suite (CFS) lets you add custom fields to various edit screens. Each "field group" lives in its own meta box. Add as many field groups as you need!
 
 = Features =
-* See the intro [screencast](http://screencast.com/t/2SmhTQob)
+* [How to Use CFS](http://uproot.us/docs/how-to-use-cfs/)
 * Many field types: [Text](http://uproot.us/docs/text/), [Textarea](http://uproot.us/docs/textarea/), [Visual Editor](http://uproot.us/docs/wysiwyg/), [Date](http://uproot.us/docs/date/), [Color](http://uproot.us/docs/color/), [Select](http://uproot.us/docs/select/), [File Upload](http://uproot.us/docs/file-upload/), [User](http://uproot.us/docs/user/), [Relationship](http://uproot.us/docs/relationship/), [Loop](http://uproot.us/docs/loop/) and you can also [create your own](http://uproot.us/docs/creating-custom-field-types/)!
 * Loop fields are repeatable containers for other fields. For example, place a `File Upload` field into a `Loop` field to create a photo gallery!
 * Each field group has a "Placement Rules" area, where you control which edit screens the field group should appear on
@@ -48,6 +48,12 @@ Custom Field Suite (CFS) lets you add custom fields to various edit screens. Eac
 4. The Tools area for migrating field groups
 
 == Changelog ==
+
+= 1.8.8 =
+* Several form() enhancements!
+* Re-added loop "Row Display" option
+* Ensuring that $cfs exists for template parts
+* Added `cfs_pre_render_fields` filter for altering field settings
 
 = 1.8.7 =
 * Fixed newlines issue for sub-loop wysiwyg fields (props @jchristopher)

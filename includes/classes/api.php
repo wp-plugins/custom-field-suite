@@ -366,15 +366,15 @@ class cfs_api
             'field_id' => false,
             'parent_id' => false,
         );
-        $params = (object) array_merge($defaults, $params);
-        $values = $this->get_fields($post->ID, array('format' => 'input'));
+        $params = array_merge($defaults, $params);
+        $values = $this->get_fields($post->id, array('format' => 'input'));
 
         $fields = array();
 
         $results = $this->find_input_fields(array(
-            'post_id' => $params->group_id,
-            'field_id' => $params->field_id,
-            'parent_id' => $params->parent_id,
+            'post_id' => $params['group_id'],
+            'field_id' => $params['field_id'],
+            'parent_id' => $params['parent_id'],
         ));
 
         foreach ($results as $field)
@@ -417,12 +417,12 @@ class cfs_api
             'parent_id' => array(),
         );
 
-        $params = (object) array_merge($defaults, $params);
+        $params = array_merge($defaults, $params);
 
         $where = '';
-        if (!empty($params->post_id))
+        if (!empty($params['post_id']))
         {
-            $post_ids = implode(',', (array) $params->post_id);
+            $post_ids = implode(',', (array) $params['post_id']);
             $where .= " AND post_id IN ($post_ids)";
         }
 
@@ -431,7 +431,7 @@ class cfs_api
         // Cache the query (get fields)
         if (!isset($this->cache['cfs_fields'][$where]))
         {
-            $results = $wpdb->get_results("SELECT meta_value FROM $wpdb->postmeta WHERE meta_key = 'cfs_fields' $where");
+            $results = $wpdb->get_results("SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = 'cfs_fields' $where");
             $this->cache['cfs_fields'][$where] = $results;
         }
         else
@@ -441,19 +441,24 @@ class cfs_api
 
         foreach ($results as $result)
         {
+            // Loop fields need the group ID
+            $group_id = (int) $result->post_id;
+
             $result = unserialize($result->meta_value);
 
             if (!empty($result))
             {
                 foreach ($result as $field)
                 {
-                    if (empty($params->field_id) || in_array($field['id'], (array) $params->field_id))
+                    $field['group_id'] = $group_id;
+
+                    if (empty($params['field_id']) || in_array($field['id'], (array) $params['field_id']))
                     {
-                        if (empty($params->parent_id) || in_array($field['parent_id'], (array) $params->parent_id))
+                        if (empty($params['parent_id']) || in_array($field['parent_id'], (array) $params['parent_id']))
                         {
-                            if (empty($params->field_type) || in_array($field['type'], (array) $params->field_type))
+                            if (empty($params['field_type']) || in_array($field['type'], (array) $params['field_type']))
                             {
-                                if (empty($params->field_name) || in_array($field['name'], (array) $params->field_name))
+                                if (empty($params['field_name']) || in_array($field['name'], (array) $params['field_name']))
                                 {
                                     $output[] = $field;
                                 }
@@ -632,7 +637,7 @@ class cfs_api
         }
         else
         {
-            $post_id = $post_data['ID'];
+            $post_id = (int) $post_data['ID'];
 
             if (1 < count($post_data))
             {
