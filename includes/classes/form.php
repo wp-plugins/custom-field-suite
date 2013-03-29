@@ -24,11 +24,6 @@ class cfs_form
         add_action('cfs_init', array($this, 'init'));
         add_action('wp_head', array($this, 'head_scripts'));
         add_action('admin_head', array($this, 'head_scripts'));
-
-        // Start the session
-        if ('' == session_id()) {
-            session_start();
-        }
     }
 
 
@@ -43,23 +38,30 @@ class cfs_form
 
     public function init()
     {
+        if ('' == session_id()) {
+            session_start();
+        }
+
         // Save the form
         if (isset($_POST['cfs']['save']))
         {
             if (wp_verify_nonce($_POST['cfs']['save'], 'cfs_save_input'))
             {
+                // Hash is used to handle multiple active edit pages
+                $hash = $_POST['cfs']['save_hash'];
+                $session = isset($_SESSION['cfs'][$hash]) ? $_SESSION['cfs'][$hash] : false;
+
+                if (empty($session))
+                {
+                    die('Your session has expired.');
+                }
+
                 $field_data = isset($_POST['cfs']['input']) ? $_POST['cfs']['input'] : array();
                 $post_data = array();
 
-                // Form settings are SESSION-based for added security
-                $post_id = (int) $_SESSION['cfs']['post_id'];
-
-                if (true === $_SESSION['cfs']['front_end']) {
-                    $field_groups = isset($_SESSION['cfs']['field_groups']) ? $_SESSION['cfs']['field_groups'] : array();
-                }
-                else {
-                    $field_groups = isset($_POST['cfs']['field_groups']) ? $_POST['cfs']['field_groups'] : array();
-                }
+                // Form settings are session-based for added security
+                $post_id = (int) $session['post_id'];
+                $field_groups = isset($session['field_groups']) ? $session['field_groups'] : array();
 
                 // Sanitize field groups
                 foreach ($field_groups as $key => $val) {
@@ -79,13 +81,13 @@ class cfs_form
                 // New posts
                 if ($post_id < 1) {
                     // Post type
-                    if (isset($_SESSION['cfs']['post_type'])) {
-                        $post_data['post_type'] = $_SESSION['cfs']['post_type'];
+                    if (isset($session['post_type'])) {
+                        $post_data['post_type'] = $session['post_type'];
                     }
 
                     // Post status
-                    if (isset($_SESSION['cfs']['post_status'])) {
-                        $post_data['post_status'] = $_SESSION['cfs']['post_status'];
+                    if (isset($session['post_status'])) {
+                        $post_data['post_status'] = $session['post_status'];
                     }
                 }
                 else {
@@ -96,12 +98,13 @@ class cfs_form
                 $this->parent->save($field_data, $post_data, $options);
 
                 // Redirect public forms
-                if (true === $_SESSION['cfs']['front_end']) {
+                if (true === $session['front_end']) {
                     $redirect_url = $_SERVER['REQUEST_URI'];
-                    if (!empty($_SESSION['cfs']['confirmation_url'])) {
-                        $redirect_url = $_SESSION['cfs']['confirmation_url'];
+                    if (!empty($session['confirmation_url'])) {
+                        $redirect_url = $session['confirmation_url'];
                     }
-                    unset($_SESSION['cfs']);
+
+                    unset($_SESSION['cfs'][$hash]);
                     header('Location: ' . $redirect_url);
                     exit;
                 }
@@ -188,6 +191,7 @@ var CFS = {
             'post_type' => 'post',
             'confirmation_message' => '',
             'confirmation_url' => '',
+            'submit_label' => __('Submit', 'cfs'),
             'front_end' => true,
         );
 
@@ -214,16 +218,26 @@ var CFS = {
         // Hook to allow for overridden field settings
         $input_fields = apply_filters('cfs_pre_render_fields', $input_fields, $params);
 
-        // Form variables
-        $_SESSION['cfs'] = array(
+        // The SESSION should contain all applicable field group IDs. Since add_meta_box only
+        // passes 1 field group at a time, we use $cfs->group_ids from admin_head.php
+        // to store all group IDs needed for the SESSION.
+        $all_group_ids = (false === $params['front_end']) ? $this->parent->group_ids : $field_groups;
+
+        $session_data = array(
             'post_id' => $post_id,
             'post_type' => $params['post_type'],
             'post_status' => $params['post_status'],
-            'field_groups' => $field_groups,
+            'field_groups' => $all_group_ids,
             'confirmation_message' => $params['confirmation_message'],
             'confirmation_url' => $params['confirmation_url'],
             'front_end' => $params['front_end'],
         );
+
+        // Create a verification hash based on the SESSION options
+        $hash = md5(serialize($session_data));
+
+        // Set the SESSION
+        $_SESSION['cfs'][$hash] = $session_data;
 
         if (false !== $params['front_end'])
         {
@@ -332,14 +346,11 @@ var CFS = {
     ?>
 
         <input type="hidden" name="cfs[save]" value="<?php echo wp_create_nonce('cfs_save_input'); ?>" />
+        <input type="hidden" name="cfs[save_hash]" value="<?php echo $hash; ?>" />
 
-        <?php if (false === $params['front_end']) : ?>
+        <?php if (false !== $params['front_end']) : ?>
 
-        <input type="hidden" name="cfs[field_groups][]" value="<?php echo $field_groups; ?>" />
-
-        <?php else : ?>
-
-        <input type="submit" value="<?php _e('Submit', 'cfs'); ?>" />
+        <input type="submit" value="<?php echo esc_attr($params['submit_label']); ?>" />
     </form>
 </div>
 
