@@ -96,8 +96,25 @@ class cfs_form
 
                 $options = array('format' => 'input', 'field_groups' => $field_groups);
 
+                // Hook parameters
+                $hook_params = array(
+                    'field_data' => $field_data,
+                    'post_data' => $post_data,
+                    'options' => $options,
+                );
+
+                // Pre-save hook
+                do_action('cfs_pre_save_input', $hook_params);
+
                 // Save the input values
-                $this->parent->save($field_data, $post_data, $options);
+                $hook_params['post_data']['ID'] = $this->parent->save(
+                    $field_data,
+                    $post_data,
+                    $options
+                );
+
+                // After-save hook
+                do_action('cfs_after_save_input', $hook_params);
 
                 // Delete expired sessions
                 $this->session->cleanup();
@@ -138,13 +155,9 @@ class cfs_form
         wp_enqueue_script('jquery');
         wp_enqueue_script('jquery-ui-core');
         wp_enqueue_script('jquery-ui-sortable');
-        wp_enqueue_script('cfs-validation', $this->parent->url . '/assets/js/validation.js');
         wp_enqueue_script('tiptip', $this->parent->url . '/assets/js/tipTip/jquery.tipTip.js');
         wp_enqueue_style('tiptip', $this->parent->url . '/assets/js/tipTip/tipTip.css');
         wp_enqueue_style('cfs-input', $this->parent->url . '/assets/css/input.css');
-
-        // Allow for custom client-side field validators
-        do_action('cfs_custom_validation');
     }
 
 
@@ -161,15 +174,11 @@ class cfs_form
     {
     ?>
 
-<script>
-var CFS = {
-    'validators': {},
-    'get_field_value': {},
-    'loop_buffer': []
-};
-</script>
+<script src="<?php echo $this->parent->url; ?>/assets/js/validation.js"></script>
 
     <?php
+        // Allow for custom client-side field validators
+        do_action('cfs_custom_validation');
     }
 
 
@@ -296,6 +305,13 @@ var CFS = {
             if (1 > (int) $field->parent_id)
             {
                 $validator = '';
+
+                if ('relationship' == $field->type)
+                {
+                    $min = empty($field->options['limit_min']) ? 0 : (int) $field->options['limit_min'];
+                    $max = empty($field->options['limit_max']) ? 0 : (int) $field->options['limit_max'];
+                    $validator = "limit|$min,$max";
+                }
 
                 if (isset($field->options['required']) && 0 < (int) $field->options['required'])
                 {
