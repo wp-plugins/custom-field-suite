@@ -7,11 +7,11 @@ Tested up to: 3.6
 Stable tag: trunk
 License: GPL2
 
-Custom Field Suite (CFS) is a lightweight custom fields plugin for WordPress.
+Custom Field Suite (CFS) is a lightweight custom fields plugin
 
 == Description ==
 
-A lightweight custom fields plugin for WordPress
+= Custom Field Suite (CFS) is a lightweight custom fields plugin =
 
 * Visually create and manage custom fields
 * Over a dozen field types: text, date, relationship, file upload, user, loop, google maps, etc.
@@ -24,7 +24,7 @@ A lightweight custom fields plugin for WordPress
 **CFS is a fork of Advanced Custom Fields v2.** The goals of this plugin are stability, performance, and avoiding feature bloat.
 
 = Getting Started =
-[View the video tutorial on how to use CFS →](http://uproot.us/docs/how-to-use-cfs/)
+[See the CFS overview page →](http://uproot.us/projects/cfs/)
 
 = Documentation =
 [View the documentation →](http://uproot.us/projects/cfs/documentation/)
