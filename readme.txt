@@ -16,7 +16,7 @@ Custom Field Suite (CFS) is a lightweight custom fields plugin
 * Visually create and manage custom fields
 * Over a dozen field types: text, date, relationship, file upload, user, loop, google maps, etc.
 * Each field group has a "Placement Rules" area, where you define which edit screens to appear on
-* Loop fields are repeatable containers for other fields. E.g. place a `File Upload` field into a loop to create a gallery!
+* Loop fields are repeatable containers for other fields. For example, place a `File Upload` field into a loop to create a gallery!
 * Create your own field types using the `cfs_field_types` hook
 * CFS works well with Gravity Forms, and can save GF entries as post items
 * Includes client-side field validation
