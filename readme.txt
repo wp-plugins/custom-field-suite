@@ -45,6 +45,11 @@ Custom Field Suite (CFS) is a lightweight custom fields plugin
 
 == Changelog ==
 
+= 1.9.2 =
+* Replaced date picker with Pikaday
+* Bugfix - javascript "undefined method replace" error
+* Bugfix - incorrect plugins_url() for multi-site installs
+
 = 1.9.1 =
 * Added `cfs_pre_save_input` action hook
 * Added `cfs_after_save_input` action hook
