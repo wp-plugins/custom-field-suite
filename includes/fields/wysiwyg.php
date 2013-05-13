@@ -3,14 +3,26 @@
 class cfs_wysiwyg extends cfs_field
 {
 
+    public $wp_default_editor;
+
+
+
+
     function __construct($parent)
     {
         $this->name = 'wysiwyg';
         $this->label = __('Wysiwyg Editor', 'cfs');
         $this->parent = $parent;
 
+        // wp_editor() won't work for dynamic-generated wysiwygs
         add_filter('wp_default_editor', array($this, 'wp_default_editor'));
+
+        // force HTML mode for main content editor
+        add_action('tiny_mce_before_init', array($this, 'editor_pre_init'));
     }
+
+
+
 
     function html($field)
     {
@@ -25,6 +37,9 @@ class cfs_wysiwyg extends cfs_field
         </div>
     <?php
     }
+
+
+
 
     function options_html($key, $field)
     {
@@ -53,14 +68,17 @@ class cfs_wysiwyg extends cfs_field
     <?php
     }
 
+
+
+
     function input_head()
     {
-        // Make sure the user has WYSIWYG enabled
+        // make sure the user has WYSIWYG enabled
         if ('true' == get_user_meta(get_current_user_id(), 'rich_editing', true))
         {
             if (!is_admin())
             {
-                // Load TinyMCE for front-end forms
+                // load TinyMCE for front-end forms
                 echo '<div class="hidden">';
                 wp_editor('', 'cfswysi');
                 echo '</div>';
@@ -78,7 +96,7 @@ class cfs_wysiwyg extends cfs_field
                 });
                 $('.cfs_wysiwyg').init_wysiwyg();
 
-                // Set the active editor
+                // set the active editor
                 $(document).on('click', 'a.add_media', function() {
                     var editor_id = $(this).closest('.wp-editor-wrap').find('.wp-editor-area').attr('id');
                     wpActiveEditor = editor_id;
@@ -128,15 +146,39 @@ class cfs_wysiwyg extends cfs_field
         }
     }
 
-    function wp_default_editor()
+
+
+
+    function wp_default_editor($default)
     {
+        $this->wp_default_editor = $default;
+
         return 'tinymce'; // html or tinymce
     }
+
+
+
+
+    function editor_pre_init($settings)
+    {
+        if ('html' == $this->wp_default_editor)
+        {
+            $settings['oninit'] = "function() { switchEditors.go('content', 'html'); }";
+        }
+
+        return $settings;
+    }
+
+
+
 
     function format_value_for_input($value, $field)
     {
         return wp_richedit_pre($value);
     }
+
+
+
 
     function format_value_for_api($value, $field)
     {

@@ -11,6 +11,9 @@ class cfs_loop extends cfs_field
         $this->values = array();
     }
 
+
+
+
     /*---------------------------------------------------------------------------------------------
         html
     ---------------------------------------------------------------------------------------------*/
@@ -23,6 +26,9 @@ class cfs_loop extends cfs_field
         $this->recursive_clone($field->group_id, $field->id);
         $this->recursive_html($field->group_id, $field->id);
     }
+
+
+
 
     /*---------------------------------------------------------------------------------------------
         options_html
@@ -78,6 +84,9 @@ class cfs_loop extends cfs_field
     <?php
     }
 
+
+
+
     /*---------------------------------------------------------------------------------------------
         recursive_clone
     ---------------------------------------------------------------------------------------------*/
@@ -113,7 +122,7 @@ class cfs_loop extends cfs_field
                     $loop_field_ids[] = $field->id;
                 ?>
                     <div class="table_footer">
-                        <input type="button" class="button-primary cfs_add_field" value="<?php echo esc_attr($this->get_option($field, 'button_label', __('Add Row', 'cfs'))); ?>" data-loop-tag="[clone][<?php echo $field->id; ?>]" data-num-rows="0" />
+                        <input type="button" class="button-primary cfs_add_field" value="<?php echo esc_attr($this->get_option($field, 'button_label', __('Add Row', 'cfs'))); ?>" data-loop-tag="[clone][<?php echo $field->id; ?>]" data-rows="0" />
                     </div>
                 <?php else : ?>
                 <?php
@@ -145,6 +154,9 @@ class cfs_loop extends cfs_field
         }
     }
 
+
+
+
     /*---------------------------------------------------------------------------------------------
         dynamic_label
     ---------------------------------------------------------------------------------------------*/
@@ -174,6 +186,9 @@ class cfs_loop extends cfs_field
         return $row_label;
     }
 
+
+
+
     /*---------------------------------------------------------------------------------------------
         recursive_html
     ---------------------------------------------------------------------------------------------*/
@@ -192,11 +207,11 @@ class cfs_loop extends cfs_field
         $css_class = (0 < (int) $row_display) ? ' open' : '';
 
         // Do the dirty work
-        $offset = 0;
+        $row_offset = -1;
 
         if ($values) :
             foreach ($values as $i => $value) :
-                $offset = ($i + 1);
+                $row_offset = max($i, $row_offset);
     ?>
         <div class="loop_wrapper">
             <div class="cfs_loop_head">
@@ -234,10 +249,13 @@ class cfs_loop extends cfs_field
         <?php endforeach; endif; ?>
 
         <div class="table_footer">
-            <input type="button" class="button-primary cfs_add_field" value="<?php echo esc_attr($button_label); ?>" data-loop-tag="<?php echo $parent_tag; ?>" data-num-rows="<?php echo $offset; ?>" />
+            <input type="button" class="button-primary cfs_add_field" value="<?php echo esc_attr($button_label); ?>" data-loop-tag="<?php echo $parent_tag; ?>" data-rows="<?php echo ($row_offset + 1); ?>" />
         </div>
     <?php
     }
+
+
+
 
     /*---------------------------------------------------------------------------------------------
         input_head
@@ -250,11 +268,11 @@ class cfs_loop extends cfs_field
         (function($) {
             $(function() {
                 $(document).on('click', '.cfs_add_field', function() {
-                    var num_rows = $(this).attr('data-num-rows');
+                    var num_rows = $(this).attr('data-rows');
                     var loop_tag = $(this).attr('data-loop-tag');
                     var loop_id = loop_tag.match(/.*\[(.*?)\]/)[1];
                     var html = CFS.loop_buffer[loop_id].replace(/\[clone\]/g, loop_tag + '[' + num_rows + ']');
-                    $(this).attr('data-num-rows', parseInt(num_rows)+1);
+                    $(this).attr('data-rows', parseInt(num_rows)+1);
                     $(this).closest('.table_footer').before(html);
                     $(this).trigger('cfs/ready');
                 });
@@ -288,26 +306,30 @@ class cfs_loop extends cfs_field
                         $(document).trigger('cfs/sortable_stop', ui.item);
                     },
                     update: function(event, ui) {
-                        var counter = {};
-                        var last_depth = -1;
-                        var loop = ui.item.closest('.cfs_loop');
-                        loop.find('[name^="cfs[input]"]').each(function() {
-                            // get the loop depth, used to find the correct array element
-                            var depth = $(this).closest('.cfs_loop').parents('.cfs_loop').size();
-                            var array_index = 3 + (depth * 2);
+                        // To re-order field names:
+                        // 1. Get the depth of the dragged element
+                        // 2. Loop through each input field within the dragged element
+                        // 3. Reset the array index within the name attribute
+                        var $container = ui.item.closest('.field');
+                        var depth = $container.closest('.cfs_loop').parents('.cfs_loop').length;
+                        var array_element = 3 + (depth * 2);
 
-                            // If depth increases, set counter[depth] = 0
-                            // Otherwise, set counter[depth] = counter[depth] + 1
-                            counter[depth] = (depth > last_depth) ? 0 : counter[depth] + 1;
-                            last_depth = depth;
+                        var counter = -1;
+                        var last_index = -1;
+                        $container.find('[name^="cfs[input]"]').each(function() {
+                            var name_attr = $(this).attr('name').split('[');
+                            var current_index = parseInt( name_attr[array_element] );
+                            if (current_index != last_index) {
+                                counter += 1;
+                            }
+                            name_attr[array_element] = counter + ']';
+                            last_index = current_index;
+                            $(this).attr('name', name_attr.join('['));
+                        });
 
-                            // Update the current input, as well as any children
-                            $(this).closest('.loop_wrapper').find('[name^="cfs[input]"]').each(function() {
-                                var new_name = $(this).attr('name').split('[');
-                                new_name[array_index] = counter[depth] + ']';
-                                new_name = new_name.join('[');
-                                $(this).attr('name', new_name);
-                            });
+                        // debug
+                        $container.find('[name^="cfs[input]"]').each(function() {
+                            console.log($(this).attr('name') + ' = ' + $(this).val());
                         });
                     }
                 });
@@ -316,6 +338,9 @@ class cfs_loop extends cfs_field
         </script>
     <?php
     }
+
+
+
 
     function prepare_value($value, $field)
     {
