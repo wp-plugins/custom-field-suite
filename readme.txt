@@ -45,6 +45,12 @@ Custom Field Suite (CFS) is a lightweight custom fields plugin
 
 == Changelog ==
 
+= 1.9.4 =
+* Removed the need for session cookies
+* Time support for datepicker (https://github.com/owenmead/Pikaday)
+* Gravity Forms integration bugfix (props @joshlevinson)
+* Better code commenting (PHPDoc)
+
 = 1.9.3 =
 * Fixed several Loop field order / sorting bugs (props @decamino)
 * Bugfix: CFS respects wp_default_editor()

@@ -7,15 +7,14 @@ class cfs_form
     public $assets_loaded;
     public $session;
 
-    /*--------------------------------------------------------------------------------------
-    *
-    *    __construct
-    *
-    *    @author Matt Gibbs
-    *    @since 1.8.5
-    *
-    *-------------------------------------------------------------------------------------*/
 
+
+
+    /**
+     * Constructor
+     * @param object $parent 
+     * @since 1.8.5
+     */
     public function __construct($parent)
     {
         $this->parent = $parent;
@@ -28,17 +27,22 @@ class cfs_form
     }
 
 
-    /*--------------------------------------------------------------------------------------
-    *
-    *    init
-    *
-    *    @author Matt Gibbs
-    *    @since 1.8.5
-    *
-    *-------------------------------------------------------------------------------------*/
 
+
+    /**
+     * Initialize the session and save the form
+     * @since 1.8.5
+     */
     public function init()
     {
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+            return;
+        }
+
+        if (defined('DOING_AJAX') && DOING_AJAX) {
+            return;
+        }
+
         $this->session = new cfs_session();
 
         // Save the form
@@ -46,10 +50,7 @@ class cfs_form
         {
             if (wp_verify_nonce($_POST['cfs']['save'], 'cfs_save_input'))
             {
-                // Hash is used to handle multiple active edit pages
-                $hash = $_POST['cfs']['save_hash'];
-
-                $session = $this->session->get($hash);
+                $session = $this->session->get();
 
                 if (empty($session))
                 {
@@ -134,15 +135,12 @@ class cfs_form
     }
 
 
-    /*--------------------------------------------------------------------------------------
-    *
-    *    load_assets
-    *
-    *    @author Matt Gibbs
-    *    @since 1.8.5
-    *
-    *-------------------------------------------------------------------------------------*/
 
+
+    /**
+     * Load form dependencies
+     * @since 1.8.5
+     */
     public function load_assets()
     {
         if ($this->assets_loaded)
@@ -161,15 +159,12 @@ class cfs_form
     }
 
 
-    /*--------------------------------------------------------------------------------------
-    *
-    *    head_scripts
-    *
-    *    @author Matt Gibbs
-    *    @since 1.8.8
-    *
-    *-------------------------------------------------------------------------------------*/
 
+
+    /**
+     * Handle front-end validation
+     * @since 1.8.8
+     */
     function head_scripts()
     {
     ?>
@@ -182,15 +177,14 @@ class cfs_form
     }
 
 
-    /*--------------------------------------------------------------------------------------
-    *
-    *    render
-    *
-    *    @author Matt Gibbs
-    *    @since 1.8.5
-    *
-    *-------------------------------------------------------------------------------------*/
 
+
+    /**
+     * Render the HTML input form
+     * @param array $params 
+     * @return string form HTML code
+     * @since 1.8.5
+     */
     public function render($params)
     {
         global $post;
@@ -246,11 +240,8 @@ class cfs_form
             'front_end' => $params['front_end'],
         );
 
-        // Create a verification hash based on the SESSION options
-        $hash = md5(serialize($session_data));
-
         // Set the SESSION
-        $this->session->set($hash, $session_data);
+        $this->session->set($session_data);
 
         if (false !== $params['front_end'])
         {
@@ -366,7 +357,7 @@ class cfs_form
     ?>
 
         <input type="hidden" name="cfs[save]" value="<?php echo wp_create_nonce('cfs_save_input'); ?>" />
-        <input type="hidden" name="cfs[save_hash]" value="<?php echo $hash; ?>" />
+        <input type="hidden" name="cfs[session_id]" value="<?php echo $this->session->session_id; ?>" />
 
         <?php if (false !== $params['front_end']) : ?>
 

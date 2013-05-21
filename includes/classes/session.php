@@ -4,48 +4,38 @@ class cfs_session
 {
     public $session_id;
     public $session_data;
-    public $expires = 3600;
+    public $expires = 14400; // 4 hours
 
 
 
 
+    /**
+     * Constructor
+     */
     public function __construct() {
-        if (isset($_COOKIE['cfs_session']) && $this->is_valid($_COOKIE['cfs_session'])) {
-            $this->session_id = $_COOKIE['cfs_session'];
+        if (isset($_POST['cfs']['session_id']) && $this->is_valid($_POST['cfs']['session_id'])) {
+            $this->session_id = $_POST['cfs']['session_id'];
         }
         else {
             $this->session_id = md5(uniqid());
         }
-
-        // Set or update the cookie
-        setcookie('cfs_session',
-            $this->session_id,
-            time() + $this->expires,
-            COOKIEPATH,
-            COOKIE_DOMAIN
-        );
     }
 
 
 
 
-    public function get($key = null) {
+    /**
+     * Load the session (expired sessions return an empty array)
+     * @return array
+     */
+    public function get() {
         global $wpdb;
 
         $now = time();
         $output = array();
         $session_data = $wpdb->get_var("SELECT data FROM {$wpdb->prefix}cfs_sessions WHERE id = '$this->session_id' AND expires > '$now'");
         if (!empty($session_data)) {
-            $session_data = unserialize($session_data);
-
-            if (null != $key) {
-                if (isset($session_data[$key])) {
-                    $output = $session_data[$key];
-                }
-            }
-            else {
-                $output = $session_data;
-            }
+            $output = unserialize($session_data);
         }
 
         return $output;
@@ -54,12 +44,14 @@ class cfs_session
 
 
 
-    public function set($key, $data) {
+    /**
+     * Update the session
+     * @param array $session_data 
+     */
+    public function set($session_data) {
         global $wpdb;
 
-        $session_data = $this->get();
-        $session_data = array_merge($session_data, array($key => $data));
-        $this->destroy();
+        $wpdb->query("DELETE FROM {$wpdb->prefix}cfs_sessions WHERE id = '$this->session_id' LIMIT 1");
 
         $wpdb->query(
             $wpdb->prepare(
@@ -72,15 +64,9 @@ class cfs_session
 
 
 
-    public function destroy() {
-        global $wpdb;
-
-        $wpdb->query("DELETE FROM {$wpdb->prefix}cfs_sessions WHERE id = '$this->session_id' LIMIT 1");
-    }
-
-
-
-
+    /**
+     * Remove expired sessions
+     */
     public function cleanup() {
         global $wpdb;
 
@@ -91,6 +77,11 @@ class cfs_session
 
 
 
+    /**
+     * Validate the MD5 session hash
+     * @param string $session_id 
+     * @return boolean
+     */
     public function is_valid($session_id) {
         return preg_match("/^([a-f0-9]{32})$/", $session_id) ? true : false;
     }
