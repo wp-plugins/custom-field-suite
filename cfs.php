@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Custom Field Suite
-Plugin URI: http://uproot.us/projects/cfs/
+Plugin URI: https://uproot.us/
 Description: Visually add custom fields to your WordPress edit pages.
-Version: 1.9.6
+Version: 1.9.7
 Author: Matt Gibbs
-Author URI: http://uproot.us/
+Author URI: https://uproot.us/
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -21,17 +21,9 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, see <http://www.gnu.org/licenses/>.
 */
 
-$cfs = new cfs();
-
-class cfs
+class Custom_Field_Suite
 {
-    public $dir;
-    public $url;
-    public $version;
-    public $field_group;
-    public $fields;
-    public $form;
-    public $api;
+    public $version = '1.9.7';
 
 
 
@@ -54,7 +46,6 @@ class cfs
      */
     function init()
     {
-        $this->version = '1.9.6';
         $this->dir = dirname(__FILE__);
         $this->url = plugins_url('custom-field-suite');
 
@@ -91,27 +82,25 @@ class cfs
         $this->third_party = new cfs_third_party($this);
         $this->fields = $this->get_field_types();
 
-        $labels = array(
-            'name' => __('Field Groups', 'cfs'),
-            'singular_name' => __('Field Group', 'cfs'),
-            'add_new' => __('Add New', 'cfs'),
-            'add_new_item' => __('Add New Field Group', 'cfs'),
-            'edit_item' =>  __('Edit Field Group', 'cfs'),
-            'new_item' => __('New Field Group', 'cfs'),
-            'view_item' => __('View Field Group', 'cfs'),
-            'search_items' => __('Search Field Groups', 'cfs'),
-            'not_found' =>  __('No Field Groups found', 'cfs'),
-            'not_found_in_trash' => __('No Field Groups found in Trash', 'cfs'),
-        );
-
         register_post_type('cfs', array(
-            'labels' => $labels,
-            'public' => false,
-            'show_ui' => true,
-            'show_in_menu' => false,
-            'capability_type' => 'page',
-            'hierarchical' => false,
-            'supports' => array('title'),
+            'public'            => false,
+            'show_ui'           => true,
+            'show_in_menu'      => false,
+            'capability_type'   => 'page',
+            'hierarchical'      => false,
+            'supports'          => array('title'),
+            'labels'            => array(
+                'name'                  => __('Field Groups', 'cfs'),
+                'singular_name'         => __('Field Group', 'cfs'),
+                'add_new'               => __('Add New', 'cfs'),
+                'add_new_item'          => __('Add New Field Group', 'cfs'),
+                'edit_item'             =>  __('Edit Field Group', 'cfs'),
+                'new_item'              => __('New Field Group', 'cfs'),
+                'view_item'             => __('View Field Group', 'cfs'),
+                'search_items'          => __('Search Field Groups', 'cfs'),
+                'not_found'             =>  __('No Field Groups found', 'cfs'),
+                'not_found_in_trash'    => __('No Field Groups found in Trash', 'cfs'),
+            ),
         ));
 
         // customize the table header
@@ -131,9 +120,9 @@ class cfs
     function cfs_columns()
     {
         return array(
-            'cb' => '<input type="checkbox" />',
-            'title' => __('Title', 'cfs'),
-            'placement' => __('Placement', 'cfs'),
+            'cb'            => '<input type="checkbox" />',
+            'title'         => __('Title', 'cfs'),
+            'placement'     => __('Placement', 'cfs'),
         );
     }
 
@@ -153,11 +142,11 @@ class cfs
             global $wpdb;
 
             $labels = array(
-                'post_types' => __('Post Types', 'cfs'),
-                'user_roles' => __('User Roles', 'cfs'),
-                'post_ids' => __('Post IDs', 'cfs'),
-                'term_ids' => __('Term IDs', 'cfs'),
-                'page_templates' => __('Page Templates', 'cfs')
+                'post_types'        => __('Post Types', 'cfs'),
+                'user_roles'        => __('User Roles', 'cfs'),
+                'post_ids'          => __('Post IDs', 'cfs'),
+                'term_ids'          => __('Term IDs', 'cfs'),
+                'page_templates'    => __('Page Templates', 'cfs')
             );
 
             $results = $wpdb->get_var("SELECT meta_value FROM $wpdb->postmeta WHERE post_id = '$post_id' AND meta_key = 'cfs_rules' LIMIT 1");
@@ -179,17 +168,17 @@ class cfs
     function get_field_types()
     {
         $field_types = array(
-            'text' =>               $this->dir . '/includes/fields/text.php',
-            'textarea' =>           $this->dir . '/includes/fields/textarea.php',
-            'wysiwyg' =>            $this->dir . '/includes/fields/wysiwyg.php',
-            'date' =>               $this->dir . '/includes/fields/date/date.php',
-            'color' =>              $this->dir . '/includes/fields/color/color.php',
-            'true_false' =>         $this->dir . '/includes/fields/true_false.php',
-            'select' =>             $this->dir . '/includes/fields/select.php',
-            'relationship' =>       $this->dir . '/includes/fields/relationship.php',
-            'user' =>               $this->dir . '/includes/fields/user.php',
-            'file' =>               $this->dir . '/includes/fields/file.php',
-            'loop' =>               $this->dir . '/includes/fields/loop.php',
+            'text'                  => $this->dir . '/includes/fields/text.php',
+            'textarea'              => $this->dir . '/includes/fields/textarea.php',
+            'wysiwyg'               => $this->dir . '/includes/fields/wysiwyg.php',
+            'date'                  => $this->dir . '/includes/fields/date/date.php',
+            'color'                 => $this->dir . '/includes/fields/color/color.php',
+            'true_false'            => $this->dir . '/includes/fields/true_false.php',
+            'select'                => $this->dir . '/includes/fields/select.php',
+            'relationship'          => $this->dir . '/includes/fields/relationship.php',
+            'user'                  => $this->dir . '/includes/fields/user.php',
+            'file'                  => $this->dir . '/includes/fields/file.php',
+            'loop'                  => $this->dir . '/includes/fields/loop.php',
         );
 
         // support custom field types
@@ -363,7 +352,7 @@ class cfs
 
         if ('post' == $screen->base)
         {
-            include($this->dir . '/includes/admin/admin_head.php');
+            include($this->dir . '/includes/templates/admin_head.php');
         }
     }
 
@@ -380,7 +369,7 @@ class cfs
 
         if ('edit' == $screen->base && 'cfs' == $screen->post_type)
         {
-            include($this->dir . '/includes/admin/admin_footer.php');
+            include($this->dir . '/includes/templates/admin_footer.php');
         }
     }
 
@@ -444,10 +433,10 @@ class cfs
             $extras = isset($_POST['cfs']['extras']) ? $_POST['cfs']['extras'] : array();
 
             $this->field_group->save(array(
-                'post_id' => $post_id,
-                'fields' => $fields,
-                'rules' => $rules,
-                'extras' => $extras,
+                'post_id'   => $post_id,
+                'fields'    => $fields,
+                'rules'     => $rules,
+                'extras'    => $extras,
             ));
         }
     }
@@ -478,23 +467,6 @@ class cfs
 
 
     /**
-     * Make sure that $cfs is defined for template parts
-     * get_template_part() -> locate_template() -> load_template()
-     * load_template() extracts the $wp_query->query_vars array into variables,
-     *     so we want to force it to create $cfs too.
-     * 
-     * @param object $wp_query 
-     * @since 1.8.8
-     */
-    function parse_query($wp_query)
-    {
-        $wp_query->query_vars['cfs'] = $this;
-    }
-
-
-
-
-    /**
      * meta_box
      * @param object $post 
      * @param array $metabox 
@@ -503,7 +475,7 @@ class cfs
     function meta_box($post, $metabox)
     {
         $box = $metabox['args']['box'];
-        include($this->dir . "/includes/admin/meta_box_$box.php");
+        include($this->dir . "/includes/templates/meta_box_$box.php");
     }
 
 
@@ -516,7 +488,7 @@ class cfs
      */
     function field_html($field)
     {
-        include($this->dir . '/includes/admin/field_html.php');
+        include($this->dir . '/includes/templates/field_html.php');
     }
 
 
@@ -528,7 +500,7 @@ class cfs
      */
     function page_tools()
     {
-        include($this->dir . '/includes/admin/page_tools.php');
+        include($this->dir . '/includes/templates/page_tools.php');
     }
 
 
@@ -540,7 +512,7 @@ class cfs
      */
     function page_addons()
     {
-        include($this->dir . '/includes/admin/page_addons.php');
+        include($this->dir . '/includes/templates/page_addons.php');
     }
 
 
@@ -590,4 +562,23 @@ class cfs
             exit;
         }
     }
+
+
+
+
+    /**
+     * Make sure that $cfs is defined for template parts
+     * get_template_part() -> locate_template() -> load_template()
+     * load_template() extracts the $wp_query->query_vars array into variables,
+     *     so we want to force it to create $cfs too.
+     * 
+     * @param object $wp_query 
+     * @since 1.8.8
+     */
+    function parse_query($wp_query)
+    {
+        $wp_query->query_vars['cfs'] = $this;
+    }
 }
+
+$cfs = new Custom_Field_Suite();
