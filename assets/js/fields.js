@@ -1,6 +1,6 @@
 (function($) {
     $(function() {
-        function update_order() {
+        function zebra_stripes() {
             $('.fields .field_meta').removeClass('even');
             $('.fields .field_meta:even').addClass('even');
         }
@@ -14,7 +14,7 @@
             });
         }
 
-        update_order();
+        zebra_stripes();
         init_tooltip();
 
         // Setup checkboxes
@@ -37,9 +37,22 @@
                 }).append('<ul></ul>');
             },
             update: function(event, ui) {
-                update_order();
-                var parent_id = ui.item.parent('li').find('.field_id').val() || 0;
+                zebra_stripes();
+
+                // Use parents() because closest() includes the current element
+                // ui.item is the <li>, and loop fields have <li class="loop">
+                var parent_id = 0;
+                if (0 < ui.item.parents('li.loop').length) {
+                    parent_id = ui.item.parents('li.loop').first().find('.field_id').first().val();
+                }
                 ui.item.find('.parent_id').first().val(parent_id);
+
+                /*
+                var $container = ui.item.closest('.fields');
+                $container.find('[name^="cfs[fields]"]').each(function() {
+                    console.log($(this).attr('name') + ' = ' + $(this).val());
+                });
+                */
             }
         });
 
