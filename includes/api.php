@@ -509,29 +509,73 @@ class cfs_api
 
     /**
      * Determine which field groups to use for the current post
-     * @param int $post_id 
+     * @param int|array $params Post ID or an array of rules to match
      * @param boolean $skip_roles 
      * @return array
      * @since 1.0.0
      */
-    public function get_matching_groups($post_id, $skip_roles = false)
+    public function get_matching_groups($params, $skip_roles = false)
     {
         global $wpdb, $current_user;
 
-        if (wp_is_post_revision($post_id)) {
-            $post_id = wp_is_post_revision($post_id);
+        // Set post ID
+        if ( !is_array( $params ) ) {
+            $post_id = (int) $params;
+
+            if ( wp_is_post_revision( $post_id ) ) {
+                $post_id = wp_is_post_revision( $post_id );
+            }
+
+            $rule_types = array(
+                'post_ids' => $post_id
+            );
+        }
+        else {
+            $rule_types = $params;
         }
 
-        // Get variables
-        $matches = array();
-        $post_id = (int) $post_id;
-        $post_type = get_post_type($post_id);
-        $page_template = get_post_meta($post_id, '_wp_page_template', true);
-        $user_roles = $current_user->roles;
+        // Detect post_types / page_templates if they weren't sent
+        if ( !empty( $rule_types[ 'post_ids' ] ) ) {
+            $rule_types[ 'post_ids' ] = array_map( 'absint', (array) $rule_types[ 'post_ids' ] );
+
+            if ( !isset( $rule_types[ 'post_types' ] ) ) {
+                $rule_types[ 'post_types' ] = array();
+
+                foreach ( $rule_types[ 'post_ids' ] as $pid ) {
+                    $post_type = get_post_type( $pid );
+
+                    if ( !in_array( $post_type, $rule_types[ 'post_types' ] ) ) {
+                        $rule_types[ 'post_types' ][] = $post_type;
+                    }
+                }
+            }
+
+            if ( !isset( $rule_types[ 'page_templates' ] ) ) {
+                $rule_types[ 'page_templates' ] = array();
+
+                foreach ( $rule_types[ 'post_ids' ] as $pid ) {
+                    $page_template = get_post_meta( $pid, '_wp_page_template', true );
+
+                    if ( !empty( $page_template ) && !in_array( $page_template, $rule_types[ 'page_templates' ] ) ) {
+                        $rule_types[ 'page_templates' ][] = $page_template;
+                    }
+                }
+            }
+        }
+
+        // Set defaults
+        $rule_types = array_merge(
+            array(
+                'post_types' => array(),
+                'user_roles' => $current_user->roles,
+                'term_ids' => array(),
+                'post_ids' => array(),
+                'page_templates' => array()
+            ), $rule_types
+        );
 
         // Cache the query (get rules)
-        if (!isset($this->cache['cfs_options']))
-        {
+        if ( !isset($this->cache['cfs_options'] ) ) {
             $sql = "
             SELECT p.ID, p.post_title, m.meta_value AS rules, m2.meta_value AS extras
             FROM $wpdb->posts p
@@ -541,38 +585,24 @@ class cfs_api
             $results = $wpdb->get_results($sql);
             $this->cache['cfs_options'] = $results;
         }
-        else
-        {
+        else {
             $results = $this->cache['cfs_options'];
         }
 
-        $rule_types = array(
-            'post_types' => $post_type,
-            'user_roles' => $user_roles,
-            'term_ids' => array(),
-            'post_ids' => $post_id,
-            'page_templates' => $page_template,
-        );
-
         // Ignore user_roles if used within get_fields
-        if (false !== $skip_roles)
-        {
+        if ( false !== $skip_roles ) {
             unset($rule_types['user_roles']);
         }
 
-        foreach ($results as $result)
-        {
+        foreach ( $results as $result ) {
             $fail = false;
-            $rules = unserialize($result->rules);
-            $extras = unserialize($result->extras);
+            $rules = unserialize( $result->rules );
+            $extras = unserialize( $result->extras );
 
-            foreach ($rule_types as $rule_type => $value)
-            {
-                if (isset($rules[$rule_type]))
-                {
+            foreach ( $rule_types as $rule_type => $value ) {
+                if ( !empty( $rules[ $rule_type ] ) ) {
                     // Only lookup a post's term IDs if the rule exists
-                    if ('term_ids' == $rule_type)
-                    {
+                    if ( 'term_ids' == $rule_type ) {
                         $sql = "
                         SELECT tt.term_id
                         FROM $wpdb->term_taxonomy tt
@@ -581,36 +611,35 @@ class cfs_api
                     }
 
                     $operator = (array) $rules[$rule_type]['operator'];
-                    $in_array = (0 < count(array_intersect((array) $value, $rules[$rule_type]['values'])));
-                    if (($in_array && '!=' == $operator[0]) || (!$in_array && '==' == $operator[0]))
-                    {
+                    $in_array = ( 0 < count( array_intersect( (array) $value, $rules[$rule_type]['values'] ) ) );
+
+                    if ( ( $in_array && '!=' == $operator[0] ) || ( !$in_array && '==' == $operator[0] ) ) {
                         $fail = true;
                     }
                 }
             }
 
-            if (!$fail)
-            {
+            if ( !$fail ) {
                 $temp[] = array(
                     'post_id' => $result->ID,
                     'post_title' => $result->post_title,
-                    'order' => empty($extras['order']) ? 0 : (int) $extras['order'],
+                    'order' => empty( $extras['order'] ) ? 0 : (int) $extras['order'],
                 );
             }
         }
+        
+        $matches = array();
 
         // Sort the field groups
-        if (!empty($temp))
-        {
-            $temp = $this->array_orderby($temp, 'order');
-            foreach ($temp as $values)
-            {
+        if ( !empty( $temp ) ) {
+            $temp = $this->array_orderby( $temp, 'order' );
+            foreach ( $temp as $values ) {
                 $matches[$values['post_id']] = $values['post_title'];
             }
         }
 
         // Allow for overrides
-        return apply_filters('cfs_matching_groups', $matches, $post_id, $post_type);
+        return apply_filters( 'cfs_matching_groups', $matches, $post_id, $post_type, $rule_types );
     }
 
 

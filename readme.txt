@@ -3,7 +3,7 @@ Contributors: logikal16, mgibbs189
 Donate link: https://uproot.us/
 Tags: custom fields, fields, forms, meta, postmeta, metabox, cck, wysiwyg, relationship, upload
 Requires at least: 3.5
-Tested up to: 3.6
+Tested up to: 3.7
 Stable tag: trunk
 License: GPL2
 
@@ -43,6 +43,14 @@ Custom Field Suite (CFS) is a lightweight custom fields plugin
 4. The Tools area for migrating field groups
 
 == Changelog ==
+
+= 2.0.0 =
+* Improved i18n (props @deckerweb)
+* Improved get_matching_groups API method (props @scottkclark)
+* Support for required wysiwyg fields
+* Support for the "Duplicate Posts" plugin
+* Added ability to exclude fields from front-end forms
+* Code formatting tweaks
 
 = 1.9.9 =
 * New checkerboard pattern for image thumbnails (props @jchristopher)
