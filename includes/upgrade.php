@@ -36,10 +36,11 @@ class cfs_upgrade
             field_id INT unsigned,
             meta_id INT unsigned,
             post_id INT unsigned,
-            base_field_id INT unsigned,
+            base_field_id INT unsigned default 0,
             hierarchy TEXT,
-            weight INT unsigned,
-            sub_weight INT unsigned,
+            depth INT unsigned default 0,
+            weight INT unsigned default 0,
+            sub_weight INT unsigned default 0,
             PRIMARY KEY (id),
             INDEX field_id_idx (field_id),
             INDEX post_id_idx (post_id)
@@ -251,6 +252,19 @@ class cfs_upgrade
                 PRIMARY KEY (id)
             ) DEFAULT CHARSET=utf8";
             dbDelta($sql);
+        }
+
+        // Add the "depth" column
+        if (version_compare($this->last_version, '2.0.1', '<'))
+        {
+            $wpdb->query("ALTER TABLE {$wpdb->prefix}cfs_values ADD COLUMN depth INT unsigned default 0 AFTER hierarchy");
+
+            $results = $wpdb->get_results("SELECT id, hierarchy FROM {$wpdb->prefix}cfs_values WHERE hierarchy != ''");
+            foreach ($results as $result) {
+                $hierarchy_array = explode(':', $result->hierarchy);
+                $depth = floor(count($hierarchy_array) / 2);
+                $wpdb->query("UPDATE {$wpdb->prefix}cfs_values SET depth = '$depth' WHERE id = '$result->id' LIMIT 1");
+            }
         }
     }
 }
