@@ -44,9 +44,12 @@ Custom Field Suite (CFS) is a lightweight custom fields plugin
 
 == Changelog ==
 
+= 2.0.2 =
+* Fixed fatal error for relationship fields
+
 = 2.0.1 =
 * Validation fix for wysiwyg fields
-* Relaced deprecated WPDB->escape method (props @joshlevinson)
+* Replaced deprecated WPDB->escape method (props @joshlevinson)
 * Fixed text fields to output '0'
 * Better support for loop sub-field values
 * Added new "depth" table column
