@@ -45,6 +45,9 @@ Custom Field Suite (CFS) is a lightweight custom fields plugin
 
 == Changelog ==
 
+= 2.0.4 =
+* Fixed file upload issue with custom mime types
+
 = 2.0.3 =
 * WP 3.8 compatibility updates
 
