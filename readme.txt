@@ -42,6 +42,11 @@ Custom Field Suite (CFS) is a lightweight custom fields plugin
 
 == Changelog ==
 
+= 2.3.1 =
+* Refreshed field design (props @jchristopher)
+* Removed deprecated WP 3.5 code (file upload field)
+* Minor tweaks to the output of Exports
+
 = 2.3.0 =
 * Added Tab field type
 * Updated translations

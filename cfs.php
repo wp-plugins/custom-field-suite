@@ -3,7 +3,7 @@
 Plugin Name: Custom Field Suite
 Plugin URI: https://uproot.us/
 Description: Visually add custom fields to your WordPress edit pages.
-Version: 2.3.0
+Version: 2.3.1
 Author: Matt Gibbs
 Author URI: https://uproot.us/
 Text Domain: cfs
@@ -25,7 +25,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 
 class Custom_Field_Suite
 {
-    public $version = '2.3.0';
+    public $version = '2.3.1';
 
 
     /**
@@ -55,6 +55,7 @@ class Custom_Field_Suite
         add_action( 'delete_post',              array( $this, 'delete_post' ) );
         add_action( 'add_meta_boxes',           array( $this, 'add_meta_boxes' ) );
         add_action( 'wp_ajax_cfs_ajax_handler', array( $this, 'ajax_handler' ) );
+	    add_filter( 'admin_body_class',         array( $this, 'add_body_class' ) );
 
         // Force the $cfs variable
         if ( !is_admin() ) {
@@ -153,7 +154,8 @@ class Custom_Field_Suite
 
             foreach ( $results as $criteria => $values ) {
                 $label = $labels[$criteria];
-                echo "<div>$label " . $values['operator'] . ' ' . implode(', ', $values['values']) . '</div>';
+                $operator = ( '==' == $values['operator'] ) ? '=' : '!=';
+                echo "<div>$label " . $operator . ' [' . implode(' or ', $values['values']) . ']</div>';
             }
         }
     }
@@ -496,6 +498,26 @@ class Custom_Field_Suite
     function parse_query( $wp_query ) {
         $wp_query->query_vars['cfs'] = $this;
     }
+
+
+	/**
+	 * Add a class of 'mp6' if WordPress 3.8-alpha or higher, allowing us to help the UI better match the WordPress admin
+	 * Reference: http://make.wordpress.org/ui/2013/11/19/targeting-the-new-dashboard-design-in-a-post-mp6-world/
+	 *
+	 * @param $classes
+	 *
+	 * @return array|string
+	 */
+	function add_body_class( $classes ) {
+		if ( version_compare( $GLOBALS['wp_version'], '3.8-alpha', '>' ) ) {
+			$classes = explode( " ", $classes );
+			if ( ! in_array( 'mp6', $classes ) ) {
+				$classes[] = 'mp6';
+			}
+			$classes = implode( " ", $classes );
+		}
+		return $classes;
+	}
 }
 
 

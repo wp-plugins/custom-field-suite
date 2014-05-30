@@ -32,7 +32,7 @@ class cfs_field_group
             $existing_groups = $wpdb->get_col( "SELECT post_name FROM {$wpdb->posts} WHERE post_type = 'cfs'" );
 
             // Loop through field groups
-            foreach ( $options['import_code'] as $group_id => $group ) {
+            foreach ( $options['import_code'] as $group ) {
 
                 // Make sure this field group doesn't exist
                 if ( !in_array( $group['post_name'], $existing_groups ) ) {
@@ -121,6 +121,13 @@ class cfs_field_group
             $value = unserialize( $row->meta_value );
             $field_groups[$row->post_id][$row->meta_key] = $value;
         }
+
+        // Strip out the field group keys
+        $temp = array();
+        foreach ( $field_groups as $field_group ) {
+            $temp[] = $field_group;
+        }
+        $field_groups = $temp;
 
         return $field_groups;
     }
