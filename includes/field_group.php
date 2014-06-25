@@ -2,18 +2,6 @@
 
 class cfs_field_group
 {
-    public $parent;
-
-
-    /**
-     * Constructor
-     * @param object $parent 
-     * @since 1.8.5
-     */
-    public function __construct( $parent ) {
-        $this->parent = $parent;
-    }
-
 
     /**
      * Import field groups
@@ -167,7 +155,7 @@ class cfs_field_group
             $field = stripslashes_deep($field);
 
             // Allow for field customizations
-            $field = $this->parent->fields[$field['type']]->pre_save_field( $field );
+            $field = CFS()->fields[$field['type']]->pre_save_field( $field );
 
             // Set the parent ID
             $field['parent_id'] = empty( $field['parent_id'] ) ? 0 : (int) $field['parent_id'];
