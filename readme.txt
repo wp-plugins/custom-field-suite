@@ -39,6 +39,9 @@ Custom Field Suite (CFS) is a lightweight custom fields plugin
 
 == Changelog ==
 
+= 2.3.5 =
+* Fixed WYSIWYG "code" button from showing repeatedly
+
 = 2.3.4 =
 * Re-added WYSIWYG "code" button for WP 3.9+
 * Date picker now highlights current day
