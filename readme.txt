@@ -3,7 +3,7 @@ Contributors: mgibbs189
 Donate link: http://customfieldsuite.com/
 Tags: custom fields, fields, forms, meta, postmeta, metabox, wysiwyg, relationship, repeater, upload
 Requires at least: 3.8
-Tested up to: 4.0
+Tested up to: 4.1
 Stable tag: trunk
 License: GPLv2
 
@@ -50,11 +50,17 @@ Custom Field Suite (CFS) is a lightweight custom fields plugin
 
 == Changelog ==
 
+= 2.3.10 =
+* New: `cfs_relationship_display` filter
+* New: `cfs_user_display` filter
+* New: `cfs_save_field_group_rules` filter
+* Improved loop field dynamic label support
+
 = 2.3.9 =
-* Design refresh and cleanup (props @chrisvanpatten)
+* UI refresh and cleanup (props @chrisvanpatten)
 * New: user field min/max validation (props @chrisvanpatten)
 * New: loop field min/max validation (props @christopherdro)
-* Improved Add-ons screen (includes new "Synchronize" add-on)
+* Improved Add-ons screen (incl. new "Synchronize" add-on)
 * Replaced tooltip library
 * Updated translations
 
