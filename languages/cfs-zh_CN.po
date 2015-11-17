@@ -1,104 +1,102 @@
-# Copyright (C) 2012 
-# This file is distributed under the same license as the  package.
+# This file is distributed under the same license as the Custom Field Suite package.
 msgid ""
 msgstr ""
 "Project-Id-Version: Custom Field Suite\n"
-"Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-10-20 22:30-0400\n"
 "PO-Revision-Date: 2015-10-20 22:30-0400\n"
 "Last-Translator: Matt Gibbs <hello@facetwp.com>\n"
-"Language-Team: Digital Factory <info@digitalfactory.pl>\n"
-"Language: pl_PL\n"
+"Language-Team: \n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 1.8.5\n"
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-Basepath: .\n"
-"X-Generator: Poedit 1.8.5\n"
-"X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: ..\n"
 
 #: ../includes/field.php:16 ../includes/fields/text.php:8
 msgid "Text"
-msgstr "Tekst"
+msgstr "文本"
 
 #: ../includes/field.php:42 ../includes/fields/file.php:64
 #: ../includes/fields/select.php:117 ../includes/fields/text.php:30
 #: ../includes/fields/textarea.php:58 ../includes/fields/true_false.php:45
 #: ../includes/fields/wysiwyg.php:54
 msgid "Validation"
-msgstr "Weryfikacja"
+msgstr "验证"
 
 #: ../includes/field.php:51 ../includes/fields/file.php:73
 #: ../includes/fields/select.php:126 ../includes/fields/text.php:39
 #: ../includes/fields/textarea.php:67 ../includes/fields/true_false.php:54
 #: ../includes/fields/wysiwyg.php:63
 msgid "This is a required field"
-msgstr "To pole jest wymagane"
+msgstr "必选"
 
 #: ../includes/field_group.php:112
 msgid "Imported"
-msgstr "Zaimportowane"
+msgstr "导入"
 
 #: ../includes/field_group.php:115
 msgid "Skipped"
-msgstr "Pominięto"
+msgstr "跳过"
 
 #: ../includes/field_group.php:120
 msgid "Nothing to import"
-msgstr "Nic do zaimportowania"
+msgstr "无法导入"
 
 #: ../includes/fields/color/color.php:8
 msgid "Color"
-msgstr "Kolor"
+msgstr "颜色"
 
 #: ../includes/fields/date/date.php:8
 msgid "Date"
-msgstr "Data"
+msgstr "日期"
 
 #: ../includes/fields/file.php:8
 msgid "File Upload"
-msgstr "Plik"
+msgstr "上传文件"
 
 #: ../includes/fields/file.php:32
 msgid "Add File"
-msgstr "Dodaj plik"
+msgstr "添加文件"
 
 #: ../includes/fields/file.php:33
 msgid "Remove"
-msgstr "Usuń"
+msgstr "删除"
 
 #: ../includes/fields/file.php:43
 msgid "Return Value"
-msgstr "Zwraca wartość"
+msgstr "返回值"
 
 #: ../includes/fields/file.php:52
 msgid "File URL"
-msgstr "Adres URL pliku"
+msgstr "文件链接"
 
 #: ../includes/fields/file.php:53
 msgid "Attachment ID"
-msgstr "ID załącznika"
+msgstr "附件 ID"
 
 #: ../includes/fields/hyperlink.php:9
 msgid "Hyperlink"
-msgstr "Hiperłącze"
+msgstr "超链接"
 
 #: ../includes/fields/hyperlink.php:23
 msgid "URL"
-msgstr "Odnośnik URL"
+msgstr "链接"
 
 #: ../includes/fields/hyperlink.php:27
 msgid "Link Text"
-msgstr "Tekst odnośnika"
+msgstr "链接文字"
 
 #: ../includes/fields/hyperlink.php:31
 msgid "Link Target"
-msgstr "Odnośnik"
+msgstr "链路目标"
 
 #: ../includes/fields/hyperlink.php:48
 msgid "Output format"
-msgstr "Format wyjściowy"
+msgstr "输出格式"
 
 #: ../includes/fields/hyperlink.php:57
 msgid "HTML"
@@ -106,460 +104,363 @@ msgstr "HTML"
 
 #: ../includes/fields/hyperlink.php:58
 msgid "PHP Array"
-msgstr "PHP tablicy"
+msgstr "PHP Array"
 
 #: ../includes/fields/loop.php:8
 msgid "Loop"
-msgstr "Pętla"
+msgstr "循环"
 
 #: ../includes/fields/loop.php:36
 msgid "Row Display"
-msgstr "Wyświetlanie rzędu"
+msgstr "Row Display"
 
 #: ../includes/fields/loop.php:45
 msgid "Show the values by default"
-msgstr "Pokaż wartości domyślnie"
+msgstr "默认显示值"
 
 #: ../includes/fields/loop.php:52
 msgid "Row Label"
-msgstr "Etykiety wierszy"
+msgstr "Row Label"
 
 #: ../includes/fields/loop.php:59 ../includes/fields/loop.php:113
 #: ../includes/fields/loop.php:194
 msgid "Loop Row"
-msgstr "Kolejny rząd"
+msgstr "Loop Row"
 
 #: ../includes/fields/loop.php:66
 msgid "Button Label"
-msgstr "Etykieta przycisku"
+msgstr "按钮标签"
 
 #: ../includes/fields/loop.php:73 ../includes/fields/loop.php:138
 #: ../includes/fields/loop.php:195
 msgid "Add Row"
-msgstr "Dodaj rząd"
+msgstr "Add Row"
 
 #: ../includes/fields/loop.php:81 ../includes/fields/relationship.php:104
 #: ../includes/fields/user.php:56
 msgid "Limits"
-msgstr "Limity"
+msgstr "限制"
 
 #: ../includes/fields/relationship.php:8
 msgid "Relationship"
-msgstr "Relacja"
+msgstr "关联"
 
 #: ../includes/fields/relationship.php:60
 msgid "Search posts"
-msgstr "Szukaj wpisów"
+msgstr "搜索文章..."
 
 #: ../includes/fields/relationship.php:88 ../includes/init.php:282
 #: ../templates/meta_box_rules.php:136
 msgid "Post Types"
-msgstr "Typy wpisów"
+msgstr "文章类型"
 
 #: ../includes/fields/relationship.php:89
 msgid "Limit posts to the following types"
-msgstr "Ogranicz wpisy do następujących typów"
+msgstr "限制帖子类型"
 
 #: ../includes/fields/select.php:8
 msgid "Select"
-msgstr "Wybierz"
+msgstr "选项"
 
 #: ../includes/fields/select.php:86
 msgid "Choices"
-msgstr "Opcje wyboru"
+msgstr "选项"
 
 #: ../includes/fields/select.php:87
 msgid "Enter one choice per line"
-msgstr "Każdą opcję wpisz w oddzielnym rzędzie"
+msgstr "每行输入一个选项"
 
 #: ../includes/fields/select.php:101
 msgid "Multi-select?"
-msgstr "Wielokrotne wybieranie"
+msgstr "多重选择吗?"
 
 #: ../includes/fields/select.php:110
 msgid "This is a multi-select field"
-msgstr "To jest pole wielokrotnego wyboru"
+msgstr "这是一个多项选择的字段"
 
 #: ../includes/fields/tab.php:8
 msgid "Tab"
-msgstr "Zakładka"
+msgstr "选项卡"
 
 #: ../includes/fields/text.php:16 ../includes/fields/textarea.php:23
 msgid "Default Value"
-msgstr "Wartość domyśłna"
+msgstr "默认值"
 
 #: ../includes/fields/textarea.php:8
 msgid "Textarea"
-msgstr "Obszar tekstowy"
+msgstr "文本输入区"
 
 #: ../includes/fields/textarea.php:37 ../includes/fields/wysiwyg.php:33
 msgid "Formatting"
-msgstr "Formatowanie"
+msgstr "格式化"
 
 #: ../includes/fields/textarea.php:46
 msgid "None"
-msgstr "Brak"
+msgstr "无"
 
 #: ../includes/fields/textarea.php:47
 msgid "Convert newlines to <br />"
-msgstr "Nowe linie do konwersji<br>"
+msgstr "转换换行符 <br />"
 
 #: ../includes/fields/true_false.php:8
 msgid "True / False"
-msgstr "Prawda / Fałsz"
+msgstr "真 / 假"
 
 #: ../includes/fields/true_false.php:30
 msgid "Message"
-msgstr "Treść"
+msgstr "消息"
 
 #: ../includes/fields/true_false.php:31
 msgid "The text beside the checkbox"
-msgstr "Tekst przy polu wyboru"
+msgstr "复选框描述文字"
 
 #: ../includes/fields/user.php:8
 msgid "User"
-msgstr "Użytkownik"
+msgstr "用户"
 
 #: ../includes/fields/user.php:31
 msgid "Search users"
-msgstr "Szukaj użytkownicy"
+msgstr "搜索用户..."
 
 #: ../includes/fields/wysiwyg.php:8
 msgid "Wysiwyg Editor"
-msgstr "Edytor WYSIWYG"
+msgstr "所见即所得编辑器"
 
 #: ../includes/fields/wysiwyg.php:42
 msgid "Default"
-msgstr "Domyślne"
+msgstr "默认"
 
 #: ../includes/fields/wysiwyg.php:43
 msgid "None (bypass filters)"
-msgstr "Brak (przechwyć filtry)"
+msgstr "无 (绕过过滤器)"
 
 #: ../includes/form.php:194
 msgid "Submit"
-msgstr "Wyślij"
+msgstr "提交"
 
 #: ../includes/init.php:58
 msgid "Field Groups"
-msgstr "Grupy pól"
+msgstr "字段组"
 
 #: ../includes/init.php:59
 msgid "Field Group"
-msgstr "Grupa pól"
+msgstr "字段组"
 
 #: ../includes/init.php:60
 msgid "All Field Groups"
-msgstr "Wszystkie grupy pól"
+msgstr "字段组"
 
 #: ../includes/init.php:61
 msgid "Add New Field Group"
-msgstr "Dodaj nową grupę pól"
+msgstr "添加新字段组"
 
 #: ../includes/init.php:62
 msgid "Edit Field Group"
-msgstr "Edytuj grupę pól"
+msgstr "编辑字段组"
 
 #: ../includes/init.php:63
 msgid "New Field Group"
-msgstr "Nowa grupa pól"
+msgstr "新字段组"
 
 #: ../includes/init.php:64
 msgid "View Field Group"
-msgstr "Zobacz grupę pól"
+msgstr "查看字段组"
 
 #: ../includes/init.php:65
 msgid "Search Field Groups"
-msgstr "Szukaj grup pól"
+msgstr "搜索字段组"
 
 #: ../includes/init.php:66
 msgid "No Field Groups found"
-msgstr "Nie znaleziono grup pól"
+msgstr "暂无字段组"
 
 #: ../includes/init.php:67
 msgid "No Field Groups found in Trash"
-msgstr "Nie znaleziono grup pól w koszu"
+msgstr "回收站内没有字段组"
 
 #: ../includes/init.php:140 ../templates/page_tools.php:73
 msgid "Tools"
-msgstr "Narzędzia"
+msgstr "工具"
 
 #: ../includes/init.php:153
 msgid "Fields"
-msgstr "Pola"
+msgstr "字段"
 
 #: ../includes/init.php:154
 msgid "Placement Rules"
-msgstr "Opcje wyświetlania"
+msgstr "布局规则"
 
 #: ../includes/init.php:155
 msgid "Extras"
-msgstr "Dodatki"
+msgstr "额外选项"
 
 #: ../includes/init.php:268
 msgid "Title"
-msgstr "Tutuł"
+msgstr "标题"
 
 #: ../includes/init.php:269
 msgid "Placement"
-msgstr "Umieszczenie doglebowe nawozów"
+msgstr "放置"
 
 #: ../includes/init.php:283 ../templates/meta_box_rules.php:202
 msgid "User Roles"
-msgstr "Role użytkowników"
+msgstr "用户角色"
 
 #: ../includes/init.php:284 ../templates/meta_box_rules.php:234
 msgid "Posts"
-msgstr "Wpisy"
+msgstr "文章"
 
 #: ../includes/init.php:285
 msgid "Term IDs"
-msgstr "Terminu, identyfikatory"
+msgstr "Term IDs"
 
 #: ../includes/init.php:286 ../templates/meta_box_rules.php:290
 msgid "Page Templates"
-msgstr "Szablony stron"
+msgstr "页面模版"
 
 #: ../includes/init.php:287 ../templates/meta_box_rules.php:169
 msgid "Post Formats"
-msgstr "Formaty Pocztowe"
+msgstr "文章格式"
 
 #: ../includes/revision.php:26
 msgid "Post Meta"
-msgstr "Metadane postów"
+msgstr "Post Meta"
 
 #: ../templates/admin_head.php:24
 msgid "New Field"
-msgstr "Nowe Pole"
+msgstr "新建字段"
 
 #: ../templates/field_html.php:30
 msgid "Label"
-msgstr "Etykieta"
+msgstr "标签"
 
 #: ../templates/field_html.php:32
 msgid "The field label that editors will see."
-msgstr "Etykiety pola, że Redakcja będzie widać."
+msgstr "编辑后即可显示字段标签."
 
 #: ../templates/field_html.php:39
 msgid "Name"
-msgstr "Nazwa"
+msgstr "名称"
 
 #: ../templates/field_html.php:42
 msgid ""
 "The field name is passed into get() to retrieve values. Use only lowercase "
 "letters, numbers, and underscores."
-msgstr ""
-"Nazwa pola jest przekazywana do get() aby pobrać wartości. Używać tylko małe "
-"litery, cyfry i znaki podkreślenia."
+msgstr "使用 get() 获取字段值.字段名称只能使用小写字母,数字和下划线."
 
 #: ../templates/field_html.php:49
 msgid "Field Type"
-msgstr "Rodzaj pola"
+msgstr "字段类型"
 
 #: ../templates/field_html.php:67
 msgid "Notes"
-msgstr "Instrukcje"
+msgstr "注释"
 
 #: ../templates/field_html.php:69
 msgid "Notes for editors during data entry"
-msgstr "Uwagi dla redaktorów podczas wprowadzania danych"
+msgstr "描述字段用途"
 
 #: ../templates/field_html.php:82
 msgid "Close"
-msgstr "Zamknij"
+msgstr "关闭"
 
 #: ../templates/field_html.php:83
 msgid "or"
-msgstr "lub"
+msgstr "或"
 
 #: ../templates/field_html.php:83
 msgid "delete"
-msgstr "usuń"
+msgstr "删除"
 
 #: ../templates/meta_box_extras.php:33
 msgid "Order"
-msgstr "Zamówienie"
+msgstr "排序"
 
 #: ../templates/meta_box_extras.php:35
 msgid "The field group with the lowest order will appear first."
-msgstr "Pole grupy z najniższą kolejność pojawi się pierwszy."
+msgstr "数字最小的字段组将出现在第一位."
 
 #: ../templates/meta_box_extras.php:45
 msgid "Position"
-msgstr "Pozycja"
+msgstr "位置"
 
 #: ../templates/meta_box_extras.php:48
 msgid "Normal"
-msgstr "Zwykły"
+msgstr "正常"
 
 #: ../templates/meta_box_extras.php:49
 msgid "Side"
-msgstr "Boczny"
+msgstr "边侧栏"
 
 #: ../templates/meta_box_extras.php:54
 msgid "Display Settings"
-msgstr "Ustawienia wyświetlania"
+msgstr "显示设置"
 
 #: ../templates/meta_box_extras.php:64
 msgid "Hide the content editor"
-msgstr "Ukryj edytor treści"
+msgstr "隐藏内容编辑器"
 
 #: ../templates/meta_box_fields.php:60
 msgid "Add New Field"
-msgstr "Dodaj nowe pole"
+msgstr "添加新字段"
 
 #: ../templates/meta_box_rules.php:5
 msgid "equals"
-msgstr "jest równe"
+msgstr "等于"
 
 #: ../templates/meta_box_rules.php:6
 msgid "is not"
-msgstr "nie jest równe"
+msgstr "不等于"
 
 #: ../templates/meta_box_rules.php:98 ../templates/meta_box_rules.php:103
 msgid "Leave blank to skip this rule"
-msgstr "Pozostaw puste, aby pominąć tę regułę"
+msgstr "留空则跳过规则"
 
 #: ../templates/meta_box_rules.php:258
 msgid "Taxonomy Terms"
-msgstr "Terminy"
+msgstr "菜单类型"
 
 #: ../templates/page_tools.php:76 ../templates/page_tools.php:97
 msgid "Export"
-msgstr "Eksportuj"
+msgstr "导出"
 
 #: ../templates/page_tools.php:77 ../templates/page_tools.php:115
 msgid "Import"
-msgstr "Importuj"
+msgstr "导入"
 
 #: ../templates/page_tools.php:78
 msgid "Reset"
-msgstr "Reset"
+msgstr "重设"
 
 #: ../templates/page_tools.php:122
 msgid "Reset and deactivate."
-msgstr "Badanie i wyłączyć."
+msgstr "复位和停用"
 
 #: ../templates/page_tools.php:123
 msgid "This will delete all CFS data and deactivate the plugin."
-msgstr "To usunie wszystkie dane CFS i wyłączyć plugin."
+msgstr "删除CFS所有数据,并停用插件."
 
 #: ../templates/page_tools.php:124
 msgid "Delete everything"
-msgstr "Usuń wszystko"
+msgstr "删除一切"
 
 #~ msgid "Use This File"
-#~ msgstr "Użyj tego pliku"
+#~ msgstr "使用此文件"
 
 #~ msgid "Add New"
-#~ msgstr "Dodaj nową"
+#~ msgstr "新建"
 
 #~ msgid "Add-ons"
-#~ msgstr "Dodatki"
+#~ msgstr "附加组件"
 
 #~ msgid "Post IDs"
-#~ msgstr "Po ID"
+#~ msgstr "文章 ID"
 
 #~ msgid "Gravity Forms"
-#~ msgstr "Gravity Forms"
+#~ msgstr "重力形态"
 
 #~ msgid "Your Gravity Form and CFS field labels must match exactly"
-#~ msgstr "Etykiety pola formularza grawitacji i CFS musi odpowiadać dokładnie"
+#~ msgstr "Your Gravity Form and CFS field labels must match exactly"
 
 #~ msgid "Learn more"
-#~ msgstr "Dowiedz się wiecej"
-
-#~ msgid "No field groups selected"
-#~ msgstr "Nie wybrano grup pól"
-
-#~ msgid "Custom Field Suite"
-#~ msgstr "Własne pola"
-
-#~ msgid "Changelog"
-#~ msgstr "Dziennik zmian"
-
-#~ msgid "User Guide"
-#~ msgstr "Podręcznik użytkownika"
-
-#~ msgid "Website"
-#~ msgstr "Strona www"
-
-#~ msgid "Only lowercase letters and underscores"
-#~ msgstr "Dozwolone są tylko małe litery"
-
-#~ msgid "Content Editor"
-#~ msgstr "Edytor treści"
-
-#~ msgid "Select some options"
-#~ msgstr "Wybierz opcje"
-
-#~ msgid "Custom Field Import"
-#~ msgstr "Import własnych pól"
-
-#~ msgid "Import Successful"
-#~ msgstr "Importowanie zakończone powodzeniem"
-
-#~ msgid ""
-#~ "This tool will scan your existing custom fields, mapping values into "
-#~ "Custom Field Suite."
-#~ msgstr ""
-#~ "To narzędzie przeskanuje istenijące własne pola i przypisze wartości do "
-#~ "wtyczki Własne pola."
-
-#~ msgid "Select the field groups to populate:"
-#~ msgstr "Wybierz grupy pól:"
-
-#~ msgid "Import Field Data"
-#~ msgstr "Importuj dane z pól"
-
-#~ msgid "Custom Field Sync"
-#~ msgstr "Synchronizacja własnych pól"
-
-#~ msgid "Sync Successful"
-#~ msgstr "Synchronizacja zakończona"
-
-#~ msgid ""
-#~ "This tool will scan your existing custom fields, mapping any applicable "
-#~ "values into Custom Field Suite."
-#~ msgstr ""
-#~ "To narzędzie przeskanuje istenijące włąsne pola i przypisze wartości do "
-#~ "wtyczki Własne pola."
-
-#~ msgid "Synchronize"
-#~ msgstr "Synchronizacja"
-
-#~ msgid "Closed"
-#~ msgstr "Zamknięte"
-
-#~ msgid "Open"
-#~ msgstr "Otwórz"
-
-#~ msgid "Default: Add Row"
-#~ msgstr "Domyśłnie: Dodaj rząd"
-
-#~ msgid "click to toggle, drag to re-order"
-#~ msgstr "kliknij aby otworzyć/zamknąć, przeciągnij aby zmienić kolejność"
-
-#~ msgid "Select multiple values?"
-#~ msgstr "Możłiwość wybrania wielu opcji?"
-
-#~ msgid "Read the user guide"
-#~ msgstr "Czytaj instrukcję"
-
-#~ msgid "View plugin page"
-#~ msgstr "Odwiedź stronę wtyczki"
-
-#~ msgid "See updates for"
-#~ msgstr "Zobacz aktualizacje"
-
-#~ msgid "Getting started?"
-#~ msgstr "Dopiero zaczynasz?"
-
-#~ msgid "Rate the plugin"
-#~ msgstr "Oceń tę wtyczkę"
-
-#~ msgid "Donate"
-#~ msgstr "Wspomóż"
-
-#~ msgid "Attach File"
-#~ msgstr "Załącz plik"
+#~ msgstr "了解更多"
